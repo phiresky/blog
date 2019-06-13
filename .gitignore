@@ -3,6 +3,7 @@ node_modules
 .DS_Store
 out
 public
+/blog
 *.log
 content/**/*.json
 package-lock.json

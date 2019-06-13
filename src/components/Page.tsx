@@ -1,61 +1,43 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 import Header from "./Header"
 import Hero from "./Hero"
 import Footer from "./Footer"
 import Tracking from "./Tracking"
 import { ConfigJson } from "../../pages"
+import CONFIG from "../../content/index.json"
 
 // rrtod body = children
-function Page(
-	props: Pick<
-		ConfigJson,
-		| "siteTitle"
-		| "description"
-		| "stylesheets"
-		| "topLinks"
-		| "backgroundClass"
-		| "copyright"
-		| "siteId"
-	> & { heroTitle: string; body: JSX.Element },
-) {
+function Page(_props: { title?: string; children: JSX.Element }) {
+	const [num, setNum] = useState(0)
+	useEffect(() => {
+		console.log("hehehe")
+		setNum(1)
+	})
+	const props = { ...CONFIG, ..._props }
 	return (
 		<div>
 			<Header
-				siteTitle={props.siteTitle}
+				siteTitle={
+					(props.title ? props.title + " - " : "") + props.siteTitle
+				}
 				description={props.description}
 				stylesheets={props.stylesheets}
 			/>
 			<main className="lh-copy">
 				<Hero
-					heroTitle={props.heroTitle}
+					heroTitle={props.siteTitle}
 					subtitle={props.description}
 					topLinks={props.topLinks}
 					backgroundClass={props.backgroundClass}
 				/>
-
-				{props.body}
-
+				{props.children}
+				Num: {num}
 				<Footer copyright={props.copyright} />
 				{props.siteId && <Tracking siteId={props.siteId} />}
 			</main>
 		</div>
 	)
-}
-
-Page.propTypes = {
-	heroTitle: PropTypes.string.isRequired,
-	description: PropTypes.string.isRequired,
-	stylesheets: PropTypes.array,
-	topLinks: PropTypes.array,
-	siteId: PropTypes.string.isRequired,
-}
-
-Page.defaultProps = {
-	heroTitle: "",
-	description: "",
-	stylesheets: ["https://unpkg.com/tachyons@4.7.0/css/tachyons.min.css"],
-	backgroundClass: "bg-dark-gray",
 }
 
 export default Page

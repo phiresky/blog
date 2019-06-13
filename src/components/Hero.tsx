@@ -15,7 +15,7 @@ function Hero(props: {
 				<div className="pv4">
 					<h1 className="f1 normal lh-title ma0 pa0">
 						<Link prefetch href="/">
-							<a className="white no-underline" href="/">
+							<a className="white no-underline" href="/blog">
 								{props.heroTitle}
 							</a>
 						</Link>
