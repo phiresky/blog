@@ -12,7 +12,7 @@ export function filterPosts(summaryJson: SummaryJson) {
 		summaryJson.fileMap &&
 		Object.keys(summaryJson.fileMap)
 			.filter(file => {
-				if (file.indexOf("content/posts") === 0) {
+				if (file.match(/^content\/\d{4}\//)) {
 					return true
 				}
 			})

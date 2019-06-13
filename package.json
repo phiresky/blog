@@ -2,31 +2,16 @@
 	"name": "next-blog",
 	"version": "3.1.1",
 	"description": "Markdown based blog using next.js",
-	"main": "index.js",
-	"homepage": "http://timscanlin.net",
-	"twitter": "tim_scanlin",
 	"scripts": {
 		"start": "node server.js",
 		"build": "next build",
-		"build:content": "processmd content/**/*.md --outputDir content --preview 110 --summaryOutput content/summary.json",
-		"build:content:watch": "processmd content/**/*.md --outputDir content --preview 110 --summaryOutput content/summary.json --watch",
-		"build:export": "npm run build && npm run export",
+		"build:content": "processmd 'content/**/*.md' --outputDir content --preview 110 --summaryOutput content/summary.json",
+		"build:content:watch": "processmd 'content/**/*.md' --outputDir content --preview 110 --summaryOutput content/summary.json --watch",
+		"build:export": "yarn run build && yarn run export",
 		"export": "next export && cp -R static/* out/",
-		"deploy": "npm run build:content && npm run build:export && mv out public",
-		"server": "NODE_ENV=production node server.js",
-		"v-patch": "npm version patch && git push --tags && npm publish && git push",
-		"v-minor": "npm version minor && git push --tags && npm publish && git push",
-		"v-major": "npm version major && git push --tags && npm publish && git push"
+		"deploy": "yarn run build:content && yarn run build:export",
+		"server": "NODE_ENV=production node server.js"
 	},
-	"keywords": [
-		"blog",
-		"next.js",
-		"next",
-		"Tim",
-		"Scanlin"
-	],
-	"author": "Tim Scanlin",
-	"license": "MIT",
 	"devDependencies": {
 		"husky": ">=1",
 		"lint-staged": ">=8",

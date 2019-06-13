@@ -18,7 +18,7 @@ module.exports = withTypescript({
 					fileObj.paths.forEach(path => {
 						paths[path] = obj
 					})
-				} else if (file.indexOf("content/posts") === 0) {
+				} else if (file.indexOf("content") === 0) {
 					// Handle posts.
 					const page = file
 						.split("content")
@@ -33,9 +33,8 @@ module.exports = withTypescript({
 					}
 				}
 			})
-
+		console.log(posts, paths)
 		return Object.assign(
-			{},
 			{
 				"/": { page: "/" },
 			},
@@ -43,4 +42,7 @@ module.exports = withTypescript({
 			paths,
 		) // aliases
 	},
+	assetPrefix: "/blog",
 })
+
+console.log(module.exports)
