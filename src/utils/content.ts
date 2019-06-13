@@ -1,9 +1,12 @@
 import { SummaryJson } from "../../pages"
 
 export function makeUrl(article: { dir: string; base: string }) {
-	return `${article.dir.split("content").join("")}/${article.base
-		.split(".json")
-		.join("")}`
+	return (
+		`/blog` +
+		`${article.dir.split("content").join("")}/${article.base
+			.split(".json")
+			.join("")}`
+	)
 }
 
 export function filterPosts(summaryJson: SummaryJson) {
