@@ -4,8 +4,7 @@ import Header from "./Header"
 import Hero from "./Hero"
 import Footer from "./Footer"
 import Tracking from "./Tracking"
-import { ConfigJson } from "../../pages"
-import CONFIG from "../../content/index.json"
+import { config } from "../config"
 
 // rrtod body = children
 function Page(_props: { title?: string; children: JSX.Element }) {
@@ -14,7 +13,7 @@ function Page(_props: { title?: string; children: JSX.Element }) {
 		console.log("hehehe")
 		setNum(1)
 	})
-	const props = { ...CONFIG, ..._props }
+	const props = { ...config, ..._props }
 	return (
 		<div>
 			<Header

@@ -2,16 +2,7 @@
 	"name": "next-blog",
 	"version": "3.1.1",
 	"description": "Markdown based blog using next.js",
-	"scripts": {
-		"start": "node server.js",
-		"build": "next build",
-		"build:content": "processmd 'content/**/*.md' --outputDir content --preview 110 --summaryOutput content/summary.json",
-		"build:content:watch": "processmd 'content/**/*.md' --outputDir content --preview 110 --summaryOutput content/summary.json --watch",
-		"build:export": "yarn run build && yarn run export",
-		"export": "next export && cp -R static/* out/",
-		"deploy": "yarn run build:content && yarn run build:export",
-		"server": "NODE_ENV=production node server.js"
-	},
+	"scripts": {},
 	"devDependencies": {
 		"husky": ">=1",
 		"lint-staged": ">=8",
@@ -26,11 +17,15 @@
 		"@types/react": "^16.8.19",
 		"@types/react-dom": "^16.8.4",
 		"@zeit/next-typescript": "^1.1.1",
+		"babel-loader": "^8.0.6",
 		"next-routes": "^1.4.2",
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6",
 		"styled-jsx": "^3.2.1",
-		"typescript": "^3.5.1"
+		"ts-loader": "^6.0.2",
+		"ts-node": "^8.2.0",
+		"typescript": "^3.5.1",
+		"val-loader": "^1.1.1"
 	},
 	"husky": {
 		"hooks": {

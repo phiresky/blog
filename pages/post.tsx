@@ -2,19 +2,13 @@ import React, { useEffect, useState } from "react"
 import { withRouter } from "next/router"
 import Page from "../src/components/Page"
 
-import CONFIG from "../content/index.json"
+import { config } from "../src/config"
 import { PostJson } from "."
 
 class Post extends React.Component {
 	render() {
 		const props = this.props
 		console.log("post", props)
-		let pageJson: PostJson = {} as any
-		if (props.router.query) {
-			if (props.router.query.fullUrl) {
-				pageJson = require(`../content${props.router.query.fullUrl}.json`)
-			}
-		}
 
 		return (
 			<div>
