@@ -1,40 +1,74 @@
 {
-  "name": "next-blog",
-  "version": "3.1.1",
-  "description": "Markdown based blog using next.js",
-  "main": "index.js",
-  "homepage": "http://timscanlin.net",
-  "twitter": "tim_scanlin",
-  "scripts": {
-    "start": "node server.js",
-    "build": "next build",
-    "build:content": "processmd content/**/*.md --outputDir content --preview 110 --summaryOutput content/summary.json",
-    "build:content:watch": "processmd content/**/*.md --outputDir content --preview 110 --summaryOutput content/summary.json --watch",
-    "build:export": "npm run build && npm run export",
-    "export": "next export && cp -R static/* out/",
-    "deploy": "npm run build:content && npm run build:export && mv out public",
-    "server": "NODE_ENV=production node server.js",
-    "v-patch": "npm version patch && git push --tags && npm publish && git push",
-    "v-minor": "npm version minor && git push --tags && npm publish && git push",
-    "v-major": "npm version major && git push --tags && npm publish && git push"
-  },
-  "keywords": [
-    "blog",
-    "next.js",
-    "next",
-    "Tim",
-    "Scanlin"
-  ],
-  "author": "Tim Scanlin",
-  "license": "MIT",
-  "devDependencies": {
-    "next": "^8.1.0",
-    "processmd": "^4.4.2",
-    "standard": "^12.0.1"
-  },
-  "dependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "styled-jsx": "^3.2.1"
-  }
+	"name": "next-blog",
+	"version": "3.1.1",
+	"description": "Markdown based blog using next.js",
+	"main": "index.js",
+	"homepage": "http://timscanlin.net",
+	"twitter": "tim_scanlin",
+	"scripts": {
+		"start": "node server.js",
+		"build": "next build",
+		"build:content": "processmd content/**/*.md --outputDir content --preview 110 --summaryOutput content/summary.json",
+		"build:content:watch": "processmd content/**/*.md --outputDir content --preview 110 --summaryOutput content/summary.json --watch",
+		"build:export": "npm run build && npm run export",
+		"export": "next export && cp -R static/* out/",
+		"deploy": "npm run build:content && npm run build:export && mv out public",
+		"server": "NODE_ENV=production node server.js",
+		"v-patch": "npm version patch && git push --tags && npm publish && git push",
+		"v-minor": "npm version minor && git push --tags && npm publish && git push",
+		"v-major": "npm version major && git push --tags && npm publish && git push"
+	},
+	"keywords": [
+		"blog",
+		"next.js",
+		"next",
+		"Tim",
+		"Scanlin"
+	],
+	"author": "Tim Scanlin",
+	"license": "MIT",
+	"devDependencies": {
+		"husky": ">=1",
+		"lint-staged": ">=8",
+		"next": "^8.1.0",
+		"prettier": "^1.18.2",
+		"processmd": "^4.4.2",
+		"standard": "^12.0.1"
+	},
+	"dependencies": {
+		"@babel/core": "^7.4.5",
+		"@types/next": "^8.0.5",
+		"@types/react": "^16.8.19",
+		"@types/react-dom": "^16.8.4",
+		"@zeit/next-typescript": "^1.1.1",
+		"react": "^16.8.6",
+		"react-dom": "^16.8.6",
+		"styled-jsx": "^3.2.1",
+		"typescript": "^3.5.1"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"*.{js,css,json,md}": [
+			"prettier --write",
+			"git add"
+		]
+	},
+	"prettier": {
+		"semi": false,
+		"tabWidth": 4,
+		"useTabs": true,
+		"trailingComma": "all",
+		"printWidth": 80,
+		"endOfLine": "lf"
+	},
+	"babel": {
+		"presets": [
+			"next/babel",
+			"@zeit/next-typescript/babel"
+		]
+	}
 }

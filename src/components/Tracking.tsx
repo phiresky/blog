@@ -1,8 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react"
+import PropTypes from "prop-types"
 
-function getGaScript (siteId) {
-  return `
+function getGaScript(siteId: string) {
+	return `
   (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
   function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
   e=o.createElement(i);r=o.getElementsByTagName(i)[0];
@@ -12,16 +12,18 @@ function getGaScript (siteId) {
 `
 }
 
-function Tracking(props) {
-  return (
-    <div>
-      <script dangerouslySetInnerHTML={{ __html: getGaScript(props.siteId) }} />
-    </div>
-  )
+function Tracking(props: { siteId: string }) {
+	return (
+		<div>
+			<script
+				dangerouslySetInnerHTML={{ __html: getGaScript(props.siteId) }}
+			/>
+		</div>
+	)
 }
 
 Tracking.propTypes = {
-  siteId: PropTypes.string.isRequired,
+	siteId: PropTypes.string.isRequired,
 }
 
 export default Tracking
