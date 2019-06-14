@@ -17,7 +17,7 @@ type Frontmatter = {
 	[k: string]: any
 }
 
-function getPreview(content: string) {
+function getMetaAndPreview(content: string) {
 	const _processed = unified()
 		.use(markdown)
 		.use(mdfrontmatter, ["yaml"])
@@ -31,7 +31,8 @@ function getPreview(content: string) {
 		) as any)
 		.trim()
 		.replace(/\s+/g, "  ")
-		.substr(0, 1000)
+		.substr(0, 500)
+		.replace(/\s*\S+$/, "...") // remove cut off word
 
 	const processed = (_processed as any) as Root
 	const first = processed.children[0]
@@ -49,7 +50,7 @@ export async function parsePosts() {
 			const path = join(dir, file)
 			const content = await fs.readFile(join(d, dir, file), "utf8")
 
-			const { frontmatter, preview } = getPreview(content)
+			const { frontmatter, preview } = getMetaAndPreview(content)
 
 			// remove frontmatter, hacky af
 			const content_md = content

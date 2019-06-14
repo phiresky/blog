@@ -2,7 +2,10 @@
 	"name": "next-blog",
 	"version": "3.1.1",
 	"description": "Markdown based blog using next.js",
-	"scripts": {},
+	"scripts": {
+		"dev": "node server.js",
+		"build": "yarn next build && yarn next export && ./postprocess.sh"
+	},
 	"devDependencies": {
 		"husky": ">=1",
 		"lint-staged": ">=8",
@@ -20,6 +23,7 @@
 		"@types/recharts": "^1.1.16",
 		"@zeit/next-typescript": "^1.1.1",
 		"babel-loader": "^8.0.6",
+		"glob": "^7.1.4",
 		"js-yaml": "^3.13.1",
 		"next-routes": "^1.4.2",
 		"react": "^16.8.6",
