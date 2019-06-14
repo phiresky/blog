@@ -1,5 +1,10 @@
 import { Summary } from "../buildtime/posts-summary"
 
+export const isClientSide = !!(
+	typeof window !== "undefined" &&
+	window.document &&
+	window.document.createElement
+)
 export function makeUrl(article_fname: string) {
 	return `/blog/` + `${article_fname.replace(/\.[^.]+$/, "")}`
 }
