@@ -6,7 +6,11 @@ import Footer from "./Footer"
 import Tracking from "./Tracking"
 import { config } from "../config"
 
-function Page(_props: { title?: string; children: JSX.Element }) {
+function Page(_props: {
+	title?: string
+	description?: string
+	children: JSX.Element
+}) {
 	const props = { ...config, ..._props }
 	return (
 		<div>

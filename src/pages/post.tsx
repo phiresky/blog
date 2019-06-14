@@ -68,7 +68,7 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 						word-wrap: break-word;
 					}
 				`}</style>
-				<Page title={meta.title}>
+				<Page title={meta.title} description={post.preview}>
 					<div className="content center mw7 pa3 pa4-ns">
 						<h1 className="mt0 lh-title">{meta.title}</h1>
 						<small className="db ttu o-40">
