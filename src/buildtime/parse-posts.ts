@@ -31,8 +31,8 @@ function getMetaAndPreview(content: string) {
 		) as any)
 		.trim()
 		.replace(/\s+/g, "  ")
-		.substr(0, 500)
-		.replace(/\s*\S+$/, "...") // remove cut off word
+		.substr(0, 300)
+		.replace(/\s*\S+$/, "") // remove cut off word
 
 	const processed = (_processed as any) as Root
 	const first = processed.children[0]

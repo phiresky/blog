@@ -18,7 +18,7 @@ export type ConfigJson = {
 	sourceExt: string
 }
 export const config: ConfigJson = {
-	siteTitle: "phiresky's Blog",
+	siteTitle: "My Blog",
 	description: "About my personal projects and other stuff",
 	stylesheets: ["https://unpkg.com/tachyons@4.7.4/css/tachyons.min.css"],
 	topLinks: [

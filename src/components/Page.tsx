@@ -6,7 +6,6 @@ import Footer from "./Footer"
 import Tracking from "./Tracking"
 import { config } from "../config"
 
-// rrtod body = children
 function Page(_props: { title?: string; children: JSX.Element }) {
 	const props = { ...config, ..._props }
 	return (
