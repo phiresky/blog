@@ -11496,7 +11496,9 @@ function Footer(props) {
   var now = new Date();
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
     className: "center w5 f6 tc mt4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "\xA9 "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, now.getFullYear(), " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, props.copyright)));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    href: "https://github.com/phiresky/blog"
+  }, "View blog source on GitHub")));
 }
 
 Footer.propTypes = {
