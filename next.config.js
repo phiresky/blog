@@ -1,7 +1,13 @@
 const withTypescript = require("@zeit/next-typescript")
 
 module.exports = withTypescript({
-	// assetPrefix: "/blog",
+	assetPrefix: "/blog",
+	exportPathMap() {
+		return {
+			"/blog": { page: "/index" },
+			"/blog/2019/rga": { page: "/post" },
+		}
+	},
 	webpack(config, options) {
 		const tsrule = config.module.rules.find(
 			r => r.test.source === "\\.(ts|tsx)$",
