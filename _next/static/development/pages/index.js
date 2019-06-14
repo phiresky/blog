@@ -11768,7 +11768,7 @@ __webpack_require__.r(__webpack_exports__);
 var config = {
   siteTitle: "My Blog",
   siteDescription: "About my personal projects and other stuff",
-  stylesheets: ["https://unpkg.com/tachyons@4.7.4/css/tachyons.min.css"],
+  stylesheets: [],
   topLinks: [{
     text: "GitHub",
     href: "https://github.com/phiresky/"
