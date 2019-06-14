@@ -11645,13 +11645,13 @@ function Page(_props) {
 
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_2__["default"], {
     siteTitle: (props.title ? props.title + " - " : "") + props.siteTitle,
-    description: props.description,
+    description: props.description || props.siteDescription,
     stylesheets: props.stylesheets
   }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("main", {
     className: "lh-copy"
   }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Hero__WEBPACK_IMPORTED_MODULE_3__["default"], {
     heroTitle: props.siteTitle,
-    subtitle: props.description,
+    subtitle: props.siteDescription,
     topLinks: props.topLinks,
     backgroundClass: props.backgroundClass
   }), props.children, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -11767,7 +11767,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "config", function() { return config; });
 var config = {
   siteTitle: "My Blog",
-  description: "About my personal projects and other stuff",
+  siteDescription: "About my personal projects and other stuff",
   stylesheets: ["https://unpkg.com/tachyons@4.7.4/css/tachyons.min.css"],
   topLinks: [{
     text: "GitHub",
