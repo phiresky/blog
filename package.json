@@ -4,7 +4,8 @@
 	"description": "Markdown based blog using next.js",
 	"scripts": {
 		"dev": "node server.js",
-		"build": "yarn next build && yarn next export && ./postprocess.sh"
+		"build": "next build && next export",
+		"commit": "yarn build && ./postprocess.sh"
 	},
 	"devDependencies": {
 		"husky": ">=1",
@@ -29,6 +30,7 @@
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6",
 		"react-markdown": "^4.0.8",
+		"react-syntax-highlighter": "^10.3.0",
 		"recharts": "^1.6.2",
 		"remark-frontmatter": "^1.3.1",
 		"remark-parse": "^6.0.3",
