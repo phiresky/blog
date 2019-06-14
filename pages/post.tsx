@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react"
 import { withRouter } from "next/router"
 import Page from "../src/components/Page"
-import { NextContext } from "next"
+import { NextPageContext } from "next"
 import posts from "../src/buildtime/get-post"
 import { Post } from "../src/buildtime/parse-posts"
 import { makeUrl } from "../src/utils/content"
 import ReactMarkdown from "react-markdown/with-html"
 //import htmlParser from "react-markdown/plugins/html-parser"
 import { Code } from "../src/components/Code"
+import "prismjs/themes/prism-tomorrow.css"
 
 type Props = { post: Post }
 
@@ -19,18 +20,19 @@ declare module "react" {
 }
 
 class PostUI extends React.Component<Props> {
-	static getInitialProps(ctx: NextContext): Props {
+	static getInitialProps(ctx: NextPageContext): Props {
 		// todo: only load single post
 		//console.log(posts.map(p => makeUrl(p.filename)), ctx.asPath)
 
-		// const slug = ctx.query.slug
-		const post = posts.find(p => makeUrl(p.filename) === ctx.asPath)
-		if (!post) throw Error(`could not find post ${ctx.asPath}`)
+		const slug = ctx.query.slug
+		const url = "/blog/" + slug
+		const post = posts.find(p => makeUrl(p.filename) === url)
+
+		if (!post) throw Error(`could not find post ${url}`)
 		return { post }
 	}
 	render() {
 		const { post } = this.props
-		console.log("props", this.props)
 		return (
 			<div>
 				<style jsx global>{`
@@ -57,6 +59,10 @@ class PostUI extends React.Component<Props> {
 					}
 					pre code {
 						border: none;
+					}
+					pre {
+						white-space: pre-wrap;
+						word-wrap: break-word;
 					}
 				`}</style>
 				<Page title={post.frontmatter.title}>

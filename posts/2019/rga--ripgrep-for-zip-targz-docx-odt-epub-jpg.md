@@ -1,21 +1,23 @@
 ---
-title: "((draft)) rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc"
-date: 2019-06-13
+title: "((draft)) rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc."
+date: 2019-06-16
 ---
 
 rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome [ripgrep] and enables it to search in pdf, docx, sqlite, jpg, movie subtitles (mkv, mp4), etc.
 
+[![github repo](https://img.shields.io/badge/repo-github.com%2Fphiresky%2Fripgrep__all-informational.svg)](https://github.com/phiresky/ripgrep_all)
 [![Linux build status](https://api.travis-ci.org/phiresky/ripgrep_all.svg)](https://travis-ci.org/phiresky/ripgrep_all)
 [![Crates.io](https://img.shields.io/crates/v/ripgrep_all.svg)](https://crates.io/crates/ripgrep_all)
+[![fearless concurrency](https://img.shields.io/badge/concurrency-fearless-success.svg)](https://www.reddit.com/r/rustjerk/top/?sort=top&t=all)
 
 ## Examples
 
 ### PDFs
 
-Say you have a large folder of papers or lecture slides, and you can't remember which one of them mentioned `LSTM`s. With rga, you can just run this:
+Say you have a large folder of papers or lecture slides, and you can't remember which one of them mentioned `GRU`s. With rga, you can just run this:
 
 ```bash
-> rga "LSTM|GRU" collection/
+$ rga "GRU" slides/
 
 [results]
 ```
@@ -39,7 +41,7 @@ On the first run rga is mostly faster because of multithreading, but on subseque
 
 rga will recursively descend into archives and match text in every file type it knows.
 
-Here is an example:
+Here is an example directory with different file types:
 
 ```
 demo
@@ -54,8 +56,9 @@ demo
     └── greeting.epub
 ```
 
-<pre class="ansi2html">
-$ rga "hello" demo/
+(see the actual directory [here](https://github.com/phiresky/ripgrep_all/tree/master/exampledir/demodir))
+
+<pre class="ansi2html language-none">$ rga "hello" demo/
 
 <span style="color: #E850A8">hello.odt</span>
 <span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">Hello</span> from an OpenDocument file!
@@ -71,14 +74,17 @@ metadata: chapters.chapter.0.tags.title="Chapter 1: <span style="font-weight: bo
 
 <span style="color: #E850A8">hello.sqlite3</span>
 tbl: greeting='<span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">hello</span>', from='sqlite database!'
-
 </pre>
 
 It can even search jpg / png images and scanned pdfs using OCR, though this is disabled by default since it is not useful that often and very slow.
 
-```bash
-rga --rga-adapters=+pdfpages,tesseract hello inputdir
-```
+<pre class="ansi2html language-none">$ # find screenshots of crates.io
+$ rga --rga-adapters=+pdfpages,tesseract crates ~/screenshots
+<span style="color: #E850A8">2019-06-14-19-01-10.png</span>
+<span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">crates</span>.io I Browse All <span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">Crates</span>  Docs v
+Documentation Repository Dependent <span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">crates</span>
+$ # there it is!
+</pre>
 
 ## Setup
 
@@ -94,6 +100,8 @@ rga --help # works! :)
 You don't necessarily need to install any dependencies, but then you will see an error when trying to read from the corresponding file type (e.g. poppler-utils for pdf).
 
 ## Technical details
+
+The code and a few more details are here: <https://github.com/phiresky/ripgrep_all>
 
 `rga` simply runs ripgrep (`rg`) with some options set, especially `--pre=rga-preproc` and `--pre-glob`.
 
@@ -122,7 +130,7 @@ Also rember to disable caching with `--rga-no-cache` or clear the cache in `~/.c
 
 -   I wanted to add a photograph adapter (based on object classification / detection) for fun, so you can grep for "mountain" and it will show pictures of mountains, like in Google Photos. It worked with [YOLO](https://pjreddie.com/darknet/yolo/), but something more useful and state-of-the art [like this](https://github.com/aimagelab/show-control-and-tell) proved very hard to integrate.
 -   7z adapter (couldn't find a nice to use Rust library with streaming)
--   allow per-adapter configuration options (probably via env (RGA_ADAPTER_CONF=json))
+-   allow per-adapter configuration options (probably via env (RGA_ADAPTERXYZ_CONF=json))
 -   maybe use a different disk kv-store as a cache instead of rkv, because I had some [weird problems](src/preproc_cache.rs#30) with that. SQLite is great. All other Rust alternatives I could find don't allow writing from multiple processes.
 -   there's some more (mostly technical) todos in the code I don't know how to fix
 
@@ -134,14 +142,3 @@ Also rember to disable caching with `--rga-no-cache` or clear the cache in `~/.c
 
 [pdfgrep]: https://pdfgrep.org/
 [ripgrep]: https://github.com/BurntSushi/ripgrep
-
-<style>
-pre {
-   white-space: pre-wrap;
-   word-wrap: break-word;
-}
-.ansi2html {
-   color: white;
-   background-color: black;
-}
-</style>

@@ -10,7 +10,7 @@
 	"devDependencies": {
 		"husky": ">=1",
 		"lint-staged": ">=8",
-		"next": "^8.1.0",
+		"next": "^8.1.1-canary.52",
 		"prettier": "^1.18.2",
 		"processmd": "^4.4.2",
 		"standard": "^12.0.1"
@@ -22,7 +22,7 @@
 		"@types/react": "^16.8.19",
 		"@types/react-dom": "^16.8.4",
 		"@types/recharts": "^1.1.16",
-		"@zeit/next-typescript": "^1.1.1",
+		"@zeit/next-css": "^1.0.1",
 		"babel-loader": "^8.0.6",
 		"glob": "^7.1.4",
 		"js-yaml": "^3.13.1",

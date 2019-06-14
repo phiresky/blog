@@ -1,11 +1,7 @@
 // server.js
 const next = require("next")
 const app = next({ dev: process.env.NODE_ENV !== "production" })
-const nextRoutes = require("next-routes")
-
-const routes = nextRoutes()
-	.add("index", "/blog")
-	.add("post", "/blog/:slug+")
+const routes = require("./routes")
 
 const handler = routes.getRequestHandler(app)
 

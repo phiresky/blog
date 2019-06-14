@@ -1,14 +1,15 @@
 import React from "react"
 import PropTypes from "prop-types"
-import Link from "next/link"
+import { Link } from "../../routes"
 
 function PageLink(props: {
 	href: string
 	className?: string
 	children: React.ReactNode
 }) {
+	console.log(Link)
 	return (
-		<Link href={`post?fullUrl=${props.href}`} as={props.href}>
+		<Link route={props.href}>
 			<a
 				className={`b black o-80 glow no-underline lh-solid ${props.className ||
 					""}`}

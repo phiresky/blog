@@ -37,9 +37,9 @@ function getMetaAndPreview(content: string) {
 	const processed = (_processed as any) as Root
 	const first = processed.children[0]
 	let frontmatter: Frontmatter
-	if (first.type === "yaml") {
+	if (first && first.type === "yaml") {
 		frontmatter = yaml.load(first.value)
-	} else frontmatter = { date: "NaN", title: "[No frontmatter given]" }
+	} else frontmatter = { date: "2000-01-01", title: "[No frontmatter given]" }
 	return { frontmatter, preview }
 }
 export async function parsePosts() {

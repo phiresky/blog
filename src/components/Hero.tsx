@@ -28,7 +28,7 @@ function Hero(props: {
 							props.topLinks.length > 0 &&
 							props.topLinks.map((link, i) => {
 								return (
-									<Link href={link.href} key={i}>
+									<Link prefetch href={link.href} key={i}>
 										<a
 											className="dib f6 white no-underline pa1 ma1"
 											key={i}

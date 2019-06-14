@@ -7,11 +7,16 @@ export function returnJson<C, T>(getter: (config: C) => Promise<T>): T {
 	}
 	const g = async (config: C) => {
 		try {
+			const contextDependencies = [
+				__dirname,
+				require("path").join(__dirname, "..", "..", "posts", "2019"),
+			]
+			// console.log(contextDependencies)
 			return {
 				code: `module.exports = (${JSON.stringify(
 					await getter(config),
 				)});`,
-				contextDependencies: [__dirname],
+				contextDependencies,
 			}
 		} catch (e) {
 			console.error(e)

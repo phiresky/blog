@@ -1,12 +1,14 @@
 require("ts-node/register/transpile-only")
+const withCSS = require("@zeit/next-css")
+
 global.__is_next_config = true // hacky lol
-const withTypescript = require("@zeit/next-typescript")
 const { default: postsSummary } = require("./src/buildtime/posts-summary")
 global.__is_next_config = false
 const { makeUrl } = require("./src/utils/content")
+const isProd = process.env.NODE_ENV === "production"
 
-module.exports = withTypescript({
-	assetPrefix: "/blog",
+module.exports = withCSS({
+	assetPrefix: isProd ? "/blog" : "/",
 	async exportPathMap() {
 		const { posts } = await postsSummary()
 		const o = {
