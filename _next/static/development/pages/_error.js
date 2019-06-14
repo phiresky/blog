@@ -6775,20 +6775,20 @@ exports.formatWithValidation = formatWithValidation;
 
 /***/ }),
 
-/***/ "../node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F_error&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2F_error.js!./":
-/*!*****************************************************************************************************************************************************************************************!*\
-  !*** ../node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F_error&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2F_error.js ***!
-  \*****************************************************************************************************************************************************************************************/
+/***/ "../node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F_error&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2F_error.tsx!./":
+/*!******************************************************************************************************************************************************************************************!*\
+  !*** ../node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F_error&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2F_error.tsx ***!
+  \******************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
     (window.__NEXT_P=window.__NEXT_P||[]).push(["/_error", function() {
-      var page = __webpack_require__(/*! ./pages/_error.js */ "./pages/_error.js")
+      var page = __webpack_require__(/*! ./pages/_error.tsx */ "./pages/_error.tsx")
       if(true) {
-        module.hot.accept(/*! ./pages/_error.js */ "./pages/_error.js", function() {
+        module.hot.accept(/*! ./pages/_error.tsx */ "./pages/_error.tsx", function() {
           if(!next.router.components["/_error"]) return
-          var updatedPage = __webpack_require__(/*! ./pages/_error.js */ "./pages/_error.js")
+          var updatedPage = __webpack_require__(/*! ./pages/_error.tsx */ "./pages/_error.tsx")
           next.router.update("/_error", updatedPage.default || updatedPage)
         })
       }
@@ -11722,10 +11722,10 @@ var config = {
 
 /***/ }),
 
-/***/ "./pages/_error.js":
-/*!*************************!*\
-  !*** ./pages/_error.js ***!
-  \*************************/
+/***/ "./pages/_error.tsx":
+/*!**************************!*\
+  !*** ./pages/_error.tsx ***!
+  \**************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -11807,14 +11807,14 @@ var Link = routes.Link;
 
 /***/ }),
 
-/***/ 0:
-/*!********************************************************************************************************************************************!*\
-  !*** multi next-client-pages-loader?page=%2F_error&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2F_error.js ***!
-  \********************************************************************************************************************************************/
+/***/ 3:
+/*!*********************************************************************************************************************************************!*\
+  !*** multi next-client-pages-loader?page=%2F_error&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2F_error.tsx ***!
+  \*********************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2F_error&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2F_error.js! */"../node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F_error&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2F_error.js!./");
+module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2F_error&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2F_error.tsx! */"../node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F_error&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2F_error.tsx!./");
 
 
 /***/ }),
@@ -11830,5 +11830,5 @@ module.exports = dll_09412a5be180c798c2ca;
 
 /***/ })
 
-},[[0,"static/runtime/webpack.js"]]]);
+},[[3,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=_error.js.map

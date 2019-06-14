@@ -11684,7 +11684,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function PageLink(props) {
-  console.log(_routes__WEBPACK_IMPORTED_MODULE_2__["Link"]);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_routes__WEBPACK_IMPORTED_MODULE_2__["Link"], {
     route: props.href
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
@@ -11939,7 +11938,7 @@ function formatDate(dateString) {
 
 /***/ }),
 
-/***/ 1:
+/***/ 2:
 /*!**************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2F&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2Findex.tsx ***!
   \**************************************************************************************************************************************/
@@ -11962,5 +11961,5 @@ module.exports = dll_09412a5be180c798c2ca;
 
 /***/ })
 
-},[[1,"static/runtime/webpack.js"]]]);
+},[[2,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=index.js.map
