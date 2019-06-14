@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { withRouter } from "next/router"
 import Page from "../src/components/Page"
-
-import { config } from "../src/config"
-import { PostJson } from "."
 import { NextContext } from "next"
 import posts from "../src/buildtime/get-post"
 import { Post } from "../src/buildtime/parse-posts"

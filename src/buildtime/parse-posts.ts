@@ -16,6 +16,31 @@ type Frontmatter = {
 	title: string
 	[k: string]: any
 }
+
+function getPreview(content: string) {
+	const _processed = unified()
+		.use(markdown)
+		.use(mdfrontmatter, ["yaml"])
+		.parse(content)
+	const previewProcessor = unified()
+		.use(stripmarkdown)
+		.use(stringify)
+	const preview = previewProcessor
+		.stringify(previewProcessor.runSync(
+			JSON.parse(JSON.stringify(_processed)),
+		) as any)
+		.trim()
+		.replace(/\s+/g, "  ")
+		.substr(0, 1000)
+
+	const processed = (_processed as any) as Root
+	const first = processed.children[0]
+	let frontmatter: Frontmatter
+	if (first.type === "yaml") {
+		frontmatter = yaml.load(first.value)
+	} else frontmatter = { date: "NaN", title: "[No frontmatter given]" }
+	return { frontmatter, preview }
+}
 export async function parsePosts() {
 	const d = join(__dirname, "/../../posts")
 	const posts = []
@@ -23,35 +48,9 @@ export async function parsePosts() {
 		for (const file of await fs.readdir(join(d, dir))) {
 			const path = join(dir, file)
 			const content = await fs.readFile(join(d, dir, file), "utf8")
-			const _processed = unified()
-				.use(markdown)
-				.use(mdfrontmatter, ["yaml"])
-				.parse(content)
-			const processed = (_processed as any) as Root
-			const first = processed.children[0]
-			let frontmatter: Frontmatter
-			if (first.type === "yaml") {
-				frontmatter = yaml.load(first.value)
-			} else
-				frontmatter = { date: "NaN", title: "[No frontmatter given]" }
-			const previewProcessor = unified()
-				.use(stripmarkdown)
-				.use(stringify)
-			const preview = previewProcessor
-				.stringify(previewProcessor.runSync(
-					JSON.parse(JSON.stringify(_processed)),
-				) as any)
-				.trim()
-				.replace(/\s+/g, "  ")
-				.substr(0, 1000)
-			// preview.children.filter(p => p.type === "paragraph").map(x => x.)
 
-			/*fs.writeFile(
-				"/tmp/test.json",
-				JSON.stringify({ preview, processed }, null, 3),
-			)*/
+			const { frontmatter, preview } = getPreview(content)
 
-			// processed.position
 			// remove frontmatter, hacky af
 			const content_md = content
 				.split("\n---\n")
