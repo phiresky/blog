@@ -7,7 +7,6 @@ function PageLink(props: {
 	className?: string
 	children: React.ReactNode
 }) {
-	console.log(Link)
 	return (
 		<Link route={props.href}>
 			<a

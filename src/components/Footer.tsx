@@ -7,9 +7,9 @@ function Footer(props: { copyright: string }) {
 	return (
 		<footer className="center w5 f6 tc mt4">
 			<p>
-				<span>&copy; </span>
-				<span>{now.getFullYear()} </span>
-				<span>{props.copyright}</span>
+				<a href="https://github.com/phiresky/blog">
+					View blog source on GitHub
+				</a>
 			</p>
 		</footer>
 	)

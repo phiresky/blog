@@ -6,7 +6,7 @@ import { Post } from "../../server/build-posts"
 import ReactMarkdown from "react-markdown/with-html"
 //import htmlParser from "react-markdown/plugins/html-parser"
 import { Code } from "../components/Code"
-import "prismjs/themes/prism-tomorrow.css"
+// import "prismjs/themes/prism-tomorrow.css"
 import { WithRouterProps } from "next/dist/client/with-router"
 import { config } from "../config"
 
@@ -21,7 +21,6 @@ declare module "react" {
 
 class PostUI extends React.Component<Props & WithRouterProps> {
 	static async getInitialProps(ctx: NextPageContext): Promise<Props> {
-		console.log("ctx", ctx)
 		// todo: only load single post
 		//console.log(posts.map(p => makeUrl(p.filename)), ctx.asPath)
 

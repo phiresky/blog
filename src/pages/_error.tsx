@@ -1,8 +1,9 @@
 import React from "react"
 import Page from "../components/Page"
+import { NextPageContext } from "next"
 
-class Error extends React.Component {
-	static getInitialProps({ res, err }) {
+class Error extends React.Component<{ statusCode: null | number }> {
+	static getInitialProps({ res, err }: NextPageContext) {
 		const statusCode = res ? res.statusCode : err ? err.statusCode : null
 		return { statusCode }
 	}
