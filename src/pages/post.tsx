@@ -10,6 +10,7 @@ import { Code } from "../components/Code"
 import { WithRouterProps } from "next/dist/client/with-router"
 import { config } from "../config"
 import { formatDate } from "../utils/date"
+import "../post.scss"
 
 type Props = { post: Post }
 

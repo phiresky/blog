@@ -5,9 +5,9 @@ date: 2019-06-16
 
 rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome [ripgrep] and enables it to search in pdf, docx, sqlite, jpg, movie subtitles (mkv, mp4), etc.
 
-[![github repo](https://img.shields.io/badge/repo-github.com%2Fphiresky%2Fripgrep__all-informational.svg)](https://github.com/phiresky/ripgrep_all)
-[![Linux build status](https://api.travis-ci.org/phiresky/ripgrep_all.svg)](https://travis-ci.org/phiresky/ripgrep_all)
-[![Crates.io](https://img.shields.io/crates/v/ripgrep_all.svg)](https://crates.io/crates/ripgrep_all)
+[![github repo](https://img.shields.io/badge/repo-github.com%2Fphiresky%2Fripgrep--all-informational.svg)](https://github.com/phiresky/ripgrep-all)
+[![Linux build status](https://api.travis-ci.org/phiresky/ripgrep-all.svg)](https://travis-ci.org/phiresky/ripgrep-all)
+[![Crates.io](https://img.shields.io/crates/v/ripgrep-all.svg)](https://crates.io/crates/ripgrep-all)
 [![fearless concurrency](https://img.shields.io/badge/concurrency-fearless-success.svg)](https://www.reddit.com/r/rustjerk/top/?sort=top&t=all)
 
 ## Examples
@@ -16,11 +16,21 @@ rga is a line-oriented search tool that allows you to look for a regex in a mult
 
 Say you have a large folder of papers or lecture slides, and you can't remember which one of them mentioned `GRU`s. With rga, you can just run this:
 
-```bash
-$ rga "GRU" slides/
+<pre class="ansi2html language-none">~$ rga "GRU" slides/
+<span class="ansi35">slides/2016/winter1516_lecture14.pdf</span>
+Page 34:   <span class="ansi1"></span><span class="ansi1 ansi31">GRU</span>                            LSTM
+Page 35:   <span class="ansi1"></span><span class="ansi1 ansi31">GRU</span>                            CONV
+Page 38:     - Try out <span class="ansi1"></span><span class="ansi1 ansi31">GRU</span>-RCN! (imo best model)
 
-[results]
-```
+<span class="ansi35">slides/2018/cs231n_2018_ds08.pdf</span>
+Page  3: ●   CNNs, GANs, RNNs, LSTMs, <span class="ansi1"></span><span class="ansi1 ansi31">GRU</span>
+Page 35: ● 1) temporal pooling 2) RNN (e.g. LSTM, <span class="ansi1"></span><span class="ansi1 ansi31">GRU</span>)
+
+<span class="ansi35">slides/2019/cs231n_2019_lecture10.pdf</span>
+Page 103:   <span class="ansi1"></span><span class="ansi1 ansi31">GRU</span> [Learning phrase representations using rnn
+Page 105:    - Common to use LSTM or <span class="ansi1"></span><span class="ansi1 ansi31">GRU</span>
+
+</pre>
 
 and it will recursively find a regex in pdfs and pptx slides, including if some of them are zipped up.
 
@@ -30,12 +40,12 @@ You can do mostly the same thing with [`pdfgrep -r`][pdfgrep], but you will miss
 title: Searching in 65 pdfs with 93 slides each
 series: run time (seconds, lower is better)
 data:
-   pdfgrep: 30.97
-   rga (first run): 9.91
-   rga (subsequent runs): 0.156
+   pdfgrep: 19.16
+   rga (first run): 2.95
+   rga (subsequent runs): 0.092
 ```
 
-On the first run rga is mostly faster because of multithreading, but on subsequent runs (with the same files but any regex query) rga will cache the text extraction, so it becomes almost as fast as searching in plain text files.
+On the first run rga is mostly faster because of multithreading, but on subsequent runs (with the same files but any regex query) rga will cache the text extraction, so it becomes almost as fast as searching in plain text files. All runs were done with a warm FS cache.
 
 ### Other files
 
@@ -45,9 +55,9 @@ Here is an example directory with different file types:
 
 ```
 demo
+├── greeting.mkv
 ├── hello.odt
 ├── hello.sqlite3
-├── greeting.mkv
 └── somearchive.zip
     ├── dir
     │   ├── greeting.docx
@@ -56,34 +66,35 @@ demo
     └── greeting.epub
 ```
 
-(see the actual directory [here](https://github.com/phiresky/ripgrep_all/tree/master/exampledir/demodir))
+(see the actual directory [here](https://github.com/phiresky/ripgrep-all/tree/master/exampledir/demo))
 
 <pre class="ansi2html language-none">$ rga "hello" demo/
 
-<span style="color: #E850A8">hello.odt</span>
-<span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">Hello</span> from an OpenDocument file!
+<span class="ansi35">demo/greeting.mkv</span>
+metadata: chapters.chapter.0.tags.title="Chapter 1: <span class="ansi1"></span><span class="ansi1 ansi31">Hello</span>"
+00:08.398 --&gt; 00:11.758: <span class="ansi1"></span><span class="ansi1 ansi31">Hello</span> from a movie!
 
-<span style="color: #E850A8">somearchive.zip</span>
-dir/greeting.docx: <span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">Hello</span> from a MS Office document!
-dir/inner.tar.gz: greeting.pdf: Page 1: <span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">Hello</span> from a PDF!
-greeting.epub: <span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">Hello</span> from an E-Book!
+<span class="ansi35">demo/hello.odt</span>
+<span class="ansi1"></span><span class="ansi1 ansi31">Hello</span> from an OpenDocument file!
 
-<span style="color: #E850A8">greeting.mkv</span>
-metadata: chapters.chapter.0.tags.title="Chapter 1: <span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">Hello</span>"
-00:08.398 --&gt; 00:11.758: <span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">Hello</span> from a movie!
+<span class="ansi35">demo/hello.sqlite3</span>
+tbl: greeting='<span class="ansi1"></span><span class="ansi1 ansi31">hello</span>', from='sqlite database!'
 
-<span style="color: #E850A8">hello.sqlite3</span>
-tbl: greeting='<span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">hello</span>', from='sqlite database!'
+<span class="ansi35">demo/somearchive.zip</span>
+dir/greeting.docx: <span class="ansi1"></span><span class="ansi1 ansi31">Hello</span> from a MS Office document!
+dir/inner.tar.gz: greeting.pdf: Page 1: <span class="ansi1"></span><span class="ansi1 ansi31">Hello</span> from a PDF!
+greeting.epub: <span class="ansi1"></span><span class="ansi1 ansi31">Hello</span> from an E-Book!
 </pre>
 
 It can even search jpg / png images and scanned pdfs using OCR, though this is disabled by default since it is not useful that often and very slow.
 
 <pre class="ansi2html language-none">$ # find screenshots of crates.io
-$ rga --rga-adapters=+pdfpages,tesseract crates ~/screenshots
-<span style="color: #E850A8">2019-06-14-19-01-10.png</span>
-<span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">crates</span>.io I Browse All <span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">Crates</span>  Docs v
-Documentation Repository Dependent <span style="font-weight: bold"></span><span style="font-weight: bold; color: #aa0000">crates</span>
-$ # there it is!
+~$ rga --rga-adapters=+pdfpages,tesseract crates ~/screenshots
+<span class="ansi35">/home/tehdog/Bilder/screenshots/2019-06-14-19-01-10.png</span>
+<span class="ansi1"></span><span class="ansi1 ansi31">crates</span>.io I Browse All <span class="ansi1"></span><span class="ansi1 ansi31">Crates</span>  Docs v
+Documentation Repository Dependent <span class="ansi1"></span><span class="ansi1 ansi31">crates</span>
+
+~$ # there it is!
 </pre>
 
 ## Setup
@@ -91,17 +102,17 @@ $ # there it is!
 rga should compile with stable Rust. To install it, simply run (your OSes equivalent of)
 
 ```bash
-apt install build-essential pandoc poppler-utils ffmpeg
-cargo install ripgrep_all
+~$ apt install build-essential pandoc poppler-utils ffmpeg
+~$ cargo install ripgrep-all
 
-rga --help # works! :)
+~$ rga --help # works! :)
 ```
 
 You don't necessarily need to install any dependencies, but then you will see an error when trying to read from the corresponding file type (e.g. poppler-utils for pdf).
 
 ## Technical details
 
-The code and a few more details are here: <https://github.com/phiresky/ripgrep_all>
+The code and a few more details are here: <https://github.com/phiresky/ripgrep-all>
 
 `rga` simply runs ripgrep (`rg`) with some options set, especially `--pre=rga-preproc` and `--pre-glob`.
 
