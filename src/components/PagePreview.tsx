@@ -1,6 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Link } from "../routes"
+import { formatDate } from "../utils/date"
 
 function PageLink(props: {
 	href: string
@@ -41,7 +42,7 @@ function PagePreview(props: {
 			{props.date && (
 				<small className="db ttu o-40">
 					<time key={new Date(props.date).toISOString()}>
-						{props.date}
+						{formatDate(props.date)}
 					</time>
 				</small>
 			)}

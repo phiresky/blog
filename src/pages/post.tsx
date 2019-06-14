@@ -9,6 +9,7 @@ import { Code } from "../components/Code"
 // import "prismjs/themes/prism-tomorrow.css"
 import { WithRouterProps } from "next/dist/client/with-router"
 import { config } from "../config"
+import { formatDate } from "../utils/date"
 
 type Props = { post: Post }
 
@@ -33,6 +34,7 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 	}
 	render() {
 		const { post } = this.props
+		const meta = post.frontmatter
 		return (
 			<div>
 				<style jsx global>{`
@@ -65,11 +67,14 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 						word-wrap: break-word;
 					}
 				`}</style>
-				<Page title={post.frontmatter.title}>
+				<Page title={meta.title}>
 					<div className="content center mw7 pa3 pa4-ns">
-						<h1 className="mt0 lh-title">
-							{post.frontmatter.title}
-						</h1>
+						<h1 className="mt0 lh-title">{meta.title}</h1>
+						<small className="db ttu o-40">
+							<time dateTime={new Date(meta.date).toISOString()}>
+								{formatDate(meta.date)}
+							</time>
+						</small>
 						<ReactMarkdown
 							escapeHtml={false}
 							renderers={{ code: Code }}
