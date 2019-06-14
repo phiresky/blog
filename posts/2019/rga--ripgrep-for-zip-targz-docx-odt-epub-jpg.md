@@ -68,7 +68,7 @@ demo
 
 (see the actual directory [here](https://github.com/phiresky/ripgrep-all/tree/master/exampledir/demo))
 
-<pre class="ansi2html language-none">$ rga "hello" demo/
+<pre class="ansi2html language-none">~$ rga "hello" demo/
 
 <span class="ansi35">demo/greeting.mkv</span>
 metadata: chapters.chapter.0.tags.title="Chapter 1: <span class="ansi1"></span><span class="ansi1 ansi31">Hello</span>"
@@ -88,8 +88,8 @@ greeting.epub: <span class="ansi1"></span><span class="ansi1 ansi31">Hello</span
 
 It can even search jpg / png images and scanned pdfs using OCR, though this is disabled by default since it is not useful that often and very slow.
 
-<pre class="ansi2html language-none">$ # find screenshots of crates.io
-~$ rga --rga-adapters=+pdfpages,tesseract crates ~/screenshots
+<pre class="ansi2html language-none">~$ # find screenshot of crates.io
+~$ rga crates ~/screenshots --rga-adapters=+pdfpages,tesseract
 <span class="ansi35">/home/tehdog/Bilder/screenshots/2019-06-14-19-01-10.png</span>
 <span class="ansi1"></span><span class="ansi1 ansi31">crates</span>.io I Browse All <span class="ansi1"></span><span class="ansi1 ansi31">Crates</span>  Docs v
 Documentation Repository Dependent <span class="ansi1"></span><span class="ansi1 ansi31">crates</span>
@@ -101,9 +101,9 @@ Documentation Repository Dependent <span class="ansi1"></span><span class="ansi1
 
 rga should compile with stable Rust. To install it, simply run (your OSes equivalent of)
 
-```bash
+```console
 ~$ apt install build-essential pandoc poppler-utils ffmpeg
-~$ cargo install ripgrep-all
+~$ cargo install ripgrep_all
 
 ~$ rga --help # works! :)
 ```

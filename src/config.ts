@@ -25,7 +25,7 @@ export const config: ConfigJson = {
 	stylesheets: ["https://unpkg.com/tachyons@4.7.4/css/tachyons.min.css"],
 	topLinks: [
 		{
-			text: "Github",
+			text: "GitHub",
 			href: "https://github.com/phiresky/",
 		},
 	],

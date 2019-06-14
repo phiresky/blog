@@ -12,9 +12,9 @@ function Hero(props: {
 }) {
 	return (
 		<div className={`relative tc ${props.backgroundClass}`}>
-			<div className="mw7 center white pv4">
+			<div className="mw7 center white">
 				<div className="pv4">
-					<h1 className="f1 normal lh-title ma0 pa0">
+					<h1 className="f2 normal lh-title ma0 pa0">
 						<Link route={config.blogRoot}>
 							<a
 								className="white no-underline"
