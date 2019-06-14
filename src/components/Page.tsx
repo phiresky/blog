@@ -8,11 +8,6 @@ import { config } from "../config"
 
 // rrtod body = children
 function Page(_props: { title?: string; children: JSX.Element }) {
-	const [num, setNum] = useState(0)
-	useEffect(() => {
-		console.log("hehehe")
-		setNum(1)
-	})
 	const props = { ...config, ..._props }
 	return (
 		<div>
@@ -31,7 +26,6 @@ function Page(_props: { title?: string; children: JSX.Element }) {
 					backgroundClass={props.backgroundClass}
 				/>
 				{props.children}
-				Num: {num}
 				<Footer copyright={props.copyright} />
 				{props.siteId && <Tracking siteId={props.siteId} />}
 			</main>

@@ -12,7 +12,7 @@ rga is a line-oriented search tool that allows you to look for a regex in a mult
 
 Say you have a large folder of papers or lecture slides, and you can't remember which one of them mentioned `LSTM`s. With rga, you can just run this:
 
-```
+```bash
 rga "LSTM|GRU" collection/
 [results]
 ```
@@ -23,11 +23,11 @@ You can do mostly the same thing with [`pdfgrep -r`][pdfgrep], but it will be mu
 
 ```barchart
 title: Searching in 20 pdfs with 100 slides each
-subtitle: lower is better
+seriesName: run time (seconds, lower is better)
 data:
-   - pdfgrep: 123s
-   - rga (first run): 10.3s
-   - rga (subsequent runs): 0.1s
+   pdfgrep: 123
+   rga (first run): 10.3
+   rga (subsequent runs): 0.1
 ```
 
 On the first run rga is mostly faster because of multithreading, but on subsequent runs (with the same files but any regex query) rga will cache the text extraction because pdf parsing is slow.
