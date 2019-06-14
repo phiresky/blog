@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { Link } from "../../routes"
+import { Link } from "../routes"
 
 function PageLink(props: {
 	href: string
@@ -9,7 +9,7 @@ function PageLink(props: {
 }) {
 	console.log(Link)
 	return (
-		<Link route={props.href}>
+		<Link prefetch route={props.href}>
 			<a
 				className={`b black o-80 glow no-underline lh-solid ${props.className ||
 					""}`}

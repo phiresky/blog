@@ -1,4 +1,4 @@
-import { Summary } from "../buildtime/posts-summary"
+import { Summary } from "../../server/build-posts"
 
 export const isClientSide = !!(
 	typeof window !== "undefined" &&

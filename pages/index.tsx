@@ -3,7 +3,9 @@ import Page from "../src/components/Page"
 import PagePreview from "../src/components/PagePreview"
 import { formatDate } from "../src/utils/date"
 import { makeUrl, filterPosts } from "../src/utils/content"
-import summary from "../src/buildtime/posts-summary"
+import summary from "../posts-built/summary.json"
+import { withRouter } from "next/router"
+import { WithRouterProps } from "next/dist/client/with-router"
 
 export type LinkInfo = {
 	text: string
@@ -26,7 +28,7 @@ export interface PostJson extends PostSummary {
 	bodyHtml: string
 }
 
-export default class Index extends React.Component {
+class Index extends React.Component<WithRouterProps> {
 	render() {
 		const postList = filterPosts(summary)
 		return (
@@ -50,3 +52,4 @@ export default class Index extends React.Component {
 		)
 	}
 }
+export default withRouter(Index)

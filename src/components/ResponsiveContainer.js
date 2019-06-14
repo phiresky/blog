@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileOverview Wrapper component to make charts adapt to the size of parent * DOM
  */
@@ -25,6 +26,8 @@ class ResponsiveContainer extends Component {
 		debounce: PropTypes.number,
 		id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		className: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		initialWidth: PropTypes.number,
+		initialHeight: PropTypes.number,
 	}
 
 	static defaultProps = {
@@ -32,6 +35,7 @@ class ResponsiveContainer extends Component {
 		height: "100%",
 		debounce: 0,
 	}
+	mounted = false
 
 	constructor(props) {
 		super(props)

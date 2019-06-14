@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react"
 import { withRouter } from "next/router"
 import Page from "../src/components/Page"
 import { NextPageContext } from "next"
-import posts from "../src/buildtime/get-post"
-import { Post } from "../src/buildtime/parse-posts"
+import { Post } from "../server/build-posts"
 import { makeUrl } from "../src/utils/content"
 import ReactMarkdown from "react-markdown/with-html"
 //import htmlParser from "react-markdown/plugins/html-parser"
 import { Code } from "../src/components/Code"
 import "prismjs/themes/prism-tomorrow.css"
+import { WithRouterProps } from "next/dist/client/with-router"
 
 type Props = { post: Post }
 
@@ -19,14 +19,14 @@ declare module "react" {
 	}
 }
 
-class PostUI extends React.Component<Props> {
-	static getInitialProps(ctx: NextPageContext): Props {
+class PostUI extends React.Component<Props & WithRouterProps> {
+	static async getInitialProps(ctx: NextPageContext): Promise<Props> {
 		// todo: only load single post
 		//console.log(posts.map(p => makeUrl(p.filename)), ctx.asPath)
 
 		const slug = ctx.query.slug
 		const url = "/blog/" + slug
-		const post = posts.find(p => makeUrl(p.filename) === url)
+		const post = require("../posts-built/" + slug + ".md.json")
 
 		if (!post) throw Error(`could not find post ${url}`)
 		return { post }

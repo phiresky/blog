@@ -1,7 +1,7 @@
 // server.js
-const next = require("next")
-const app = next({ dev: process.env.NODE_ENV !== "production" })
-const routes = require("./routes")
+import next from "next"
+import routes from "../src/routes"
+const app = (next as any)({ dev: process.env.NODE_ENV !== "production" })
 
 const handler = routes.getRequestHandler(app)
 
