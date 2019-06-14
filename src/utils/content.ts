@@ -1,4 +1,6 @@
 import { Summary } from "../../server/build-posts"
+import { config } from "../config"
+import { SingleEntryPlugin } from "webpack"
 
 export const isClientSide = !!(
 	typeof window !== "undefined" &&
@@ -6,7 +8,9 @@ export const isClientSide = !!(
 	window.document.createElement
 )
 export function makeUrl(article_fname: string) {
-	return `/blog/` + `${article_fname.replace(/\.[^.]+$/, "")}`
+	const slug = article_fname.replace(/\.[^.]+$/, "")
+	const url = `${config.blogRoot}` + slug
+	return { url, slug }
 }
 
 export function filterPosts(summary: Summary) {

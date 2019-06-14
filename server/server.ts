@@ -1,7 +1,10 @@
 // server.js
 import next from "next"
 import routes from "../src/routes"
-const app = (next as any)({ dev: process.env.NODE_ENV !== "production" })
+const app = (next as any)({
+	dev: process.env.NODE_ENV !== "production",
+	dir: "./src",
+})
 
 const handler = routes.getRequestHandler(app)
 

@@ -9,7 +9,7 @@ function PageLink(props: {
 }) {
 	console.log(Link)
 	return (
-		<Link prefetch route={props.href}>
+		<Link route={props.href}>
 			<a
 				className={`b black o-80 glow no-underline lh-solid ${props.className ||
 					""}`}

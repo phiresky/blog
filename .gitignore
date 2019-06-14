@@ -1,4 +1,6 @@
 /node_modules
-/.next
-/out
+/dist
+
+.next
+out
 /posts-built

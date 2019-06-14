@@ -1,4 +1,4 @@
-import { LinkInfo } from "../pages"
+import { LinkInfo } from "./pages"
 
 export type ConfigJson = {
 	siteTitle: string
@@ -16,6 +16,8 @@ export type ConfigJson = {
 	ext: string
 	sourceBase: string
 	sourceExt: string
+	/** must end with slash */
+	blogRoot: string
 }
 export const config: ConfigJson = {
 	siteTitle: "My Blog",
@@ -37,4 +39,5 @@ export const config: ConfigJson = {
 	ext: ".json",
 	sourceBase: "index.md",
 	sourceExt: ".md",
+	blogRoot: "/blog/",
 }

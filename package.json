@@ -6,7 +6,7 @@
 		"runts": "ts-node --transpile-only --project=tsconfig.server.json",
 		"dev": "yarn runts server/server.ts",
 		"posts": "yarn runts server/build-posts.ts",
-		"build": "yarn posts && next build && next export",
+		"build": "yarn posts && next build src && next export src",
 		"commit": "yarn build && ./postprocess.sh"
 	},
 	"devDependencies": {
@@ -27,6 +27,7 @@
 		"@zeit/next-css": "^1.0.1",
 		"@zeit/next-typescript": "^1.1.1",
 		"babel-loader": "^8.0.6",
+		"eslint": "^5.16.0",
 		"glob": "^7.1.4",
 		"js-yaml": "^3.13.1",
 		"next-routes": "^1.4.2",
@@ -43,9 +44,11 @@
 		"styled-jsx": "^3.2.1",
 		"ts-loader": "^6.0.2",
 		"ts-node": "^8.2.0",
+		"tsconfig-paths-webpack-plugin": "^3.2.0",
 		"typescript": "^3.5.1",
 		"unified": "^7.1.0",
-		"val-loader": "^1.1.1"
+		"val-loader": "^1.1.1",
+		"webpack": "^4.34.0"
 	},
 	"husky": {
 		"hooks": {

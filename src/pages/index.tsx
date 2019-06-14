@@ -1,9 +1,9 @@
 import React from "react"
-import Page from "../src/components/Page"
-import PagePreview from "../src/components/PagePreview"
-import { formatDate } from "../src/utils/date"
-import { makeUrl, filterPosts } from "../src/utils/content"
-import summary from "../posts-built/summary.json"
+import Page from "../components/Page"
+import PagePreview from "../components/PagePreview"
+import { formatDate } from "../utils/date"
+import { makeUrl, filterPosts } from "../utils/content"
+import summary from "../../posts-built/summary.json"
 import { withRouter } from "next/router"
 import { WithRouterProps } from "next/dist/client/with-router"
 
@@ -35,14 +35,14 @@ class Index extends React.Component<WithRouterProps> {
 			<Page>
 				<div className="center mw7 pa3 pa4-ns">
 					{postList.map((article, i) => {
-						const href = makeUrl(article.filename)
+						const { url } = makeUrl(article.filename)
 						const date = formatDate(article.frontmatter.date)
 						return (
 							<PagePreview
 								title={article.frontmatter.title}
 								preview={article.preview}
 								date={date}
-								href={href}
+								href={url}
 								key={i}
 							/>
 						)

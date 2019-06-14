@@ -16,6 +16,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true
 	},
+
 	"exclude": ["node_modules", "server/**/*.ts", "next.config.ts"],
 	"include": ["**/*.ts", "**/*.tsx"]
 }

@@ -1,4 +1,5 @@
 import React from "react"
+import Page from "../components/Page"
 
 class Error extends React.Component {
 	static getInitialProps({ res, err }) {
@@ -8,11 +9,13 @@ class Error extends React.Component {
 
 	render() {
 		return (
-			<p>
-				{this.props.statusCode
-					? `An error ${this.props.statusCode} occurred on server`
-					: "An error occurred on client"}
-			</p>
+			<Page title="404">
+				<div className="center mw7 pa3 pa4-ns">
+					{this.props.statusCode
+						? `An error ${this.props.statusCode} occurred on server`
+						: "An error occurred on client"}
+				</div>
+			</Page>
 		)
 	}
 }
