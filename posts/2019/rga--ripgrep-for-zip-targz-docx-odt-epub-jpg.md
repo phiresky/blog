@@ -99,7 +99,9 @@ Documentation Repository Dependent <span class="ansi1"></span><span class="ansi1
 
 ## Setup
 
-Linux x64 and MacOS (untested) binaries are available in [GitHub releases](https://github.com/phiresky/ripgrep-all/releases). Make sure you have [ripgrep](https://github.com/BurntSushi/ripgrep#installation) installed. The releases currently don't include other binaries you may need (rg, pandoc, etc.), so make sure you have those installed.
+Linux x64 and MacOS (untested) binaries are available in [GitHub releases](https://github.com/phiresky/ripgrep-all/releases). Make sure you have [ripgrep](https://github.com/BurntSushi/ripgrep#installation) installed. The releases currently don't include other binaries you may need (rg, pandoc, etc.), but it will warn you when that happens.
+
+For Arch Linux, I have packaged rga in the AUR: [`yay -S ripgrep-all`](https://aur.archlinux.org/packages/ripgrep-all/)
 
 rga should compile with stable Rust. To install it, run (your OSes equivalent of)
 
