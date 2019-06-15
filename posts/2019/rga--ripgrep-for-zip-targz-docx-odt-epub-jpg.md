@@ -3,7 +3,7 @@ title: "((draft)) rga: ripgrep, but also search in PDFs, E-Books, Office documen
 date: 2019-06-16
 ---
 
-rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome [ripgrep] and enables it to search in pdf, docx, sqlite, jpg, movie subtitles (mkv, mp4), etc.
+[rga](https://github.com/phiresky/ripgrep-all) is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome [ripgrep] and enables it to search in pdf, docx, sqlite, jpg, movie subtitles (mkv, mp4), etc.
 
 [![github repo](https://img.shields.io/badge/repo-github.com%2Fphiresky%2Fripgrep--all-informational.svg)](https://github.com/phiresky/ripgrep-all)
 [![Linux build status](https://api.travis-ci.org/phiresky/ripgrep-all.svg)](https://travis-ci.org/phiresky/ripgrep-all)
