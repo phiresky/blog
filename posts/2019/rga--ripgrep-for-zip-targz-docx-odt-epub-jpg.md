@@ -120,7 +120,7 @@ The code and a few more details are here: <https://github.com/phiresky/ripgrep-a
 
 `rga` simply runs ripgrep (`rg`) with some options set, especially `--pre=rga-preproc` and `--pre-glob`.
 
-`rga-preproc [fname]` will match an "adapter" to the given file based on either it's filename or it's mime type (if `--accurate` is given). You can see all adapters currently included in [src/adapters](src/adapters).
+`rga-preproc [fname]` will match an "adapter" to the given file based on either it's filename or it's mime type (if `--accurate` is given). You can see all adapters currently included in [src/adapters](https://github.com/phiresky/ripgrep-all/tree/master/src/adapters).
 
 Some rga adapters run external binaries to do the actual work (such as pandoc or ffmpeg), usually by writing to stdin and reading from stdout. Others use a Rust library or bindings to achieve the same effect (like sqlite or zip).
 
@@ -146,7 +146,7 @@ Also rember to disable caching with `--rga-no-cache` or clear the cache in `~/.c
 -   I wanted to add a photograph adapter (based on object classification / detection) for fun, so you can grep for "mountain" and it will show pictures of mountains, like in Google Photos. It worked with [YOLO](https://pjreddie.com/darknet/yolo/), but something more useful and state-of-the art [like this](https://github.com/aimagelab/show-control-and-tell) proved very hard to integrate.
 -   7z adapter (couldn't find a nice to use Rust library with streaming)
 -   Allow per-adapter configuration options (probably via env (RGA_ADAPTERXYZ_CONF=json))
--   Maybe use a different disk kv-store as a cache instead of rkv, because I had some [weird problems](src/preproc_cache.rs#30) with that. SQLite is great. All other Rust alternatives I could find don't allow writing from multiple processes.
+-   Maybe use a different disk kv-store as a cache instead of rkv, because I had some [weird problems](https://github.com/phiresky/ripgrep-all/blob/05835c1c42bc3575023a81e5494c5530078730fc/src/preproc_cache.rs#L30) with that. SQLite is great. All other Rust alternatives I could find don't allow writing from multiple processes.
 -   Tests!
 -   There's some more (mostly technical) todos in the code I don't know how to fix
 
