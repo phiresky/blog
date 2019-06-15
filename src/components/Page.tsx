@@ -18,13 +18,13 @@ function Page(_props: {
 				siteTitle={
 					(props.title ? props.title + " - " : "") + props.siteTitle
 				}
-				description={props.description}
+				description={props.description || props.siteDescription}
 				stylesheets={props.stylesheets}
 			/>
 			<main className="lh-copy">
 				<Hero
 					heroTitle={props.siteTitle}
-					subtitle={props.description}
+					subtitle={props.siteDescription}
 					topLinks={props.topLinks}
 					backgroundClass={props.backgroundClass}
 				/>

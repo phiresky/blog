@@ -2,7 +2,7 @@ import { LinkInfo } from "./pages"
 
 export type ConfigJson = {
 	siteTitle: string
-	description: string
+	siteDescription: string
 	stylesheets: string[]
 	topLinks: LinkInfo[]
 
@@ -21,8 +21,8 @@ export type ConfigJson = {
 }
 export const config: ConfigJson = {
 	siteTitle: "My Blog",
-	description: "About my personal projects and other stuff",
-	stylesheets: ["https://unpkg.com/tachyons@4.7.4/css/tachyons.min.css"],
+	siteDescription: "About my personal projects and other stuff",
+	stylesheets: [],
 	topLinks: [
 		{
 			text: "GitHub",

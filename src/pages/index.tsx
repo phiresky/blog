@@ -36,12 +36,11 @@ class Index extends React.Component<WithRouterProps> {
 				<div className="center mw7 pa3 pa4-ns">
 					{postList.map((article, i) => {
 						const { url } = makeUrl(article.filename)
-						const date = formatDate(article.frontmatter.date)
 						return (
 							<PagePreview
 								title={article.frontmatter.title}
 								preview={article.preview}
-								date={date}
+								date={article.frontmatter.date}
 								href={url}
 								key={i}
 							/>

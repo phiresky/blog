@@ -32,7 +32,7 @@ Page 105:    - Common to use LSTM or <span class="ansi1"></span><span class="ans
 
 </pre>
 
-and it will recursively find a regex in pdfs and pptx slides, including if some of them are zipped up.
+and it will recursively find a string in pdfs, including if some of them are zipped up.
 
 You can do mostly the same thing with [`pdfgrep -r`][pdfgrep], but you will miss content in other file types and it will be much slower:
 
@@ -99,14 +99,18 @@ Documentation Repository Dependent <span class="ansi1"></span><span class="ansi1
 
 ## Setup
 
-rga should compile with stable Rust. To install it, simply run (your OSes equivalent of)
+Linux x64 and MacOS (untested) binaries are available in [GitHub releases](https://github.com/phiresky/ripgrep-all/releases). Make sure you have [ripgrep](https://github.com/BurntSushi/ripgrep#installation) installed. The releases currently don't include other binaries you may need (rg, pandoc, etc.), so make sure you have those installed.
+
+rga should compile with stable Rust. To install it, run (your OSes equivalent of)
 
 ```console
-~$ apt install build-essential pandoc poppler-utils ffmpeg
+~$ apt install build-essential pandoc poppler-utils ffmpeg ripgrep
 ~$ cargo install ripgrep_all
 
-~$ rga --help # works! :)
+~$ rga --version # works! :)
 ```
+
+Windows support shouldn't be a problem, feel free to send PRs! :)
 
 You don't necessarily need to install any dependencies, but then you will see an error when trying to read from the corresponding file type (e.g. poppler-utils for pdf).
 
@@ -141,9 +145,10 @@ Also rember to disable caching with `--rga-no-cache` or clear the cache in `~/.c
 
 -   I wanted to add a photograph adapter (based on object classification / detection) for fun, so you can grep for "mountain" and it will show pictures of mountains, like in Google Photos. It worked with [YOLO](https://pjreddie.com/darknet/yolo/), but something more useful and state-of-the art [like this](https://github.com/aimagelab/show-control-and-tell) proved very hard to integrate.
 -   7z adapter (couldn't find a nice to use Rust library with streaming)
--   allow per-adapter configuration options (probably via env (RGA_ADAPTERXYZ_CONF=json))
--   maybe use a different disk kv-store as a cache instead of rkv, because I had some [weird problems](src/preproc_cache.rs#30) with that. SQLite is great. All other Rust alternatives I could find don't allow writing from multiple processes.
--   there's some more (mostly technical) todos in the code I don't know how to fix
+-   Allow per-adapter configuration options (probably via env (RGA_ADAPTERXYZ_CONF=json))
+-   Maybe use a different disk kv-store as a cache instead of rkv, because I had some [weird problems](src/preproc_cache.rs#30) with that. SQLite is great. All other Rust alternatives I could find don't allow writing from multiple processes.
+-   Tests!
+-   There's some more (mostly technical) todos in the code I don't know how to fix
 
 ## Similar tools
 
