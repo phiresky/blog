@@ -11472,7 +11472,7 @@ module.exports = {
 /*! exports provided: posts, default */
 /***/ (function(module) {
 
-module.exports = {"posts":[{"filename":"2019/about.md","frontmatter":{"title":"Creating a blog","date":"2019-06-14T00:00:00.000Z"},"preview":"Hello World! I finally decided to make a blog to put my ramblings and projects. After some deliberation I settled on using next.js, so I can use React+TypeScript, don't need a server and the website is accessible without JS enabled. The content is written as markdown, though I'm adding some neat"},{"filename":"2019/rga--ripgrep-for-zip-targz-docx-odt-epub-jpg.md","frontmatter":{"title":"((draft)) rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.","date":"2019-06-16T00:00:00.000Z"},"preview":"rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome ripgrep and enables it to search in pdf, docx, sqlite, jpg, movie subtitles (mkv, mp4), etc. github repo Linux build status Crates.io fearless concurrency Examples PDFs Say you "}]};
+module.exports = {"posts":[{"filename":"2019/about.md","frontmatter":{"title":"Creating a blog","date":"2019-06-14T00:00:00.000Z"},"preview":"Hello World! I finally decided to make a blog to put my ramblings and projects. After some deliberation I settled on using next.js, so I can use React+TypeScript, don't need a server and the website is accessible without JS enabled. The content is written as markdown, though I'm adding some neat"},{"filename":"2019/rga--ripgrep-for-zip-targz-docx-odt-epub-jpg.md","frontmatter":{"title":"rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.","date":"2019-06-16T00:00:00.000Z"},"preview":"rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome ripgrep and enables it to search in pdf, docx, sqlite, jpg, zip, tar.\\*, movie subtitles (mkv, mp4), etc. github repo Linux build status Crates.io fearless concurrency Examples "}]};
 
 /***/ }),
 
@@ -11566,8 +11566,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../routes */ "./routes.ts");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../config */ "./config.ts");
-
 
 
 
@@ -11579,14 +11577,7 @@ function Hero(props) {
     className: "mw7 center white"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "pv4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-    className: "f2 normal lh-title ma0 pa0"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_routes__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-    route: _config__WEBPACK_IMPORTED_MODULE_3__["config"].blogRoot
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-    className: "white no-underline",
-    href: _config__WEBPACK_IMPORTED_MODULE_3__["config"].blogRoot
-  }, props.heroTitle))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
     className: "normal o-70 ma0 pt2 pb3 ph1"
   }, props.subtitle), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, props.topLinks && props.topLinks.length > 0 && props.topLinks.map(function (link, i) {
     var isExternal = link.href.match(/^https?:/);
@@ -11772,10 +11763,13 @@ Tracking.propTypes = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "config", function() { return config; });
 var config = {
-  siteTitle: "My Blog",
+  siteTitle: "phiresky's blog",
   siteDescription: "About my personal projects and other stuff",
   stylesheets: [],
   topLinks: [{
+    text: "Blog",
+    href: "https://phiresky.github.io/blog/"
+  }, {
     text: "GitHub",
     href: "https://github.com/phiresky/"
   }],
