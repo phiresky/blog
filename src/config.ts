@@ -31,7 +31,7 @@ export const config: ConfigJson = {
 	],
 	backgroundClass: "bg-dark-gray",
 	copyright: "",
-	siteId: "",
+	siteId: "UA-39197996-3",
 	bodyContent: "",
 	bodyHtml: "",
 	dir: "content",

@@ -1,9 +1,9 @@
 ---
-title: "((draft)) rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc."
+title: "rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc."
 date: 2019-06-16
 ---
 
-[rga](https://github.com/phiresky/ripgrep-all) is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome [ripgrep] and enables it to search in pdf, docx, sqlite, jpg, movie subtitles (mkv, mp4), etc.
+[rga](https://github.com/phiresky/ripgrep-all) is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome [ripgrep] and enables it to search in pdf, docx, sqlite, jpg, zip, tar.\*, movie subtitles (mkv, mp4), etc.
 
 [![github repo](https://img.shields.io/badge/repo-github.com%2Fphiresky%2Fripgrep--all-informational.svg)](https://github.com/phiresky/ripgrep-all)
 [![Linux build status](https://api.travis-ci.org/phiresky/ripgrep-all.svg)](https://travis-ci.org/phiresky/ripgrep-all)
@@ -86,11 +86,11 @@ dir/inner.tar.gz: greeting.pdf: Page 1: <span class="ansi1"></span><span class="
 greeting.epub: <span class="ansi1"></span><span class="ansi1 ansi31">Hello</span> from an E-Book!
 </pre>
 
-It can even search jpg / png images and scanned pdfs using OCR, though this is disabled by default since it is not useful that often and very slow.
+It can even search jpg / png images and scanned pdfs using OCR, though this is disabled by default since it is not useful that often and pretty slow.
 
 <pre class="ansi2html language-none">~$ # find screenshot of crates.io
 ~$ rga crates ~/screenshots --rga-adapters=+pdfpages,tesseract
-<span class="ansi35">/home/tehdog/Bilder/screenshots/2019-06-14-19-01-10.png</span>
+<span class="ansi35">screenshots/2019-06-14-19-01-10.png</span>
 <span class="ansi1"></span><span class="ansi1 ansi31">crates</span>.io I Browse All <span class="ansi1"></span><span class="ansi1 ansi31">Crates</span>  Docs v
 Documentation Repository Dependent <span class="ansi1"></span><span class="ansi1 ansi31">crates</span>
 
@@ -99,11 +99,11 @@ Documentation Repository Dependent <span class="ansi1"></span><span class="ansi1
 
 ## Setup
 
-Linux x64 and MacOS (untested) binaries are available in [GitHub releases](https://github.com/phiresky/ripgrep-all/releases). Make sure you have [ripgrep](https://github.com/BurntSushi/ripgrep#installation) installed. The releases currently don't include other binaries you may need (rg, pandoc, etc.), but it will warn you when that happens.
+Linux x64 and MacOS (untested) binaries are available in [GitHub releases](https://github.com/phiresky/ripgrep-all/releases). Make sure you have [ripgrep](https://github.com/BurntSushi/ripgrep#installation) installed. The releases currently don't include other binaries you may need (rg, pandoc, pdftotext, ffmpeg), but it will warn you when that happens.
 
 For Arch Linux, I have packaged rga in the AUR: [`yay -S ripgrep-all`](https://aur.archlinux.org/packages/ripgrep-all/)
 
-rga should compile with stable Rust. To install it, run (your OSes equivalent of)
+rga should compile with stable Rust. To build it, run (your OSes equivalent of)
 
 ```console
 ~$ apt install build-essential pandoc poppler-utils ffmpeg ripgrep
@@ -114,15 +114,13 @@ rga should compile with stable Rust. To install it, run (your OSes equivalent of
 
 Windows support shouldn't be a problem, feel free to send PRs! :)
 
-You don't necessarily need to install any dependencies, but then you will see an error when trying to read from the corresponding file type (e.g. poppler-utils for pdf).
-
 ## Technical details
 
 The code and a few more details are here: <https://github.com/phiresky/ripgrep-all>
 
 `rga` simply runs ripgrep (`rg`) with some options set, especially `--pre=rga-preproc` and `--pre-glob`.
 
-`rga-preproc [fname]` will match an "adapter" to the given file based on either it's filename or it's mime type (if `--accurate` is given). You can see all adapters currently included in [src/adapters](https://github.com/phiresky/ripgrep-all/tree/master/src/adapters).
+`rga-preproc [fname]` will match an "adapter" to the given file based on either it's filename or it's mime type (if `--rga-accurate` is given). You can see all adapters currently included in [src/adapters](https://github.com/phiresky/ripgrep-all/tree/master/src/adapters).
 
 Some rga adapters run external binaries to do the actual work (such as pandoc or ffmpeg), usually by writing to stdin and reading from stdout. Others use a Rust library or bindings to achieve the same effect (like sqlite or zip).
 
@@ -130,18 +128,7 @@ To read archives, the `zip` and `tar` libraries are used, which work fully in a 
 
 Most adapters read the files from a [Read](https://doc.rust-lang.org/std/io/trait.Read.html), so they work completely on streamed data (that can come from anywhere including within nested archives).
 
-During the extraction, rga-preproc will compress the data with ZSTD to a memory cache while simultaneously writing it uncompressed to stdout. After completion, if the memory cache is smaller than 2MByte, it is written to a [rkv](https://docs.rs/rkv/0.9.6/rkv/) cache
-
-## Development
-
-To enable debug logging:
-
-```bash
-export RUST_LOG=debug
-export RUST_BACKTRACE=1
-```
-
-Also rember to disable caching with `--rga-no-cache` or clear the cache in `~/.cache/rga` to debug the adapters.
+During the extraction, rga-preproc will compress the data with ZSTD to a memory cache while simultaneously writing it uncompressed to stdout. After completion, if the memory cache is smaller than 2MByte, it is written to a [rkv](https://docs.rs/rkv/0.9.6/rkv/) cache. The cache is keyed by (adapter, filename, mtime), so if a file changes it's content is extracted again.
 
 ## Future Work
 
@@ -150,7 +137,7 @@ Also rember to disable caching with `--rga-no-cache` or clear the cache in `~/.c
 -   Allow per-adapter configuration options (probably via env (RGA_ADAPTERXYZ_CONF=json))
 -   Maybe use a different disk kv-store as a cache instead of rkv, because I had some [weird problems](https://github.com/phiresky/ripgrep-all/blob/05835c1c42bc3575023a81e5494c5530078730fc/src/preproc_cache.rs#L30) with that. SQLite is great. All other Rust alternatives I could find don't allow writing from multiple processes.
 -   Tests!
--   There's some more (mostly technical) todos in the code I don't know how to fix
+-   There's some more (mostly technical) todos in the code I don't know how to fix. Help wanted.
 
 ## Similar tools
 

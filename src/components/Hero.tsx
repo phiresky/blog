@@ -31,16 +31,26 @@ function Hero(props: {
 						{props.topLinks &&
 							props.topLinks.length > 0 &&
 							props.topLinks.map((link, i) => {
-								return (
-									<Link route={link.href} key={i}>
+								const isExternal = link.href.match(/^https?:/)
+								const cls = "dib f6 white no-underline pa1 ma1"
+								if (isExternal)
+									return (
 										<a
-											className="dib f6 white no-underline pa1 ma1"
+											href={link.href}
 											key={i}
+											className={cls}
 										>
 											{link.text}
 										</a>
-									</Link>
-								)
+									)
+								else
+									return (
+										<Link route={link.href} key={i}>
+											<a className={cls} key={i}>
+												{link.text}
+											</a>
+										</Link>
+									)
 							})}
 					</div>
 				</div>
