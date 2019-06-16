@@ -20,10 +20,14 @@ export type ConfigJson = {
 	blogRoot: string
 }
 export const config: ConfigJson = {
-	siteTitle: "My Blog",
+	siteTitle: "phiresky's blog",
 	siteDescription: "About my personal projects and other stuff",
 	stylesheets: [],
 	topLinks: [
+		{
+			text: "Blog",
+			href: "https://phiresky.github.io/blog/",
+		},
 		{
 			text: "GitHub",
 			href: "https://github.com/phiresky/",
