@@ -6,7 +6,8 @@
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"lib": ["dom", "es2017"],
-		"module": "esnext",
+
+		"module": "commonjs",
 		"moduleResolution": "node",
 		"noEmit": true,
 		"noFallthroughCasesInSwitch": true,
@@ -16,7 +17,6 @@
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true
 	},
-
-	"exclude": ["node_modules", "server/**/*.ts", "next.config.ts"],
-	"include": ["**/*.ts", "**/*.tsx"]
+	"exclude": ["node_modules"],
+	"include": ["server/**/*.ts"]
 }

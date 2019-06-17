@@ -19,6 +19,8 @@ function Page(_props: {
 					(props.title ? props.title + " - " : "") + props.siteTitle
 				}
 				description={props.description || props.siteDescription}
+				publicUrlBase={props.publicUrlBase}
+				blogRoot={props.blogRoot}
 				stylesheets={props.stylesheets}
 			/>
 			<main className="lh-copy">

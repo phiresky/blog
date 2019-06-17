@@ -8,8 +8,8 @@ import stripmarkdown from "strip-markdown"
 import { Root } from "./remark-ast"
 import * as yaml from "js-yaml"
 
-const inputDir = join(__dirname, "../posts")
-const outputDir = join(__dirname, "../posts-built")
+export const inputDir = join(__dirname, "../posts")
+export const outputDir = join(__dirname, "../posts-built")
 
 type Frontmatter = {
 	date: string
@@ -88,4 +88,4 @@ async function build() {
 	}
 }
 
-build()
+if (require.main === module) build()

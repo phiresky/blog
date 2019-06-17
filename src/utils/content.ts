@@ -7,8 +7,8 @@ export const isClientSide = !!(
 	window.document &&
 	window.document.createElement
 )
-export function makeUrl(article_fname: string) {
-	const slug = article_fname.replace(/\.[^.]+$/, "")
+export function makeUrl(article: { filename: string }) {
+	const slug = article.filename.replace(/\.[^.]+$/, "")
 	const url = `${config.blogRoot}` + slug
 	return { url, slug }
 }

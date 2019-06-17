@@ -3,10 +3,11 @@
 	"version": "3.1.1",
 	"description": "Markdown based blog using next.js",
 	"scripts": {
-		"runts": "ts-node --transpile-only --project=tsconfig.server.json",
+		"runts": "ts-node --transpile-only --project=tsconfig.json",
 		"dev": "yarn runts server/server.ts",
 		"posts": "yarn runts server/build-posts.ts",
-		"build": "yarn posts && next build src && next export src",
+		"feed": "yarn runts server/build-feed.ts",
+		"build": "yarn posts && yarn feed && next build src && next export src",
 		"commit": "yarn build && ./postprocess.sh"
 	},
 	"devDependencies": {
@@ -30,6 +31,7 @@
 		"@zeit/next-typescript": "^1.1.1",
 		"babel-loader": "^8.0.6",
 		"eslint": "^5.16.0",
+		"feed": "^3.0.0",
 		"glob": "^7.1.4",
 		"js-yaml": "^3.13.1",
 		"next-routes": "^1.4.2",

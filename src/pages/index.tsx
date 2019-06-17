@@ -35,7 +35,7 @@ class Index extends React.Component<WithRouterProps> {
 			<Page>
 				<div className="center mw7 pa3 pa4-ns">
 					{postList.map((article, i) => {
-						const { url } = makeUrl(article.filename)
+						const { url } = makeUrl(article)
 						return (
 							<PagePreview
 								title={article.frontmatter.title}

@@ -18,11 +18,17 @@ export type ConfigJson = {
 	sourceExt: string
 	/** must end with slash */
 	blogRoot: string
+	/** publicUrlBase + blogRoot is the publicly accessible url of the blog - needed for RSS etc feeds */
+	publicUrlBase: string
+	/** unique id of the blog for RSS */
+	id: string
 }
 export const config: ConfigJson = {
 	siteTitle: "phiresky's blog",
 	siteDescription: "About my personal projects and other stuff",
 	stylesheets: [],
+	id: "https://phiresky.github.io/blog/",
+	publicUrlBase: "https://phiresky.github.io",
 	topLinks: [
 		{
 			text: "Blog",

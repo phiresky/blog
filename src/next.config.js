@@ -6,7 +6,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 require("ts-node").register({
 	transpileOnly: true,
-	project: "tsconfig.server.json",
+	project: "tsconfig.json",
 })
 const { config } = require("./config")
 const { makeUrl } = require("./utils/content")
@@ -24,7 +24,7 @@ module.exports = withBundleAnalyzer(
 					[config.blogRoot]: { page: "/index" },
 				}
 				for (const post of posts) {
-					const { url, slug } = makeUrl(post.filename)
+					const { url, slug } = makeUrl(post)
 					o[url] = { page: "/post", query: { slug } }
 				}
 				console.log(o)
