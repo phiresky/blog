@@ -3,16 +3,20 @@ import PropTypes from "prop-types"
 import Head from "next/head"
 
 function Header(props: {
+	title?: string
 	siteTitle: string
 	publicUrlBase: string
 	blogRoot: string
-	description: string | undefined
+	description?: string | undefined
+	siteDescription: string
 	stylesheets: string[] | undefined
 }) {
+	const description = props.description || props.siteDescription
+	const title = (props.title ? props.title + " - " : "") + props.siteTitle
 	return (
 		<Head>
-			<title>{props.siteTitle}</title>
-			<meta name="description" content={props.description} />
+			<title>{title}</title>
+			<meta name="description" content={description} />
 			<meta
 				name="viewport"
 				content="width=device-width, initial-scale=1"

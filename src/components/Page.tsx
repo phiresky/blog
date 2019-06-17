@@ -14,15 +14,7 @@ function Page(_props: {
 	const props = { ...config, ..._props }
 	return (
 		<div>
-			<Header
-				siteTitle={
-					(props.title ? props.title + " - " : "") + props.siteTitle
-				}
-				description={props.description || props.siteDescription}
-				publicUrlBase={props.publicUrlBase}
-				blogRoot={props.blogRoot}
-				stylesheets={props.stylesheets}
-			/>
+			<Header {...props} />
 			<main className="lh-copy">
 				<Hero
 					heroTitle={props.siteTitle}
