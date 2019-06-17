@@ -11519,21 +11519,33 @@ Footer.propTypes = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/head */ "../node_modules/next-server/dist/lib/head.js");
-/* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_head__WEBPACK_IMPORTED_MODULE_2__);
-
+/* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/head */ "../node_modules/next-server/dist/lib/head.js");
+/* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_head__WEBPACK_IMPORTED_MODULE_1__);
 
 
 
 function Header(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(next_head__WEBPACK_IMPORTED_MODULE_2___default.a, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("title", null, props.siteTitle), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("meta", {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(next_head__WEBPACK_IMPORTED_MODULE_1___default.a, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("title", null, props.siteTitle), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("meta", {
     name: "description",
     content: props.description
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("meta", {
     name: "viewport",
     content: "width=device-width, initial-scale=1"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("link", {
+    rel: "alternate",
+    type: "application/rss+xml",
+    title: "RSS feed of ".concat(props.siteTitle),
+    href: props.publicUrlBase + props.blogRoot + "rss.xml"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("link", {
+    rel: "alternate",
+    type: "application/atom+xml",
+    title: "Atom feed of ".concat(props.siteTitle),
+    href: props.publicUrlBase + props.blogRoot + "atom.xml"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("link", {
+    rel: "alternate",
+    type: "application/json",
+    title: "JSON feed of ".concat(props.siteTitle),
+    href: props.publicUrlBase + props.blogRoot + "feed.json"
   }), props.stylesheets && props.stylesheets.length > 0 && props.stylesheets.map(function (stylesheet, i) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("link", {
       key: i,
@@ -11543,11 +11555,6 @@ function Header(props) {
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", null, "\n          body {\n            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;\n          }\n      "));
 }
 
-Header.propTypes = {
-  siteTitle: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
-  description: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
-  stylesheets: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array
-};
 /* harmony default export */ __webpack_exports__["default"] = (Header);
 
 /***/ }),
@@ -11643,6 +11650,8 @@ function Page(_props) {
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_2__["default"], {
     siteTitle: (props.title ? props.title + " - " : "") + props.siteTitle,
     description: props.description || props.siteDescription,
+    publicUrlBase: props.publicUrlBase,
+    blogRoot: props.blogRoot,
     stylesheets: props.stylesheets
   }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("main", {
     className: "lh-copy"
@@ -11766,6 +11775,8 @@ var config = {
   siteTitle: "phiresky's blog",
   siteDescription: "About my personal projects and other stuff",
   stylesheets: [],
+  id: "https://phiresky.github.io/blog/",
+  publicUrlBase: "https://phiresky.github.io",
   topLinks: [{
     text: "Blog",
     href: "https://phiresky.github.io/blog/"
@@ -11841,7 +11852,7 @@ function (_React$Component) {
       return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_components_Page__WEBPACK_IMPORTED_MODULE_6__["default"], null, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
         className: "center mw7 pa3 pa4-ns"
       }, postList.map(function (article, i) {
-        var _makeUrl = Object(_utils_content__WEBPACK_IMPORTED_MODULE_8__["makeUrl"])(article.filename),
+        var _makeUrl = Object(_utils_content__WEBPACK_IMPORTED_MODULE_8__["makeUrl"])(article),
             url = _makeUrl.url;
 
         return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_components_PagePreview__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -11898,8 +11909,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../config */ "./config.ts");
 
 var isClientSide = !!(typeof window !== "undefined" && window.document && window.document.createElement);
-function makeUrl(article_fname) {
-  var slug = article_fname.replace(/\.[^.]+$/, "");
+function makeUrl(article) {
+  var slug = article.filename.replace(/\.[^.]+$/, "");
   var url = "".concat(_config__WEBPACK_IMPORTED_MODULE_0__["config"].blogRoot) + slug;
   return {
     url: url,

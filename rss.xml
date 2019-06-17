@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>phiresky's blog</title>
+        <link>undefined</link>
+        <description>About my personal projects and other stuff</description>
+        <lastBuildDate>Mon, 17 Jun 2019 17:55:49 GMT</lastBuildDate>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <copyright>yup</copyright>
+        <item>
+            <title><![CDATA[Creating a blog]]></title>
+            <link>https://phiresky.github.io/blog/2019/about</link>
+            <guid>https://phiresky.github.io/blog/2019/about</guid>
+            <pubDate>Fri, 14 Jun 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Hello World! I finally decided to make a blog to put my ramblings and projects. After some deliberation I settled on using next.js, so I can use React+TypeScript, don't need a server and the website is accessible without JS enabled. The content is written as markdown, though I'm adding some neat...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.]]></title>
+            <link>https://phiresky.github.io/blog/2019/rga--ripgrep-for-zip-targz-docx-odt-epub-jpg</link>
+            <guid>https://phiresky.github.io/blog/2019/rga--ripgrep-for-zip-targz-docx-odt-epub-jpg</guid>
+            <pubDate>Sun, 16 Jun 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome ripgrep and enables it to search in pdf, docx, sqlite, jpg, zip, tar.\*, movie subtitles (mkv, mp4), etc. github repo Linux build status Crates.io fearless concurrency Examples ...]]></description>
+        </item>
+    </channel>
+</rss>
