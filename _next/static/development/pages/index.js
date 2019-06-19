@@ -11472,7 +11472,7 @@ module.exports = {
 /*! exports provided: posts, default */
 /***/ (function(module) {
 
-module.exports = {"posts":[{"filename":"2019/about.md","frontmatter":{"title":"Creating a blog","date":"2019-06-14T00:00:00.000Z"},"preview":"Hello World! I finally decided to make a blog to put my ramblings and projects. After some deliberation I settled on using next.js, so I can use React+TypeScript, don't need a server and the website is accessible without JS enabled. The content is written as markdown, though I'm adding some neat"},{"filename":"2019/rga--ripgrep-for-zip-targz-docx-odt-epub-jpg.md","frontmatter":{"title":"rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.","date":"2019-06-16T00:00:00.000Z"},"preview":"rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome ripgrep and enables it to search in pdf, docx, sqlite, jpg, zip, tar.\\*, movie subtitles (mkv, mp4), etc. github repo Linux build status Crates.io fearless concurrency Examples "}]};
+module.exports = {"posts":[{"filename":"2019/about.md","frontmatter":{"title":"Creating a blog","date":"2019-06-14T00:00:00.000Z"},"preview":"Hello World! I finally decided to make a blog to put my ramblings and projects. After some deliberation I settled on using next.js, so I can use React+TypeScript, don't need a server and the website is accessible without JS enabled. The content is written as markdown, though I'm adding some neat"},{"filename":"2019/rga--ripgrep-for-zip-targz-docx-odt-epub-jpg.md","frontmatter":{"title":"rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.","date":"2019-06-16T00:00:00.000Z","updated":"2019-06-19T00:00:00.000Z"},"preview":"rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome ripgrep and enables it to search in pdf, docx, sqlite, jpg, zip, tar.\\*, movie subtitles (mkv, mp4), etc. github repo Linux build status Crates.io fearless concurrency Examples "}]};
 
 /***/ }),
 
@@ -11487,23 +11487,18 @@ module.exports = {"posts":[{"filename":"2019/about.md","frontmatter":{"title":"C
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config */ "./config.ts");
 
 
 
 function Footer(props) {
-  var now = new Date();
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
     className: "center w5 f6 tc mt4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-    href: "https://github.com/phiresky/blog"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, props.override || react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    href: _config__WEBPACK_IMPORTED_MODULE_1__["config"].blogSourceUrl
   }, "View blog source on GitHub")));
 }
 
-Footer.propTypes = {
-  copyright: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired
-};
 /* harmony default export */ __webpack_exports__["default"] = (Footer);
 
 /***/ }),
@@ -11525,9 +11520,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function Header(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(next_head__WEBPACK_IMPORTED_MODULE_1___default.a, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("title", null, props.siteTitle), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("meta", {
+  var description = props.description || props.siteDescription;
+  var title = (props.title ? props.title + " - " : "") + props.siteTitle;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(next_head__WEBPACK_IMPORTED_MODULE_1___default.a, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("title", null, title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("meta", {
     name: "description",
-    content: props.description
+    content: description
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("meta", {
     name: "viewport",
     content: "width=device-width, initial-scale=1"
@@ -11570,10 +11567,7 @@ function Header(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../routes */ "./routes.ts");
-
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../routes */ "./routes.ts");
 
 
 
@@ -11593,7 +11587,7 @@ function Hero(props) {
       href: link.href,
       key: i,
       className: cls
-    }, link.text);else return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_routes__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+    }, link.text);else return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_routes__WEBPACK_IMPORTED_MODULE_1__["Link"], {
       route: link.href,
       key: i
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
@@ -11603,18 +11597,6 @@ function Hero(props) {
   })))));
 }
 
-Hero.propTypes = {
-  backgroundClass: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  topLinks: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array,
-  heroTitle: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  subtitle: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string
-};
-Hero.defaultProps = {
-  backgroundClass: "bg-mid-gray",
-  topLinks: [],
-  heroTitle: "",
-  subtitle: ""
-};
 /* harmony default export */ __webpack_exports__["default"] = (Hero);
 
 /***/ }),
@@ -11647,13 +11629,7 @@ __webpack_require__.r(__webpack_exports__);
 function Page(_props) {
   var props = Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, _config__WEBPACK_IMPORTED_MODULE_6__["config"], _props);
 
-  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    siteTitle: (props.title ? props.title + " - " : "") + props.siteTitle,
-    description: props.description || props.siteDescription,
-    publicUrlBase: props.publicUrlBase,
-    blogRoot: props.blogRoot,
-    stylesheets: props.stylesheets
-  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("main", {
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_2__["default"], props), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("main", {
     className: "lh-copy"
   }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Hero__WEBPACK_IMPORTED_MODULE_3__["default"], {
     heroTitle: props.siteTitle,
@@ -11661,7 +11637,7 @@ function Page(_props) {
     topLinks: props.topLinks,
     backgroundClass: props.backgroundClass
   }), props.children, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    copyright: props.copyright
+    override: props.footer
   }), props.siteId && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Tracking__WEBPACK_IMPORTED_MODULE_5__["default"], {
     siteId: props.siteId
   })));
@@ -11682,17 +11658,14 @@ function Page(_props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../routes */ "./routes.ts");
-/* harmony import */ var _utils_date__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/date */ "./utils/date.ts");
-
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../routes */ "./routes.ts");
+/* harmony import */ var _utils_date__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/date */ "./utils/date.ts");
 
 
 
 
 function PageLink(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_routes__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_routes__WEBPACK_IMPORTED_MODULE_1__["Link"], {
     route: props.href
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "b black o-80 glow no-underline lh-solid ".concat(props.className || "")
@@ -11713,15 +11686,9 @@ function PagePreview(props) {
     className: "db ttu o-40"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("time", {
     key: new Date(props.date).toISOString()
-  }, Object(_utils_date__WEBPACK_IMPORTED_MODULE_3__["formatDate"])(props.date))));
+  }, Object(_utils_date__WEBPACK_IMPORTED_MODULE_2__["formatDate"])(props.date))));
 }
 
-PagePreview.propTypes = {
-  title: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
-  href: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
-  preview: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  date: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string
-};
 /* harmony default export */ __webpack_exports__["default"] = (PagePreview);
 
 /***/ }),
@@ -11737,13 +11704,10 @@ PagePreview.propTypes = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-
 
 
 function getGaScript(siteId) {
-  return "\n  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=\n  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;\n  e=o.createElement(i);r=o.getElementsByTagName(i)[0];\n  e.src='https://www.google-analytics.com/analytics.js';\n  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));\n  ga('create','".concat(siteId, "','auto');ga('send','pageview');\n");
+  return "/* yes, I know... fite me */\n  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=\n  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;\n  e=o.createElement(i);r=o.getElementsByTagName(i)[0];\n  e.src='https://www.google-analytics.com/analytics.js';\n  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));\n  ga('create','".concat(siteId, "','auto');ga('send','pageview');\n");
 }
 
 function Tracking(props) {
@@ -11754,9 +11718,6 @@ function Tracking(props) {
   }));
 }
 
-Tracking.propTypes = {
-  siteId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired
-};
 /* harmony default export */ __webpack_exports__["default"] = (Tracking);
 
 /***/ }),
@@ -11785,16 +11746,11 @@ var config = {
     href: "https://github.com/phiresky/"
   }],
   backgroundClass: "bg-dark-gray",
-  copyright: "",
   siteId: "UA-39197996-3",
-  bodyContent: "",
-  bodyHtml: "",
-  dir: "content",
-  base: "index.json",
-  ext: ".json",
-  sourceBase: "index.md",
-  sourceExt: ".md",
-  blogRoot: "/blog/"
+  blogRoot: "/blog/",
+  blogSourceUrl: "https://github.com/phiresky/blog",
+  postSourceUrlBase: "https://github.com/phiresky/blog/blob/master/posts/",
+  postSourceHistoryUrlBase: "https://github.com/phiresky/blog/commits/master/posts/"
 };
 
 /***/ }),
@@ -11949,7 +11905,7 @@ function formatDate(dateString) {
 
 /***/ }),
 
-/***/ 2:
+/***/ 5:
 /*!**************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2F&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2Findex.tsx ***!
   \**************************************************************************************************************************************/
@@ -11972,5 +11928,5 @@ module.exports = dll_09412a5be180c798c2ca;
 
 /***/ })
 
-},[[2,"static/runtime/webpack.js"]]]);
+},[[5,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=index.js.map
