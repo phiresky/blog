@@ -7,21 +7,18 @@ export type ConfigJson = {
 	topLinks: LinkInfo[]
 
 	backgroundClass: string
-	copyright: string
 	siteId: string
-	bodyContent: string
-	bodyHtml: string
-	dir: string
-	base: string
-	ext: string
-	sourceBase: string
-	sourceExt: string
 	/** must end with slash */
 	blogRoot: string
 	/** publicUrlBase + blogRoot is the publicly accessible url of the blog - needed for RSS etc feeds */
 	publicUrlBase: string
 	/** unique id of the blog for RSS */
 	id: string
+	blogSourceUrl: string
+	/** url base to link to at bottom of page */
+	postSourceUrlBase?: string
+	/** url base to link when a post is updated */
+	postSourceHistoryUrlBase?: string
 }
 export const config: ConfigJson = {
 	siteTitle: "phiresky's blog",
@@ -40,14 +37,10 @@ export const config: ConfigJson = {
 		},
 	],
 	backgroundClass: "bg-dark-gray",
-	copyright: "",
 	siteId: "UA-39197996-3",
-	bodyContent: "",
-	bodyHtml: "",
-	dir: "content",
-	base: "index.json",
-	ext: ".json",
-	sourceBase: "index.md",
-	sourceExt: ".md",
 	blogRoot: "/blog/",
+	blogSourceUrl: "https://github.com/phiresky/blog",
+	postSourceUrlBase: "https://github.com/phiresky/blog/blob/master/posts/",
+	postSourceHistoryUrlBase:
+		"https://github.com/phiresky/blog/commits/master/posts/",
 }

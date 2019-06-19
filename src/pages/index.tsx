@@ -11,22 +11,6 @@ export type LinkInfo = {
 	text: string
 	href: string
 }
-export type PostSummary = {
-	title: string
-	date: string
-	page: string
-	paths: string[]
-	preview: string
-	dir: string
-	base: string
-	ext: string
-	sourceBase: string
-	sourceExt: string
-}
-export interface PostJson extends PostSummary {
-	bodyContent: string
-	bodyHtml: string
-}
 
 class Index extends React.Component<WithRouterProps> {
 	render() {

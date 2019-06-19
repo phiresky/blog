@@ -1,5 +1,4 @@
 import React from "react"
-import PropTypes from "prop-types"
 import { Link } from "../routes"
 import { formatDate } from "../utils/date"
 
@@ -48,13 +47,6 @@ function PagePreview(props: {
 			)}
 		</div>
 	)
-}
-
-PagePreview.propTypes = {
-	title: PropTypes.string.isRequired,
-	href: PropTypes.string.isRequired,
-	preview: PropTypes.string,
-	date: PropTypes.string,
 }
 
 export default PagePreview

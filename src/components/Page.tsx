@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react"
-import PropTypes from "prop-types"
+import React from "react"
 import Header from "./Header"
 import Hero from "./Hero"
 import Footer from "./Footer"
@@ -9,6 +8,7 @@ import { config } from "../config"
 function Page(_props: {
 	title?: string
 	description?: string
+	footer?: JSX.Element
 	children: JSX.Element
 }) {
 	const props = { ...config, ..._props }
@@ -23,7 +23,7 @@ function Page(_props: {
 					backgroundClass={props.backgroundClass}
 				/>
 				{props.children}
-				<Footer copyright={props.copyright} />
+				<Footer override={props.footer} />
 				{props.siteId && <Tracking siteId={props.siteId} />}
 			</main>
 		</div>

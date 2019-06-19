@@ -1,5 +1,4 @@
 import React from "react"
-import PropTypes from "prop-types"
 import { Link } from "../routes"
 import { LinkInfo } from "../pages"
 import { config } from "../config"
@@ -57,20 +56,6 @@ function Hero(props: {
 			</div>
 		</div>
 	)
-}
-
-Hero.propTypes = {
-	backgroundClass: PropTypes.string,
-	topLinks: PropTypes.array,
-	heroTitle: PropTypes.string,
-	subtitle: PropTypes.string,
-}
-
-Hero.defaultProps = {
-	backgroundClass: "bg-mid-gray",
-	topLinks: [],
-	heroTitle: "",
-	subtitle: "",
 }
 
 export default Hero

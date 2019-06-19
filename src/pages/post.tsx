@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, Fragment } from "react"
 import { withRouter } from "next/router"
 import Page from "../components/Page"
 import { NextPageContext } from "next"
-import { Post } from "../../server/build-posts"
+import { Post, Frontmatter } from "../../server/build-posts"
 import ReactMarkdown from "react-markdown/with-html"
 //import htmlParser from "react-markdown/plugins/html-parser"
 import { Code } from "../components/Code"
@@ -36,6 +36,14 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 	render() {
 		const { post } = this.props
 		const meta = post.frontmatter
+		let footer = undefined
+		if (config.postSourceUrlBase) {
+			footer = (
+				<a href={config.postSourceUrlBase + post.filename}>
+					View post source on GitHub
+				</a>
+			)
+		}
 		return (
 			<div>
 				<style jsx global>{`
@@ -68,14 +76,15 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 						word-wrap: break-word;
 					}
 				`}</style>
-				<Page title={meta.title} description={post.preview}>
+				<Page
+					title={meta.title}
+					description={post.preview}
+					footer={footer}
+				>
 					<div className="content center mw7 pa3 pa4-ns">
 						<h1 className="mt0 lh-title">{meta.title}</h1>
-						<small className="db ttu o-40">
-							<time dateTime={new Date(meta.date).toISOString()}>
-								{formatDate(meta.date)}
-							</time>
-						</small>
+						<PostDate post={post} />
+
 						<ReactMarkdown
 							escapeHtml={false}
 							renderers={{ code: Code }}
@@ -88,6 +97,37 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 			</div>
 		)
 	}
+}
+function PostDate({ post: { frontmatter: meta, filename } }: { post: Post }) {
+	let updated = null
+	if (meta.updated) {
+		const SLink = config.postSourceHistoryUrlBase
+			? ({ children = null as any }) => (
+					<a href={config.postSourceHistoryUrlBase + filename}>
+						{children}
+					</a>
+			  )
+			: Fragment
+		updated = (
+			<>
+				{" • "}
+				<SLink>
+					{"Last Update "}
+					<time dateTime={new Date(meta.date).toISOString()}>
+						{formatDate(meta.updated)}
+					</time>
+				</SLink>
+			</>
+		)
+	}
+	return (
+		<small className="db ttu o-40">
+			<time dateTime={new Date(meta.date).toISOString()}>
+				{formatDate(meta.date)}
+			</time>
+			{updated}
+		</small>
+	)
 }
 
 export default withRouter(PostUI)

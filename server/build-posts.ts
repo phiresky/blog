@@ -11,9 +11,10 @@ import * as yaml from "js-yaml"
 export const inputDir = join(__dirname, "../posts")
 export const outputDir = join(__dirname, "../posts-built")
 
-type Frontmatter = {
-	date: string
+export type Frontmatter = {
 	title: string
+	date: string
+	updated?: string
 	[k: string]: any
 }
 
