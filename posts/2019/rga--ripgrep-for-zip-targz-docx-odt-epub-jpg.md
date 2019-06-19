@@ -1,6 +1,7 @@
 ---
 title: "rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc."
 date: 2019-06-16
+updated: 2019-06-19
 ---
 
 [rga](https://github.com/phiresky/ripgrep-all) is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome [ripgrep] and enables it to search in pdf, docx, sqlite, jpg, zip, tar.\*, movie subtitles (mkv, mp4), etc.
@@ -99,20 +100,9 @@ Documentation Repository Dependent <span class="ansi1"></span><span class="ansi1
 
 ## Setup
 
-Linux x64 and MacOS (untested) binaries are available in [GitHub releases](https://github.com/phiresky/ripgrep-all/releases). Make sure you have [ripgrep](https://github.com/BurntSushi/ripgrep#installation) installed. The releases currently don't include other binaries you may need (rg, pandoc, pdftotext, ffmpeg), but it will warn you when that happens.
+Linux, Windows and OSX binaries are available in GitHub releases. See [the readme](https://github.com/phiresky/ripgrep-all#installation) for more information.
 
-For Arch Linux, I have packaged rga in the AUR: [`yay -S ripgrep-all`](https://aur.archlinux.org/packages/ripgrep-all/)
-
-rga should compile with stable Rust. To build it, run (your OSes equivalent of)
-
-```console
-~$ apt install build-essential pandoc poppler-utils ffmpeg ripgrep
-~$ cargo install ripgrep_all
-
-~$ rga --version # works! :)
-```
-
-Windows support shouldn't be a problem, feel free to send PRs! :)
+For Arch Linux, I have packaged `rga` in the AUR: [`yay -S ripgrep-all`](https://aur.archlinux.org/packages/ripgrep-all/)
 
 ## Technical details
 
