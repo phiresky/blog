@@ -4,7 +4,7 @@
         <title>phiresky's blog</title>
         <link>undefined</link>
         <description>About my personal projects and other stuff</description>
-        <lastBuildDate>Mon, 21 Oct 2019 15:54:09 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 21 Oct 2019 15:56:05 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>yup</copyright>
@@ -16,7 +16,7 @@
             <description><![CDATA[Hello World! I finally decided to make a blog to put my ramblings and projects. After some deliberation I settled on using next.js, so I can use React+TypeScript, don't need a server and the website is accessible without JS enabled. The content is written as markdown, though I'm adding some neat...]]></description>
         </item>
         <item>
-            <title><![CDATA[Automatic citation extraction from URLs.]]></title>
+            <title><![CDATA[Automatic citation extraction from URLs. (draft)]]></title>
             <link>https://phiresky.github.io/blog/2019/pandoc-url2cite</link>
             <guid>https://phiresky.github.io/blog/2019/pandoc-url2cite</guid>
             <pubDate>Wed, 21 Aug 2019 00:00:00 GMT</pubDate>
