@@ -11905,7 +11905,7 @@ function formatDate(dateString) {
 
 /***/ }),
 
-/***/ 5:
+/***/ 2:
 /*!**************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2F&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2Findex.tsx ***!
   \**************************************************************************************************************************************/
@@ -11928,5 +11928,5 @@ module.exports = dll_09412a5be180c798c2ca;
 
 /***/ })
 
-},[[5,"static/runtime/webpack.js"]]]);
+},[[2,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=index.js.map

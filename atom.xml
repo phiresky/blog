@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://phiresky.github.io/blog/</id>
     <title>phiresky's blog</title>
-    <updated>2019-06-19T15:20:22.175Z</updated>
+    <updated>2019-10-21T15:54:09.868Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <subtitle>About my personal projects and other stuff</subtitle>
     <rights>yup</rights>
@@ -12,6 +12,13 @@
         <link href="https://phiresky.github.io/blog/2019/about"/>
         <updated>2019-06-14T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Hello World! I finally decided to make a blog to put my ramblings and projects. After some deliberation I settled on using next.js, so I can use React+TypeScript, don't need a server and the website is accessible without JS enabled. The content is written as markdown, though I'm adding some neat...]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Automatic citation extraction from URLs.]]></title>
+        <id>https://phiresky.github.io/blog/2019/pandoc-url2cite</id>
+        <link href="https://phiresky.github.io/blog/2019/pandoc-url2cite"/>
+        <updated>2019-08-21T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Introduction This repo allows you to instantly and transparently cite most papers directly only given a single URL. You simply add an URL of a publication, and it will replace that with a real citation in whatever CSL style you want. This means you can avoid dealing with Mendeley@ or Zotero @zotero ...]]></summary>
     </entry>
     <entry>
         <title type="html"><![CDATA[rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.]]></title>
