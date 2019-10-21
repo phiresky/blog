@@ -1,7 +1,7 @@
 ---
 title: "rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc."
 date: 2019-06-16
-updated: 2019-06-19
+updated: 2019-10-21
 ---
 
 [rga](https://github.com/phiresky/ripgrep-all) is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome [ripgrep] and enables it to search in pdf, docx, sqlite, jpg, zip, tar.\*, movie subtitles (mkv, mp4), etc.
