@@ -7,14 +7,11 @@ type Renderers = Partial<
 	{ [k in p.EltType]: React.FunctionComponent<{ e: p.EltMap[k] }> }
 >
 type PandocConfig = {
-	escapeHTML?: boolean
+	allowUnsanitizedHTML?: boolean
 	renderers?: Renderers
 	imageUrlBase?: string
 }
-const PandocConfigContext = React.createContext<PandocConfig>({
-	escapeHTML: true,
-	renderers: {},
-})
+const PandocConfigContext = React.createContext<PandocConfig>({})
 
 function ap([id, classes, attrs]: p.Attr) {
 	if (attrs.length > 0) console.log("unused attrs", attrs)
@@ -38,7 +35,7 @@ function SimpAttr(tag: keyof JSX.IntrinsicElements) {
 	)
 }
 
-const defaultRenderers: Renderers = {
+export const defaultRenderers: Renderers = {
 	// inline
 	Str: ({ e }) => <>{e}</>,
 	Plain: ({ e }) => <Pandoc ele={e} />,
@@ -144,7 +141,7 @@ const defaultRenderers: Renderers = {
 	RawBlock: ({ e: [type, content] }) => (
 		<PandocConfigContext.Consumer>
 			{config =>
-				type === "html" && !config.escapeHTML ? (
+				type === "html" && config.allowUnsanitizedHTML ? (
 					<div dangerouslySetInnerHTML={{ __html: content }} />
 				) : (
 					<div className={`raw raw-${type}`}>{content}</div>

@@ -8,9 +8,6 @@ date: 2019-12-13
 link-citations: true
 urlcolor: blue
 url2cite: all-links
-blog:
-    relative_links: https://github.com/phiresky/pandoc-url2cite/blob/master/
-    relative_images: https://github.com/phiresky/pandoc-url2cite/raw/master/
 ---
 
 pandoc-url2cite allows you to instantly and transparently cite most papers directly given only a single URL.
@@ -45,13 +42,13 @@ pandoc --filter=pandoc-url2cite \
 
 This results in the following output:  
 **minimal.pdf**  
-[![](example/minimal.png)](example/minimal.pdf)
+[![](https://github.com/phiresky/pandoc-url2cite/raw/master/example/minimal.png)](https://github.com/phiresky/pandoc-url2cite/blob/master/example/minimal.pdf)
 
 For a slightly longer example, you can look at this readme itself:  
 **README.pdf**  
-[![](example/readme.png)](README.pdf)
+[![](https://github.com/phiresky/pandoc-url2cite/raw/master/example/readme.png)][pdf]
 
-[Source README.md](https://raw.githubusercontent.com/phiresky/pandoc-url2cite/master/README.md "no-url2cite") - [Result README.pdf](https://github.com/phiresky/pandoc-url2cite/blob/master/README.pdf "no-url2cite")
+[Source README.md](https://raw.githubusercontent.com/phiresky/pandoc-url2cite/master/README.md "no-url2cite") - [Result README.pdf][pdf]
 
 # How to Use
 
@@ -113,6 +110,7 @@ All citation data is cached (permanently) as bibtex as well as CSL to `citation-
 
 # References
 
+[pdf]: https://github.com/phiresky/pandoc-url2cite/blob/master/README.pdf "no-url2cite"
 [alexnet]: http://dl.acm.org/citation.cfm?doid=3098997.3065386
 [zotero]: https://www.zotero.org/
 [@vgg]: https://arxiv.org/abs/1409.1556

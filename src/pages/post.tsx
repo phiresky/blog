@@ -1,9 +1,8 @@
-import React, { useEffect, useState, Fragment } from "react"
+import React, { Fragment } from "react"
 import { withRouter } from "next/router"
 import Page from "../components/Page"
 import { NextPageContext } from "next"
-import { Post, Frontmatter } from "../../server/build-posts"
-import ReactMarkdown from "react-markdown/with-html"
+import { Post } from "../../server/build-posts"
 //import htmlParser from "react-markdown/plugins/html-parser"
 import { Code } from "../components/Code"
 // import "prismjs/themes/prism-tomorrow.css"
@@ -11,7 +10,9 @@ import { WithRouterProps } from "next/dist/client/with-router"
 import { config } from "../config"
 import { formatDate } from "../utils/date"
 import "../post.scss"
-import Pandoc from "../components/Pandoc"
+import Pandoc, { defaultRenderers } from "../components/Pandoc"
+import { InlineMath, BlockMath } from "react-katex"
+import "katex/dist/katex.min.css"
 
 type Props = { post: Post }
 
@@ -87,14 +88,18 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 						<PostDate post={post} />
 						<Pandoc
 							ele={post.content_ast}
-							escapeHTML={false}
-							renderers={
-								{
-									/*CodeBlock: ({ e: [attr, text] }) => (
+							allowUnsanitizedHTML
+							renderers={{
+								CodeBlock: ({ e: [attr, text] }) => (
 									<Code language={attr[1][0]} value={text} />
-								),*/
-								}
-							}
+								),
+								Math: ({ e }) => {
+									const [type, content] = e
+									if (type.t === "InlineMath")
+										return <InlineMath math={content} />
+									else return <BlockMath math={content} />
+								},
+							}}
 						/>
 						{/*<ReactMarkdown
 							escapeHtml={false}

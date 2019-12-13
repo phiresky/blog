@@ -18,6 +18,19 @@ module.exports = withBundleAnalyzer(
 	withSass(
 		withCSS({
 			assetPrefix: isProd ? config.blogRoot : "/",
+			webpack: config => {
+				config.module.rules.push({
+					test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
+					use: {
+						loader: "url-loader",
+						options: {
+							limit: 100000,
+							name: "[name].[ext]",
+						},
+					},
+				})
+				return config
+			},
 			async exportPathMap() {
 				const { posts } = summary
 				const o = {
