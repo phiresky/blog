@@ -87,7 +87,14 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 						<PostDate post={post} />
 						<Pandoc
 							ele={post.content_ast}
-							config={{ escapeHTML: false }}
+							escapeHTML={false}
+							renderers={
+								{
+									/*CodeBlock: ({ e: [attr, text] }) => (
+									<Code language={attr[1][0]} value={text} />
+								),*/
+								}
+							}
 						/>
 						{/*<ReactMarkdown
 							escapeHtml={false}

@@ -1,17 +1,19 @@
-import * as React from "react"
 import * as p from "pandoc-filter"
-import { isClientSide } from "../utils/content"
-import CodeBlock from "./CodeBlock"
+import * as React from "react"
 import { Fragment } from "react"
 import { Code } from "./Code"
 
-type E = p.Inline | p.Block
-
-type ks = keyof p.EltMap
-
-type PandocConfig = { escapeHTML?: boolean }
+type Renderers = Partial<
+	{ [k in p.EltType]: React.FunctionComponent<{ e: p.EltMap[k] }> }
+>
+type PandocConfig = {
+	escapeHTML?: boolean
+	renderers?: Renderers
+	imageUrlBase?: string
+}
 const PandocConfigContext = React.createContext<PandocConfig>({
 	escapeHTML: true,
+	renderers: {},
 })
 
 function ap([id, classes, attrs]: p.Attr) {
@@ -21,25 +23,25 @@ function ap([id, classes, attrs]: p.Attr) {
 
 function Simp(tag: keyof JSX.IntrinsicElements, className?: string) {
 	const Tag = tag
-	return (ele: E[]) => (
+	return (p: { e: p.AnyElt[] }) => (
 		<Tag className={className}>
-			<Pandoc ele={ele} />
+			<Pandoc ele={p.e} />
 		</Tag>
 	)
 }
 function SimpAttr(tag: keyof JSX.IntrinsicElements) {
 	const Tag = tag
-	return ([attr, ele]: [p.Attr, E[]]) => (
+	return ({ e: [attr, ele] }: { e: [p.Attr, p.AnyElt[]] }) => (
 		<Tag {...ap(attr)}>
 			<Pandoc ele={ele} />
 		</Tag>
 	)
 }
 
-const eles: Partial<{ [k in ks]: React.FunctionComponent<p.EltMap[k]> }> = {
+const defaultRenderers: Renderers = {
 	// inline
-	Str: p => <>{p}</>,
-	Plain: p => <Pandoc ele={p} />,
+	Str: ({ e }) => <>{e}</>,
+	Plain: ({ e }) => <Pandoc ele={e} />,
 	Emph: Simp("em"),
 	Strong: Simp("b"),
 	Strikeout: Simp("s"),
@@ -47,20 +49,20 @@ const eles: Partial<{ [k in ks]: React.FunctionComponent<p.EltMap[k]> }> = {
 	Subscript: Simp("sub"),
 	SmallCaps: Simp("span", "small-caps"),
 	SoftBreak: () => <>{"\n"}</>, // usually rendered as a space
-	Quoted: ([a, b]) => (
-		<span>
+	Quoted: ({ e: [a, b] }) => (
+		<span className="quoted">
 			{a.t === "DoubleQuote" ? '"' : "'"}
 			<Pandoc ele={b} />
 			{a.t === "DoubleQuote" ? '"' : "'"}
 		</span>
 	),
-	Link: ([attr, inline, [url, title]]) => (
+	Link: ({ e: [attr, inline, [url, title]] }) => (
 		<a href={url} title={title || undefined} {...ap(attr)}>
 			<Pandoc ele={inline} />
 		</a>
 	),
-	Space: p => <> </>,
-	Cite: ([cites, inline]) => (
+	Space: _ => <> </>,
+	Cite: ({ e: [cites, inline] }) => (
 		<span
 			className="citation"
 			data-cites={cites.map(e => e.citationId).join(" ")}
@@ -68,12 +70,12 @@ const eles: Partial<{ [k in ks]: React.FunctionComponent<p.EltMap[k]> }> = {
 			<Pandoc ele={inline} />
 		</span>
 	),
-	Code: ([attr, str]) => <code {...ap(attr)}>{str}</code>,
+	Code: ({ e: [attr, str] }) => <code {...ap(attr)}>{str}</code>,
 	HorizontalRule: () => <hr />,
 	LineBreak: () => <br />,
 
 	// block
-	Header: ([lvl, attr, c]) => {
+	Header: ({ e: [lvl, attr, c] }) => {
 		const H = ("h" + lvl) as "h1"
 		return (
 			<H {...ap(attr)}>
@@ -81,15 +83,14 @@ const eles: Partial<{ [k in ks]: React.FunctionComponent<p.EltMap[k]> }> = {
 			</H>
 		)
 	},
-	CodeBlock: ([attr, text]) => (
-		<Code language={attr[1][0]} value={text} />
-		/*<pre {...ap(attr)}>
+	CodeBlock: ({ e: [attr, text] }) => (
+		<pre {...ap(attr)}>
 			<code>{text}</code>
-		</pre>*/
+		</pre>
 	),
 	Para: Simp("p"),
 	BlockQuote: Simp("blockquote"),
-	BulletList: blocks => (
+	BulletList: ({ e: blocks }) => (
 		<ul>
 			{blocks.map((e, i) => (
 				<li key={i}>
@@ -98,7 +99,7 @@ const eles: Partial<{ [k in ks]: React.FunctionComponent<p.EltMap[k]> }> = {
 			))}
 		</ul>
 	),
-	OrderedList: ([[a, b, _], blocks]) => (
+	OrderedList: ({ e: [[a, b, _], blocks] }) => (
 		<ol
 			start={a}
 			type={
@@ -120,9 +121,9 @@ const eles: Partial<{ [k in ks]: React.FunctionComponent<p.EltMap[k]> }> = {
 			))}
 		</ol>
 	),
-	DefinitionList: els => (
+	DefinitionList: ({ e }) => (
 		<dl>
-			{els.map(([t, d], i) => (
+			{e.map(([t, d], i) => (
 				<Fragment key={i}>
 					<dt>
 						<Pandoc ele={t} />
@@ -137,8 +138,10 @@ const eles: Partial<{ [k in ks]: React.FunctionComponent<p.EltMap[k]> }> = {
 		</dl>
 	),
 	Div: SimpAttr("div"),
-	Image: ([a, b, [src, title]]) => <img src={src} title={title} {...ap(a)} />, // todo: alt text
-	RawBlock: ([type, content]) => (
+	Image: ({ e: [a, b, [src, title]] }) => (
+		<img src={src} title={title} {...ap(a)} />
+	), // todo: alt text
+	RawBlock: ({ e: [type, content] }) => (
 		<PandocConfigContext.Consumer>
 			{config =>
 				type === "html" && !config.escapeHTML ? (
@@ -153,12 +156,11 @@ const eles: Partial<{ [k in ks]: React.FunctionComponent<p.EltMap[k]> }> = {
 
 export default function Pandoc({
 	ele,
-	config,
+	...config
 }: {
-	ele: E | E[]
-	config?: PandocConfig
-}) {
-	if (config)
+	ele: p.AnyElt | p.AnyElt[]
+} & PandocConfig) {
+	if (Object.keys(config).length > 0)
 		return (
 			<PandocConfigContext.Provider value={config}>
 				<Pandoc ele={ele} />
@@ -172,11 +174,17 @@ export default function Pandoc({
 				))}
 			</>
 		)
-	if (ele.t in eles) {
-		const c = eles[ele.t] as any
-		return c(ele.c)
-	}
-	return <>[UNK:{ele.t}]</>
+	return (
+		<PandocConfigContext.Consumer>
+			{config => {
+				const renderers = { ...defaultRenderers, ...config.renderers }
+				if (ele.t in renderers) {
+					const C = renderers[ele.t] as any
+					return <C e={ele.c} />
+				} else return <>[UNK:{ele.t}]</>
+			}}
+		</PandocConfigContext.Consumer>
+	)
 }
 
-export const PandocConfig = PandocConfigContext.Provider
+export const PandocConfigProvider = PandocConfigContext.Provider

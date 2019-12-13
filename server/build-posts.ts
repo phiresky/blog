@@ -1,11 +1,27 @@
 import { join } from "path"
 import { promises as fs } from "fs"
-import { Root } from "./remark-ast"
-import * as yaml from "js-yaml"
 import { promisify } from "util"
 import { execFile as _execFile } from "child_process"
-import * as x from "pandoc-url2cite/dist/util"
-import { stringify as stripFormatting, Block } from "pandoc-filter"
+import { config } from "../src/config"
+
+import {
+	stringify as stripFormatting,
+	Block,
+	AnyElt,
+	filter,
+	PandocJson,
+	Para,
+	Inline,
+	Image,
+	EltType,
+	Elt,
+	Str,
+	FilterAction,
+	Format,
+	Link,
+	PandocMetaMap,
+	metaMapToRaw,
+} from "pandoc-filter"
 
 const execFile = promisify(_execFile)
 
@@ -19,6 +35,41 @@ export type Frontmatter = {
 	[k: string]: any
 }
 
+function mergeStrsReduce(eles: AnyElt[], next: AnyElt) {
+	if (eles.length > 0) {
+		const left = eles[eles.length - 1]
+		const gtrs: Partial<{ [k in EltType]: (e: Elt<k>) => string }> = {
+			Str: e => e.c,
+			Space: _ => " ",
+			SoftBreak: _ => " ",
+		}
+		if (left.t in gtrs && next.t in gtrs) {
+			eles.pop()
+			return [
+				...eles,
+				Str(gtrs[left.t]!(left as any) + gtrs[next.t]!(next as any)),
+			]
+		}
+	}
+	return [...eles, next]
+}
+function mergeStrs(v: AnyElt[]) {
+	return v.reduce(mergeStrsReduce, [])
+}
+function makeLinksAbs(v: AnyElt, _: Format, meta: PandocMetaMap) {
+	if (v.t === "Link" || v.t === "Image") {
+		const [a, b, [url, title]] = v.c
+		const Cons = v.t === "Link" ? Link : Image
+		const base = (metaMapToRaw(meta) as any).blog?.[
+			v.t === "Link" ? "relative_links" : "relative_images"
+		]
+		const urL =
+			new URL(url, "https://example.com").origin === "https://example.com"
+				? base + url
+				: url
+		return Cons(a, b, [urL, title])
+	}
+}
 async function getMetaAndPreview(path: string) {
 	const { stdout } = await execFile("pandoc", [
 		"-t",
@@ -29,9 +80,13 @@ async function getMetaAndPreview(path: string) {
 		"--",
 		path,
 	])
-	const parsed = JSON.parse(stdout)
-	const frontmatter: Frontmatter = x.fromMetaMap(parsed.meta) as any
-	console.log(parsed.meta, frontmatter)
+	const _parsed: PandocJson = JSON.parse(stdout)
+	const parsed = filter(
+		_parsed,
+		{ array: mergeStrs, single: makeLinksAbs },
+		"",
+	)
+	const frontmatter: Frontmatter = metaMapToRaw(parsed.meta) as any
 	const text = stripFormatting(parsed.blocks)
 	const preview = text
 		.trim()

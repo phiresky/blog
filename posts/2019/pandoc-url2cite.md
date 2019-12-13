@@ -2,15 +2,16 @@
 title: "Automatic citation extraction from URLs (draft)"
 author: |
     phiresky
-date: 2019-08-21
+date: 2019-12-13
 # abstract: |
 #     This is the abstract. The system is great.
 link-citations: true
 urlcolor: blue
 url2cite: all-links
+blog:
+    relative_links: https://github.com/phiresky/pandoc-url2cite/blob/master/
+    relative_images: https://github.com/phiresky/pandoc-url2cite/raw/master/
 ---
-
-# Introduction
 
 pandoc-url2cite allows you to instantly and transparently cite most papers directly given only a single URL.
 

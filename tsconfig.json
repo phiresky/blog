@@ -12,7 +12,7 @@
 		"noEmit": true,
 		"noFallthroughCasesInSwitch": true,
 		"strict": true,
-		"target": "esnext",
+		"target": "es2019",
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true
