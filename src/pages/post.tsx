@@ -11,6 +11,7 @@ import { WithRouterProps } from "next/dist/client/with-router"
 import { config } from "../config"
 import { formatDate } from "../utils/date"
 import "../post.scss"
+import Pandoc from "../components/Pandoc"
 
 type Props = { post: Post }
 
@@ -84,14 +85,17 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 					<div className="content center mw7 pa3 pa4-ns">
 						<h1 className="mt0 lh-title">{meta.title}</h1>
 						<PostDate post={post} />
-
-						<ReactMarkdown
+						<Pandoc
+							ele={post.content_ast}
+							config={{ escapeHTML: false }}
+						/>
+						{/*<ReactMarkdown
 							escapeHtml={false}
 							renderers={{ code: Code }}
 							//astPlugins={[htmlParser()]}
 						>
 							{post.content_md}
-						</ReactMarkdown>
+						</ReactMarkdown>*/}
 					</div>
 				</Page>
 			</div>
@@ -122,7 +126,11 @@ function PostDate({ post: { frontmatter: meta, filename } }: { post: Post }) {
 	}
 	return (
 		<small className="db ttu o-40">
-			<time dateTime={new Date(meta.date).toISOString()}>
+			<time
+				dateTime={
+					meta.date ? new Date(meta.date).toISOString() : undefined
+				}
+			>
 				{formatDate(meta.date)}
 			</time>
 			{updated}

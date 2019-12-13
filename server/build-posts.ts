@@ -1,12 +1,13 @@
 import { join } from "path"
 import { promises as fs } from "fs"
-import unified from "unified"
-import markdown from "remark-parse"
-import rstringify from "remark-stringify"
-import mdfrontmatter from "remark-frontmatter"
-import stripmarkdown from "strip-markdown"
 import { Root } from "./remark-ast"
 import * as yaml from "js-yaml"
+import { promisify } from "util"
+import { execFile as _execFile } from "child_process"
+import * as x from "pandoc-url2cite/dist/util"
+import { stringify as stripFormatting, Block } from "pandoc-filter"
+
+const execFile = promisify(_execFile)
 
 export const inputDir = join(__dirname, "../posts")
 export const outputDir = join(__dirname, "../posts-built")
@@ -18,30 +19,26 @@ export type Frontmatter = {
 	[k: string]: any
 }
 
-function getMetaAndPreview(content: string) {
-	const _processed = unified()
-		.use(markdown)
-		.use(mdfrontmatter, ["yaml"])
-		.parse(content)
-	const previewProcessor = unified()
-		.use(stripmarkdown)
-		.use(rstringify)
-	const preview = previewProcessor
-		.stringify(previewProcessor.runSync(
-			JSON.parse(JSON.stringify(_processed)),
-		) as any)
+async function getMetaAndPreview(path: string) {
+	const { stdout } = await execFile("pandoc", [
+		"-t",
+		"json",
+		"--filter=" +
+			require.resolve("pandoc-url2cite/dist/pandoc-url2cite.js"),
+		"--filter=pandoc-citeproc",
+		"--",
+		path,
+	])
+	const parsed = JSON.parse(stdout)
+	const frontmatter: Frontmatter = x.fromMetaMap(parsed.meta) as any
+	console.log(parsed.meta, frontmatter)
+	const text = stripFormatting(parsed.blocks)
+	const preview = text
 		.trim()
 		.replace(/\s+/g, " ")
 		.substr(0, 300)
 		.replace(/\s*\S+$/, "") // remove cut off word
-
-	const processed = (_processed as any) as Root
-	const first = processed.children[0]
-	let frontmatter: Frontmatter
-	if (first && first.type === "yaml") {
-		frontmatter = yaml.load(first.value)
-	} else frontmatter = { date: "2000-01-01", title: "[No frontmatter given]" }
-	return { frontmatter, preview }
+	return { frontmatter, preview, content_ast: parsed.blocks as Block[] }
 }
 export async function parsePosts() {
 	const d = join(__dirname, "/../posts")
@@ -49,20 +46,18 @@ export async function parsePosts() {
 	for (const dir of await fs.readdir(d)) {
 		for (const file of await fs.readdir(join(d, dir))) {
 			const path = join(dir, file)
-			const content = await fs.readFile(join(d, dir, file), "utf8")
 
-			const { frontmatter, preview } = getMetaAndPreview(content)
+			const {
+				frontmatter,
+				preview,
+				content_ast,
+			} = await getMetaAndPreview(join(d, dir, file))
 
-			// remove frontmatter, hacky af
-			const content_md = content
-				.split("\n---\n")
-				.slice(1)
-				.join("\n---\n")
 			posts.push({
 				filename: path,
 				frontmatter,
 				preview,
-				content_md,
+				content_ast,
 			})
 		}
 	}
@@ -72,13 +67,13 @@ export async function parsePosts() {
 type ThenArg<T> = T extends Promise<infer U> ? U : T
 
 export type Post = ThenArg<ReturnType<typeof parsePosts>>[0]
-export type Summary = { posts: Omit<Post, "content_md">[] }
+export type Summary = { posts: Omit<Post, "content_ast">[] }
 
 const stringify = (o: any) => JSON.stringify(o, null, "\t")
 
 async function build() {
 	const posts = await parsePosts()
-	const summary = { posts: posts.map(({ content_md, ...other }) => other) }
+	const summary = { posts: posts.map(({ content_ast, ...other }) => other) }
 	await fs.mkdir(outputDir, { recursive: true })
 	await fs.writeFile(join(outputDir, "summary.json"), stringify(summary))
 	for (const post of posts) {

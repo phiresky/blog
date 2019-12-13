@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
-import theme from "react-syntax-highlighter/dist/styles/prism/tomorrow"
+import theme from "react-syntax-highlighter/dist/cjs/styles/prism/tomorrow"
 // https://medium.com/young-developer/react-markdown-code-and-syntax-highlighting-632d2f9b4ada
 
 class CodeBlock extends PureComponent<{ language?: string; value: string }> {

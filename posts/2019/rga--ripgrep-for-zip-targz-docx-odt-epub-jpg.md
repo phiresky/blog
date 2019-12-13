@@ -134,7 +134,7 @@ During the extraction, rga-preproc will compress the data with ZSTD to a memory 
 
 -   [pdfgrep][pdfgrep]
 -   [this gist](https://gist.github.com/phiresky/5025490526ba70663ab3b8af6c40a8db) has my proof of concept version of a caching extractor to use ripgrep as a replacement for pdfgrep.
--   [this gist](https://gist.github.com/ColonolBuendia/314826e37ec35c616d70506c38dc65aa) is a more extensive preprocessing script by [@ColonolBuendia](https://github.com/ColonolBuendia)
+-   [this gist](https://gist.github.com/ColonolBuendia/314826e37ec35c616d70506c38dc65aa) is a more extensive preprocessing script by [\@ColonolBuendia](https://github.com/ColonolBuendia)
 -   [lesspipe](https://github.com/wofr06/lesspipe) is a tool to make `less` work with many different file types. Different usecase, but similar in what it does.
 
 [pdfgrep]: https://pdfgrep.org/
