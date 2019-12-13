@@ -34,7 +34,7 @@ module.exports = withBundleAnalyzer(
 			async exportPathMap() {
 				const { posts } = summary
 				const o = {
-					[config.blogRoot + "index.html"]: { page: "/" },
+					[config.blogRoot]: { page: "/" },
 				}
 				for (const post of posts) {
 					const { url, slug } = makeUrl(post)
@@ -43,6 +43,7 @@ module.exports = withBundleAnalyzer(
 				console.log(o)
 				return o
 			},
+			exportTrailingSlash: true,
 		}),
 	),
 )

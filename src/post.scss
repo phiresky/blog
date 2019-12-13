@@ -7,7 +7,7 @@
 	.tooltip-content {
 		min-width: 300px;
 		/*max-width:400px;*/
-		top: 40px;
+		top: calc(100% + 12px);
 		left: 50%;
 		transform: translate(-50%, 0);
 		padding: 20px;

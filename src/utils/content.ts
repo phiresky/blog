@@ -9,7 +9,7 @@ export const isClientSide = !!(
 )
 export function makeUrl(article: { filename: string }) {
 	const slug = article.filename.replace(/\.[^.]+$/, "")
-	const url = `${config.blogRoot}` + slug + "/index.html"
+	const url = `${config.blogRoot}` + slug
 	return { url, slug }
 }
 
