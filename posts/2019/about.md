@@ -1,6 +1,7 @@
 ---
 title: Creating a blog
 date: 2019-06-14
+updated: 2019-12-13
 ---
 
 Hello World! I finally decided to make a blog to put my ramblings and projects.
@@ -29,3 +30,5 @@ data:
     mine: 11
     hediet's: 5
 ```
+
+See [hediet's blog](https://blog.hediet.de/) for comparison.
