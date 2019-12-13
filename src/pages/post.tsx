@@ -10,9 +10,11 @@ import { WithRouterProps } from "next/dist/client/with-router"
 import { config } from "../config"
 import { formatDate } from "../utils/date"
 import "../post.scss"
-import Pandoc, { defaultRenderers } from "../components/Pandoc"
+import Pandoc, { defaultRenderers, attrProps } from "../components/Pandoc"
 import { InlineMath, BlockMath } from "react-katex"
 import "katex/dist/katex.min.css"
+import { Elt, EltMap, Superscript } from "pandoc-filter"
+import { fromEntries } from "../utils/content"
 
 type Props = { post: Post }
 
@@ -23,6 +25,36 @@ declare module "react" {
 	}
 }
 
+function unescapeMd(s: string) {
+	// hack
+	return s.replace(/\\(?!\\)/g, "")
+}
+
+function NiceLink({ c: [attr, inline, [url, title]] }: Elt<"Link">) {
+	const attrs = fromEntries(attr[2])
+	if (attrs["cite-meta"]) {
+		const m = JSON.parse(attrs["cite-meta"])
+		return (
+			<a
+				href={url}
+				title={title || undefined}
+				{...attrProps([attr[0], [...attr[1], "tooltip"], attr[2]])}
+			>
+				<Pandoc ele={inline} />
+				<span className="tooltip-content">
+					<b>{unescapeMd(m.shorttitle || m.title)}</b>
+					{m.abstract && <p>{unescapeMd(m.abstract)}</p>}
+					<i className="arr" />
+				</span>
+			</a>
+		)
+	}
+	return (
+		<a href={url} title={title || undefined} {...attrProps(attr)}>
+			<Pandoc ele={inline} />
+		</a>
+	)
+}
 class PostUI extends React.Component<Props & WithRouterProps> {
 	static async getInitialProps(ctx: NextPageContext): Promise<Props> {
 		// todo: only load single post
@@ -90,15 +122,16 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 							ele={post.content_ast}
 							allowUnsanitizedHTML
 							renderers={{
-								CodeBlock: ({ e: [attr, text] }) => (
+								CodeBlock: ({ c: [attr, text] }) => (
 									<Code language={attr[1][0]} value={text} />
 								),
-								Math: ({ e }) => {
+								Math: ({ c: e }) => {
 									const [type, content] = e
 									if (type.t === "InlineMath")
 										return <InlineMath math={content} />
 									else return <BlockMath math={content} />
 								},
+								Link: NiceLink,
 							}}
 						/>
 						{/*<ReactMarkdown

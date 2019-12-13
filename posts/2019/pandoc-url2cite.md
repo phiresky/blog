@@ -41,9 +41,9 @@ pandoc \
 
 This results in the following output:  
 **minimal.pdf**  
-[![](https://github.com/phiresky/pandoc-url2cite/raw/master/example/minimal.png)](https://github.com/phiresky/pandoc-url2cite/blob/master/example/minimal.pdf)
+[![](https://github.com/phiresky/pandoc-url2cite/raw/master/example/minimal.png)][minpdf]
 
-For a longer example, you can look at the source of this file itself, which is both a blog post, GitHub Readme and LaTeX "paper":
+For a longer example, you can look at the source of this file itself, which is both [a blog post](https://phiresky.github.io/blog/2019/pandoc-url2cite/index.html), GitHub Readme and LaTeX "paper":
 
 **README.pdf**  
 [![](https://github.com/phiresky/pandoc-url2cite/raw/master/example/readme.png)][pdf]
@@ -111,6 +111,7 @@ All citation data is cached (permanently) as bibtex as well as CSL to `citation-
 # References
 
 [repo]: https://github.com/phiresky/pandoc-url2cite
+[minpdf]: https://github.com/phiresky/pandoc-url2cite/blob/master/example/minimal.pdf "no-url2cite"
 [pdf]: https://github.com/phiresky/pandoc-url2cite/blob/master/README.pdf "no-url2cite"
 [alexnet]: http://dl.acm.org/citation.cfm?doid=3098997.3065386
 [zotero]: https://www.zotero.org/

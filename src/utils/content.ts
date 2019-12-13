@@ -20,3 +20,13 @@ export function filterPosts(summary: Summary) {
 		return bDate > aDate ? 1 : bDate < aDate ? -1 : 0
 	})
 }
+
+/** Object.fromEntries ponyfill */
+export function fromEntries<V>(
+	iterable: Iterable<[string, V]>,
+): Record<string, V> {
+	return [...iterable].reduce((obj, [key, val]) => {
+		obj[key] = val
+		return obj
+	}, {} as Record<string, V>)
+}

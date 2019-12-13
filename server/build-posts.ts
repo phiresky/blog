@@ -1,4 +1,4 @@
-import { join } from "path"
+import { join, dirname } from "path"
 import { promises as fs } from "fs"
 import { promisify } from "util"
 import { execFile as _execFile } from "child_process"
@@ -73,16 +73,22 @@ function makeLinksAbs(v: AnyElt, _: Format, meta: PandocMetaMap) {
 	}
 }
 async function getMetaAndPreview(path: string) {
-	const { stdout } = await execFile("pandoc", [
-		"-t",
-		"json",
-		"--filter=" +
-			require.resolve("pandoc-url2cite/dist/pandoc-url2cite.js"),
-		"--filter=pandoc-citeproc",
-		"--csl=ieee-with-url.csl",
-		"--",
-		path,
-	])
+	const { stdout } = await execFile(
+		"pandoc",
+		[
+			"-t",
+			"json",
+			"-M",
+			"url2cite-link-output=sup",
+			"--filter=" +
+				require.resolve("pandoc-url2cite/dist/pandoc-url2cite.js"),
+			"--filter=pandoc-citeproc",
+			"--csl=ieee-with-url.csl",
+			"--",
+			path,
+		],
+		{ cwd: dirname(path) },
+	)
 	const _parsed: PandocJson = JSON.parse(stdout)
 	const parsed = filter(
 		_parsed,
@@ -103,6 +109,7 @@ export async function parsePosts() {
 	const posts = []
 	for (const dir of await fs.readdir(d)) {
 		for (const file of await fs.readdir(join(d, dir))) {
+			if (!/\.md$/.test(file)) continue
 			const path = join(dir, file)
 
 			const {

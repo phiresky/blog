@@ -4,7 +4,7 @@ import { Fragment } from "react"
 import { Code } from "./Code"
 
 type Renderers = Partial<
-	{ [k in p.EltType]: React.FunctionComponent<{ e: p.EltMap[k] }> }
+	{ [k in p.EltType]: React.FunctionComponent<p.Elt<k>> }
 >
 type PandocConfig = {
 	allowUnsanitizedHTML?: boolean
@@ -14,21 +14,22 @@ type PandocConfig = {
 const PandocConfigContext = React.createContext<PandocConfig>({})
 
 function ap([id, classes, attrs]: p.Attr) {
-	if (attrs.length > 0) console.log("unused attrs", attrs)
+	// if (attrs.length > 0) console.log("unused attrs", attrs)
 	return { id: id || undefined, className: classes.join(" ") || undefined }
 }
+export const attrProps = ap
 
 function Simp(tag: keyof JSX.IntrinsicElements, className?: string) {
 	const Tag = tag
-	return (p: { e: p.AnyElt[] }) => (
+	return (p: { c: p.AnyElt[] }) => (
 		<Tag className={className}>
-			<Pandoc ele={p.e} />
+			<Pandoc ele={p.c} />
 		</Tag>
 	)
 }
 function SimpAttr(tag: keyof JSX.IntrinsicElements) {
 	const Tag = tag
-	return ({ e: [attr, ele] }: { e: [p.Attr, p.AnyElt[]] }) => (
+	return ({ c: [attr, ele] }: { c: [p.Attr, p.AnyElt[]] }) => (
 		<Tag {...ap(attr)}>
 			<Pandoc ele={ele} />
 		</Tag>
@@ -37,8 +38,8 @@ function SimpAttr(tag: keyof JSX.IntrinsicElements) {
 
 export const defaultRenderers: Renderers = {
 	// inline
-	Str: ({ e }) => <>{e}</>,
-	Plain: ({ e }) => <Pandoc ele={e} />,
+	Str: ({ c: e }) => <>{e}</>,
+	Plain: ({ c: e }) => <Pandoc ele={e} />,
 	Emph: Simp("em"),
 	Strong: Simp("b"),
 	Strikeout: Simp("s"),
@@ -46,20 +47,20 @@ export const defaultRenderers: Renderers = {
 	Subscript: Simp("sub"),
 	SmallCaps: Simp("span", "small-caps"),
 	SoftBreak: () => <>{"\n"}</>, // usually rendered as a space
-	Quoted: ({ e: [a, b] }) => (
+	Quoted: ({ c: [a, b] }) => (
 		<span className="quoted">
 			{a.t === "DoubleQuote" ? '"' : "'"}
 			<Pandoc ele={b} />
 			{a.t === "DoubleQuote" ? '"' : "'"}
 		</span>
 	),
-	Link: ({ e: [attr, inline, [url, title]] }) => (
+	Link: ({ c: [attr, inline, [url, title]] }) => (
 		<a href={url} title={title || undefined} {...ap(attr)}>
 			<Pandoc ele={inline} />
 		</a>
 	),
 	Space: _ => <> </>,
-	Cite: ({ e: [cites, inline] }) => (
+	Cite: ({ c: [cites, inline] }) => (
 		<span
 			className="citation"
 			data-cites={cites.map(e => e.citationId).join(" ")}
@@ -67,12 +68,12 @@ export const defaultRenderers: Renderers = {
 			<Pandoc ele={inline} />
 		</span>
 	),
-	Code: ({ e: [attr, str] }) => <code {...ap(attr)}>{str}</code>,
+	Code: ({ c: [attr, str] }) => <code {...ap(attr)}>{str}</code>,
 	HorizontalRule: () => <hr />,
 	LineBreak: () => <br />,
 
 	// block
-	Header: ({ e: [lvl, attr, c] }) => {
+	Header: ({ c: [lvl, attr, c] }) => {
 		const H = ("h" + lvl) as "h1"
 		return (
 			<H {...ap(attr)}>
@@ -80,14 +81,14 @@ export const defaultRenderers: Renderers = {
 			</H>
 		)
 	},
-	CodeBlock: ({ e: [attr, text] }) => (
+	CodeBlock: ({ c: [attr, text] }) => (
 		<pre {...ap(attr)}>
 			<code>{text}</code>
 		</pre>
 	),
 	Para: Simp("p"),
 	BlockQuote: Simp("blockquote"),
-	BulletList: ({ e: blocks }) => (
+	BulletList: ({ c: blocks }) => (
 		<ul>
 			{blocks.map((e, i) => (
 				<li key={i}>
@@ -96,7 +97,7 @@ export const defaultRenderers: Renderers = {
 			))}
 		</ul>
 	),
-	OrderedList: ({ e: [[a, b, _], blocks] }) => (
+	OrderedList: ({ c: [[a, b, _], blocks] }) => (
 		<ol
 			start={a}
 			type={
@@ -118,7 +119,7 @@ export const defaultRenderers: Renderers = {
 			))}
 		</ol>
 	),
-	DefinitionList: ({ e }) => (
+	DefinitionList: ({ c: e }) => (
 		<dl>
 			{e.map(([t, d], i) => (
 				<Fragment key={i}>
@@ -135,10 +136,10 @@ export const defaultRenderers: Renderers = {
 		</dl>
 	),
 	Div: SimpAttr("div"),
-	Image: ({ e: [a, b, [src, title]] }) => (
+	Image: ({ c: [a, b, [src, title]] }) => (
 		<img src={src} title={title} {...ap(a)} />
 	), // todo: alt text
-	RawBlock: ({ e: [type, content] }) => (
+	RawBlock: ({ c: [type, content] }) => (
 		<PandocConfigContext.Consumer>
 			{config =>
 				type === "html" && config.allowUnsanitizedHTML ? (
@@ -177,7 +178,7 @@ export default function Pandoc({
 				const renderers = { ...defaultRenderers, ...config.renderers }
 				if (ele.t in renderers) {
 					const C = renderers[ele.t] as any
-					return <C e={ele.c} />
+					return <C {...ele} />
 				} else return <>[UNK:{ele.t}]</>
 			}}
 		</PandocConfigContext.Consumer>
