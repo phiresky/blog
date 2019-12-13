@@ -6,7 +6,6 @@ git worktree add dist gh-pages || true
 rm -r dist/*
 touch dist/.nojekyll
 cp -r src/out/blog/* dist
-cp -r src/out/static/* dist
 cp -r src/out/_next src/out/404.html dist
 
 (

@@ -18,18 +18,20 @@ class Index extends React.Component<WithRouterProps> {
 		return (
 			<Page>
 				<div className="center mw7 pa3 pa4-ns">
-					{postList.map((article, i) => {
-						const { url } = makeUrl(article)
-						return (
-							<PagePreview
-								title={article.frontmatter.title}
-								preview={article.preview}
-								date={article.frontmatter.date}
-								href={url}
-								key={i}
-							/>
-						)
-					})}
+					{postList
+						.filter(p => !p.frontmatter.hidden)
+						.map((article, i) => {
+							const { url } = makeUrl(article)
+							return (
+								<PagePreview
+									title={article.frontmatter.title}
+									preview={article.preview}
+									date={article.frontmatter.date}
+									href={url}
+									key={i}
+								/>
+							)
+						})}
 				</div>
 			</Page>
 		)

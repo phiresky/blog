@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "../routes"
+import Link from "next/link"
 import { formatDate } from "../utils/date"
 
 function PageLink(props: {
@@ -8,7 +8,7 @@ function PageLink(props: {
 	children: React.ReactNode
 }) {
 	return (
-		<Link route={props.href}>
+		<Link href={props.href}>
 			<a
 				className={`b black o-80 glow no-underline lh-solid ${props.className ||
 					""}`}

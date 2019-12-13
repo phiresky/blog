@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "../routes"
+import Link from "next/link"
 import { LinkInfo } from "../pages"
 import { config } from "../config"
 
@@ -44,7 +44,7 @@ function Hero(props: {
 									)
 								else
 									return (
-										<Link route={link.href} key={i}>
+										<Link href={link.href} key={i}>
 											<a className={cls} key={i}>
 												{link.text}
 											</a>

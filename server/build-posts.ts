@@ -32,6 +32,7 @@ export type Frontmatter = {
 	title: string
 	date: string
 	updated?: string
+	hidden?: boolean
 	[k: string]: any
 }
 
@@ -60,9 +61,10 @@ function makeLinksAbs(v: AnyElt, _: Format, meta: PandocMetaMap) {
 	if (v.t === "Link" || v.t === "Image") {
 		const [a, b, [url, title]] = v.c
 		const Cons = v.t === "Link" ? Link : Image
-		const base = (metaMapToRaw(meta) as any).blog?.[
-			v.t === "Link" ? "relative_links" : "relative_images"
-		]
+		const base =
+			(metaMapToRaw(meta) as any).blog?.[
+				v.t === "Link" ? "relative_links" : "relative_images"
+			] || ""
 		const urL =
 			new URL(url, "https://example.com").origin === "https://example.com"
 				? base + url
@@ -77,6 +79,7 @@ async function getMetaAndPreview(path: string) {
 		"--filter=" +
 			require.resolve("pandoc-url2cite/dist/pandoc-url2cite.js"),
 		"--filter=pandoc-citeproc",
+		"--csl=ieee-with-url.csl",
 		"--",
 		path,
 	])
@@ -128,7 +131,9 @@ const stringify = (o: any) => JSON.stringify(o, null, "\t")
 
 async function build() {
 	const posts = await parsePosts()
-	const summary = { posts: posts.map(({ content_ast, ...other }) => other) }
+	const summary = {
+		posts: posts.map(({ content_ast, ...other }) => other),
+	}
 	await fs.mkdir(outputDir, { recursive: true })
 	await fs.writeFile(join(outputDir, "summary.json"), stringify(summary))
 	for (const post of posts) {

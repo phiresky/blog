@@ -126,7 +126,7 @@ export const defaultRenderers: Renderers = {
 						<Pandoc ele={t} />
 					</dt>
 					{d.map((d, i) => (
-						<dd>
+						<dd key={i}>
 							<Pandoc key={i} ele={d} />
 						</dd>
 					))}

@@ -4,7 +4,8 @@ import { config } from "../src/config"
 import summary from "../posts-built/summary.json"
 import { makeUrl } from "../src/utils/content"
 import { join } from "path"
-const outDir = join(__dirname, "..", "src", "static")
+const outDir = join(__dirname, "..", "src", "public", "blog")
+
 const feed = new Feed({
 	title: config.siteTitle,
 	description: config.siteDescription,
@@ -21,6 +22,7 @@ for (const post of summary.posts) {
 	})
 }
 async function write() {
+	await fs.mkdir(outDir, { recursive: true })
 	await fs.writeFile(join(outDir, "rss.xml"), feed.rss2())
 	await fs.writeFile(join(outDir, "atom.xml"), feed.atom1())
 	await fs.writeFile(join(outDir, "feed.json"), feed.json1())
