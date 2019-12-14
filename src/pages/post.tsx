@@ -25,11 +25,6 @@ declare module "react" {
 	}
 }
 
-function unescapeMd(s: string) {
-	// hack
-	return s.replace(/\\(?!\\)/g, "")
-}
-
 function NiceLink({ c: [attr, inline, [url, title]] }: Elt<"Link">) {
 	const attrs = fromEntries(attr[2])
 	if (attrs["cite-meta"]) {
@@ -42,8 +37,8 @@ function NiceLink({ c: [attr, inline, [url, title]] }: Elt<"Link">) {
 			>
 				<Pandoc ele={inline} />
 				<span className="tooltip-content">
-					<b>{unescapeMd(m.shorttitle || m.title)}</b>
-					{m.abstract && <p>{unescapeMd(m.abstract)}</p>}
+					<b>{m.shorttitle || m.title}</b>
+					{m.abstract && <p>{m.abstract}</p>}
 					<i className="arr" />
 				</span>
 			</a>

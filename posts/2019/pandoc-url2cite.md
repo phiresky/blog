@@ -43,7 +43,7 @@ This results in the following output:
 **minimal.pdf**  
 [![](https://github.com/phiresky/pandoc-url2cite/raw/master/example/minimal.png)][minpdf]
 
-For a longer example, you can look at the source of this file itself, which is both [a blog post](https://phiresky.github.io/blog/2019/pandoc-url2cite/index.html), GitHub Readme and LaTeX "paper":
+For a longer example, you can look at the source of this file itself, which is both [a blog post](https://phiresky.github.io/blog/2019/pandoc-url2cite/), GitHub Readme and LaTeX "paper":
 
 **README.pdf**  
 [![](https://github.com/phiresky/pandoc-url2cite/raw/master/example/readme.png)][pdf]
