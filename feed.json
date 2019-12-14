@@ -11,7 +11,7 @@
         },
         {
             "url": "https://phiresky.github.io/blog/2019/pandoc-url2cite",
-            "title": "Automatic citation extraction from URLs (draft)",
+            "title": "Automatic citation extraction from URLs",
             "summary": "pandoc-url2cite[1] allows you to instantly and transparently cite most papers directly given only a single URL. You simply add a URL of a publication, and it will replace that with a real citation in whatever CSL[2] style you want. This means you can avoid dealing with Mendeley[3] or Zotero[4] and...",
             "date_modified": "2019-12-13T00:00:00.000Z"
         },
