@@ -1,5 +1,5 @@
 ---
-title: "Automatic citation extraction from URLs (draft)"
+title: "Automatic citation extraction from URLs"
 author: |
     phiresky
 date: 2019-12-13
@@ -96,13 +96,17 @@ All citation data is cached (permanently) as bibtex as well as CSL to `citation-
 
 # Limitations
 
-1. Currently, extracting the metadata from direct URLs of full text PDFs does not work, so you will need to use the URL of an overview / abstract page etc. I'm not sure why, since this does work in Zotero. [More info might be here](https://github.com/zotero/translation-server/issues/70).
-2. Currently, this filter only works if you use pandoc-citeproc, because the citations are written directly into the document metadata instead of into a bibtex file. If you want to use natbib or biblatex for citations, this filter currently won't work. Using citeproc has the disadvantage that it is somewhat less configurable than the "real" LaTeX citation text generators and the CSL language has some limitations. For example, the [bibtex "alpha"](https://www.overleaf.com/learn/latex/Bibtex_bibliography_styles) style sometimes used in Germany can't be described in CSL.
+1.  Currently, extracting the metadata from direct URLs of full text PDFs does not work, so you will need to use the URL of an overview / abstract page etc. I'm not sure why, since this does work in Zotero. [More info might be here](https://github.com/zotero/translation-server/issues/70).
+2.  Currently, this filter only works if you use pandoc-citeproc, because the citations are written directly into the document metadata instead of into a bibtex file. If you want to use natbib or biblatex for citations, this filter currently won't work. Using citeproc has the disadvantage that it is somewhat less configurable than the "real" LaTeX citation text generators and the CSL language has some limitations. For example, the [bibtex "alpha"](https://www.overleaf.com/learn/latex/Bibtex_bibliography_styles) style sometimes used in Germany can't be described in CSL.
 
     To make it work with biblatex, this script would need to write out a \*.bib file somewhere temporarily and reference that in the latex code.
 
-3. Some websites just have wrong meta information. For example, citationstyles.org has set "Your Name" as the website author in their [Open Graph](https://ogp.me/) metadata.
-4. Using URLs directly as citekeys (e.g. `[@https://google.com]` does not work because of pandoc parsing, see [this issue](https://github.com/jgm/pandoc-citeproc/issues/308). But it does work for DOIs: `As shown in [@doi:10.1037/a0028240]...`!
+3.  Some websites just have wrong meta information. For example, citationstyles.org has set "Your Name" as the website author in their [Open Graph](https://ogp.me/) metadata.
+4.  Using URLs directly as citekeys (e.g. `[@https://google.com]` does not work because of pandoc parsing, see [this issue](https://github.com/jgm/pandoc-citeproc/issues/308). But it does work for ISBNs and DOIs:
+
+        The book [@isbn:978-0374533557, pp. 15-17] is interesting.
+
+    See [this example](https://github.com/phiresky/pandoc-url2cite/blob/master/example/doi-isbn.md).
 
 # Related Work (Longer Example)
 

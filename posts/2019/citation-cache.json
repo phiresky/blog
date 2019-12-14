@@ -653,6 +653,41 @@
 				"title": "Deep Residual Learning for Image Recognition",
 				"type": "paper-conference"
 			}
+		},
+		"https://github.com/phiresky/pandoc-url2cite/blob/master/example/doi-isbn.md": {
+			"fetched": "2019-12-14T12:16:25.942Z",
+			"bibtex": [
+				"",
+				"@misc{phiresky_effortlessly_2019,",
+				"   title = {Effortlessly and transparently add correctly styled citations to your markdown paper given only a {URL}: phiresky/pandoc-url2cite},",
+				"   shorttitle = {Effortlessly and transparently add correctly styled citations to your markdown paper given only a {URL}},",
+				"   url = {https://github.com/phiresky/pandoc-url2cite},",
+				"   urldate = {2019-12-14},",
+				"   author = {{phiresky}},",
+				"   month = dec,",
+				"   year = {2019},",
+				"   note = {original-date: 2019-08-19T22:24:50Z}",
+				"}"
+			],
+			"csl": {
+				"URL": "https://github.com/phiresky/pandoc-url2cite",
+				"accessed": {
+					"date-parts": [[2019, 12, 14]]
+				},
+				"author": [
+					{
+						"literal": "phiresky"
+					}
+				],
+				"id": "https://github.com/phiresky/pandoc-url2cite/blob/master/example/doi-isbn.md",
+				"issued": {
+					"date-parts": [[2019, 12]]
+				},
+				"note": "original-date: 2019-08-19T22:24:50Z",
+				"title": "Effortlessly and transparently add correctly styled citations to your markdown paper given only a URL: Phiresky/pandoc-url2cite",
+				"title-short": "Effortlessly and transparently add correctly styled citations to your markdown paper given only a URL",
+				"type": "no-type"
+			}
 		}
 	}
 }
