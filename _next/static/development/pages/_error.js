@@ -9764,74 +9764,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/link */ "../node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_1__);
-var _jsxFileName = "/home/tehdog/data/dev/2019/blog/src/components/Hero.tsx";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
 
 function Hero(props) {
   return __jsx("div", {
-    className: "relative tc ".concat(props.backgroundClass),
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 13
-    },
-    __self: this
+    className: "relative tc ".concat(props.backgroundClass)
   }, __jsx("div", {
-    className: "mw7 center white",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 14
-    },
-    __self: this
+    className: "mw7 center white"
   }, __jsx("div", {
-    className: "pv4",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 15
-    },
-    __self: this
+    className: "pv4"
   }, __jsx("h4", {
-    className: "normal o-70 ma0 pt2 pb3 ph1",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 26
-    },
-    __self: this
-  }, props.subtitle), __jsx("div", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 29
-    },
-    __self: this
-  }, props.topLinks && props.topLinks.length > 0 && props.topLinks.map(function (link, i) {
+    className: "normal o-70 ma0 pt2 pb3 ph1"
+  }, props.subtitle), __jsx("div", null, props.topLinks && props.topLinks.length > 0 && props.topLinks.map(function (link, i) {
     var isExternal = link.href.match(/^https?:/);
     var cls = "dib f6 white no-underline pa1 ma1";
     if (isExternal) return __jsx("a", {
       href: link.href,
       key: i,
-      className: cls,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 37
-      },
-      __self: this
+      className: cls
     }, link.text);else return __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
       href: link.href,
-      key: i,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 47
-      },
-      __self: this
+      key: i
     }, __jsx("a", {
       className: cls,
-      key: i,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 48
-      },
-      __self: this
+      key: i
     }, link.text));
   })))));
 }
@@ -10038,7 +9996,7 @@ function (_React$Component) {
 
 /***/ }),
 
-/***/ 5:
+/***/ 2:
 /*!*********************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2F_error&absolutePagePath=%2Fhome%2Ftehdog%2Fdata%2Fdev%2F2019%2Fblog%2Fsrc%2Fpages%2F_error.tsx ***!
   \*********************************************************************************************************************************************/
@@ -10061,5 +10019,5 @@ module.exports = dll_99873879131b459af989;
 
 /***/ })
 
-},[[5,"static/runtime/webpack.js"]]]);
+},[[2,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=_error.js.map
