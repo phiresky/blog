@@ -13,6 +13,9 @@ type PandocConfig = {
 }
 const PandocConfigContext = React.createContext<PandocConfig>({})
 
+/**
+ * convert pandoc AST Attr to react props (id and class)
+ */
 function ap([id, classes, attrs]: p.Attr) {
 	// if (attrs.length > 0) console.log("unused attrs", attrs)
 	return { id: id || undefined, className: classes.join(" ") || undefined }

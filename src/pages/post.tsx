@@ -10,11 +10,10 @@ import { WithRouterProps } from "next/dist/client/with-router"
 import { config } from "../config"
 import { formatDate } from "../utils/date"
 import "../post.scss"
-import Pandoc, { defaultRenderers, attrProps } from "../components/Pandoc"
+import Pandoc from "../components/Pandoc"
 import { InlineMath, BlockMath } from "react-katex"
 import "katex/dist/katex.min.css"
-import { Elt, EltMap, Superscript } from "pandoc-filter"
-import { fromEntries } from "../utils/content"
+import { TooltipLink } from "../components/TooltipLink"
 
 type Props = { post: Post }
 
@@ -25,36 +24,8 @@ declare module "react" {
 	}
 }
 
-function NiceLink({ c: [attr, inline, [url, title]] }: Elt<"Link">) {
-	const attrs = fromEntries(attr[2])
-	if (attrs["cite-meta"]) {
-		const m = JSON.parse(attrs["cite-meta"])
-		return (
-			<a
-				href={url}
-				title={title || undefined}
-				{...attrProps([attr[0], [...attr[1], "tooltip"], attr[2]])}
-			>
-				<Pandoc ele={inline} />
-				<span className="tooltip-content">
-					<b>{m.shorttitle || m.title}</b>
-					{m.abstract && <p>{m.abstract}</p>}
-					<i className="arr" />
-				</span>
-			</a>
-		)
-	}
-	return (
-		<a href={url} title={title || undefined} {...attrProps(attr)}>
-			<Pandoc ele={inline} />
-		</a>
-	)
-}
 class PostUI extends React.Component<Props & WithRouterProps> {
 	static async getInitialProps(ctx: NextPageContext): Promise<Props> {
-		// todo: only load single post
-		//console.log(posts.map(p => makeUrl(p.filename)), ctx.asPath)
-
 		const slug = ctx.query.slug
 		const url = config.blogRoot + slug
 		const post = require("../../posts-built/" + slug + ".md.json")
@@ -126,7 +97,7 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 										return <InlineMath math={content} />
 									else return <BlockMath math={content} />
 								},
-								Link: NiceLink,
+								Link: TooltipLink,
 							}}
 						/>
 						{/*<ReactMarkdown
