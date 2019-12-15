@@ -3434,6 +3434,9 @@ pre.ansi2html .ansi48-255 {
 pre.ansi2html .inv48-255 {
   color: #eeeeee; }
 
+body .rc-tooltip {
+  opacity: 0.96; }
+
 .rc-tooltip-content {
   max-width: 300px; }
 
