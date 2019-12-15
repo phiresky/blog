@@ -670,7 +670,7 @@
 				"}"
 			],
 			"csl": {
-				"URL": "https://github.com/phiresky/pandoc-url2cite",
+				"URL": "https://github.com/phiresky/pandoc-url2cite/blob/master/example/doi-isbn.md",
 				"accessed": {
 					"date-parts": [[2019, 12, 14]]
 				},
@@ -684,8 +684,8 @@
 					"date-parts": [[2019, 12]]
 				},
 				"note": "original-date: 2019-08-19T22:24:50Z",
-				"title": "Effortlessly and transparently add correctly styled citations to your markdown paper given only a URL: Phiresky/pandoc-url2cite",
-				"title-short": "Effortlessly and transparently add correctly styled citations to your markdown paper given only a URL",
+				"title": "pandoc-url2cite/example/doi-isbn.md",
+				"title-short": "pandoc-url2cite/example/doi-isbn.md",
 				"type": "no-type"
 			}
 		}

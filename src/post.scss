@@ -1,5 +1,8 @@
 @import "./ansi-html.scss";
 
+body .rc-tooltip {
+	opacity: 0.96;
+}
 .rc-tooltip-content {
 	max-width: 300px;
 }
