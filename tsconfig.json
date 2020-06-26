@@ -5,7 +5,7 @@
 		"esModuleInterop": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
-		"lib": ["dom", "es2017"],
+		"lib": ["dom", "es2020"],
 
 		"module": "commonjs",
 		"moduleResolution": "node",

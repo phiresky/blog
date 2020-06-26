@@ -23,6 +23,7 @@ function PageLink(props: {
 function PagePreview(props: {
 	href: string
 	title: React.ReactNode
+	subtitle?: React.ReactNode
 	preview: React.ReactNode
 	date: string
 }): ReactElement {
@@ -31,6 +32,11 @@ function PagePreview(props: {
 			<PageLink href={props.href} className="f3">
 				{props.title}
 			</PageLink>
+			{props.subtitle && (
+				<p className="mv1 o-60">
+					<i>{props.subtitle}</i>
+				</p>
+			)}
 			{props.preview && (
 				<p className="mv1 o-60">
 					{props.preview}

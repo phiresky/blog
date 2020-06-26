@@ -105,7 +105,7 @@ For Arch Linux, I have packaged `rga` in the AUR: [`yay -S ripgrep-all`](https:/
 
 ## Technical details
 
-The code and a few more details are here: <https://github.com/phiresky/ripgrep-all>
+The code and a few more details are here: https://github.com/phiresky/ripgrep-all
 
 `rga` simply runs ripgrep (`rg`) with some options set, especially `--pre=rga-preproc` and `--pre-glob`.
 

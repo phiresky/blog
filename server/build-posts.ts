@@ -2,7 +2,8 @@ import { join, dirname } from "path"
 import { promises as fs } from "fs"
 import { promisify } from "util"
 import { execFile as _execFile } from "child_process"
-
+import anchorme from "anchorme"
+import { ListingProps, BaseTokenProps, URL } from "anchorme/dist/node/types"
 import {
 	stringify as stripFormatting,
 	Block,
@@ -12,7 +13,13 @@ import {
 	EltType,
 	Elt,
 	Str,
+	Link,
 	metaMapToRaw,
+	Format,
+	PandocMetaMap,
+	Plain,
+	Inline,
+	Para,
 } from "pandoc-filter"
 
 const execFile = promisify(_execFile)
@@ -22,6 +29,7 @@ export const outputDir = join(__dirname, "../posts-built")
 
 export type Frontmatter = {
 	title: string
+	subtitle?: string
 	date: string
 	updated?: string
 	hidden?: boolean
@@ -64,6 +72,69 @@ function makeLinksAbs(v: AnyElt, _: Format, meta: PandocMetaMap) {
 		return Cons(a, b, [urL, title])
 	}
 }*/
+
+type FullAnchorme = ListingProps | ({ isText: true } & BaseTokenProps)
+function anchormeFullList(text: string): FullAnchorme[] {
+	const matches = anchorme.list(text)
+
+	const elements: FullAnchorme[] = []
+	let lastIndex = 0
+	matches.forEach((match) => {
+		// Push text located before matched string
+		if (match.start > lastIndex) {
+			elements.push({
+				isText: true,
+				start: lastIndex,
+				end: match.start,
+				string: text.substring(lastIndex, match.start),
+			})
+		}
+
+		// Push Link component
+		elements.push(match)
+
+		lastIndex = match.end
+	})
+
+	// Push remaining text
+	if (text.length > lastIndex) {
+		elements.push({
+			isText: true,
+			start: lastIndex,
+			end: text.length,
+			string: text.substring(lastIndex),
+		})
+	}
+
+	return elements
+}
+
+function _mapInlines(inlines: Inline[]) {
+	return inlines.flatMap<Inline>((v) => {
+		if (v.t === "Str") {
+			return anchormeFullList(v.c).map((e) => {
+				if (
+					((e as URL).isURL && !(e as URL).protocol) ||
+					("isText" in e && e.isText)
+				) {
+					// if is url but doesn't have protocol
+					return Str(e.string)
+				} else
+					return Link(
+						["", ["auto-linked"], []],
+						[Str(e.string)],
+						[e.string, ""],
+					)
+			})
+		} else return [v]
+	})
+}
+function autoDetectLinks(v: AnyElt, _: Format, _meta: PandocMetaMap) {
+	if (v.t === "Plain") return Plain(_mapInlines(v.c))
+	if (v.t === "Para") return Para(_mapInlines(v.c))
+	return v
+}
+
 async function getMetaAndPreview(path: string) {
 	const { stdout } = await execFile(
 		"pandoc",
@@ -84,7 +155,7 @@ async function getMetaAndPreview(path: string) {
 	const _parsed = JSON.parse(stdout) as PandocJson
 	const parsed = await filter(
 		_parsed,
-		{ array: mergeStrs /*, single: makeLinksAbs*/ },
+		{ array: mergeStrs, single: autoDetectLinks },
 		"",
 	)
 	const frontmatter = metaMapToRaw(parsed.meta) as Frontmatter

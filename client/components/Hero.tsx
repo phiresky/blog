@@ -1,6 +1,7 @@
 import React from "react"
 import Link from "next/link"
 import { LinkInfo } from "../pages"
+import { config } from "../config"
 
 function Hero(props: {
 	backgroundClass: string
@@ -12,16 +13,14 @@ function Hero(props: {
 		<div className={`relative tc ${props.backgroundClass}`}>
 			<div className="mw7 center white">
 				<div className="pv4">
-					{/*<h1 className="f2 normal lh-title ma0 pa0">
-						<Link route={config.blogRoot}>
-							<a
-								className="white no-underline"
-								href={config.blogRoot}
-							>
+					<h1 className="f2 normal lh-title ma0 pa0">
+						<Link href={config.blogRoot}>
+							<a className="white no-underline">
 								{props.heroTitle}
 							</a>
 						</Link>
-	</h1>*/}
+					</h1>
+
 					<h4 className="normal o-70 ma0 pt2 pb3 ph1">
 						{props.subtitle}
 					</h4>

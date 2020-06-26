@@ -24,6 +24,7 @@ class Index extends React.Component<WithRouterProps> {
 							return (
 								<PagePreview
 									title={article.frontmatter.title}
+									subtitle={article.frontmatter.subtitle}
 									preview={article.preview}
 									date={article.frontmatter.date}
 									href={url}

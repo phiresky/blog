@@ -6,3 +6,38 @@ body .rc-tooltip {
 .rc-tooltip-content {
 	max-width: 300px;
 }
+
+blockquote {
+	/* font-size: 1.4em; */
+	/* width:60%; */
+	margin: 50px auto;
+	/* font-family:Open Sans; */
+	font-style: italic;
+	color: #555555;
+	padding: 1.2em 1em 1.2em 3em;
+	border-left: 8px solid #78c0a8;
+	line-height: 1.6;
+	position: relative;
+	background: #ededed;
+}
+
+blockquote::before {
+	font-family: Arial;
+	content: "\201C";
+	color: #78c0a8;
+	font-size: 4em;
+	position: absolute;
+	left: 10px;
+	top: -10px;
+}
+
+blockquote::after {
+	content: "";
+}
+
+blockquote .source {
+	display: block;
+	color: #333333;
+	font-style: normal;
+	margin-top: 1em;
+}

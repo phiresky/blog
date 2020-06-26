@@ -78,12 +78,18 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 					}
 				`}</style>
 				<Page
-					title={meta.title}
+					title={
+						meta.title +
+						(meta.subtitle ? " - " + meta.subtitle : "")
+					}
 					description={post.preview}
 					footer={footer}
 				>
 					<div className="content center mw7 pa3 pa4-ns">
-						<h1 className="mt0 lh-title">{meta.title}</h1>
+						<h1 className="mt0 lh-title mb1">{meta.title}</h1>
+						{meta.subtitle && (
+							<p className="mt0">{meta.subtitle}</p>
+						)}
 						<PostDate post={post} />
 						<Pandoc
 							ele={post.content_ast}

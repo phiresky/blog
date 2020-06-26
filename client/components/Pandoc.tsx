@@ -91,6 +91,7 @@ export const defaultRenderers: Renderers = {
 			<code>{text}</code>
 		</pre>
 	),
+	Span: SimpAttr("span"),
 	Para: Simp("p"),
 	BlockQuote: Simp("blockquote"),
 	BulletList: ({ c: blocks }) => (
