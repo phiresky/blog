@@ -1,0 +1,73 @@
+---
+title: "SQlite performance tuning - Scaling SQLite databases to many concurrent readers and multiple gigabytes while maintaining 100k SELECTs per second"
+date: 2020-06-26
+hidden: true
+---
+
+SQLite is an embedded SQL database that mimics the PostgreSQL query syntax. It's extremely easy to setup, with libraries existing for basically all common programming languages. It doesn't need any server setup or configuration since the SQL logic is run in the host process, and the database consists of only two files you can easily copy or move around. You can still connect to and query the same database concurrently with multiple processes, though only one write operation can happen at the same time.
+
+SQLite is often seen as only a toy database only suitable for databases with a few hundred entries and without any performance requirements, but you can scale a SQLite database to multiple GByte in size and many concurrent readers while maintaining high performance by applying the below optimizations.
+
+## Run these every time you connect to the db
+
+Some of these are applied permanently, but others are reset on new connection, so it's recommended to run all of these each time you connect to the database.
+
+```sql
+pragma journal_mode = WAL;
+```
+
+Instead of writing changes directly to the db file, write to a write-ahead-log instead and regularily commit the changes. This allows multiple concurrent readers, and can significantly improve performance.
+
+```sql
+pragma synchronous = normal;
+```
+
+or even off. normal is still completely corruption safe in WAL mode, and means not every insert/update has to wait for FSYNC. off can cause db corruption though I've never had problems. See here: https://www.sqlite.org/pragma.html#pragma_synchronous
+
+```sql
+pragma temp_store = memory;
+```
+
+stores temporary indices / tables in memory. sqlite automatically [creates temporary indices](https://www.sqlite.org/tempfiles.html#transient_indices) for some queries. Not sure how much this one helps.
+
+```sql
+pragma mmap_size = 30000000000;
+```
+
+Uses memory mapping instead of read/write calls when db is < mmap_size. Less syscalls, and pages and caches will be managed by the OS, so the performance of this depends on your operating system. Note that it will not use this amount of physical memory, just virtual memory. Should be much faster on at least Linux.
+
+```sql
+pragma page_size = 32768;
+```
+
+this improved performance and db size a lot for me in one project, but that might only be true because i was storing somewhat large blobs in my database and might not be good for other projects where rows are small.
+
+## More things that must be run manually
+
+```sql
+pragma vacuum;
+```
+
+Run once to completely rewrite the db. Very expensive.
+
+```sql
+pragma optimize;
+```
+
+> To achieve the best long-term query performance without the need to do a detailed engineering analysis of the application schema and SQL, it is recommended that applications run "PRAGMA optimize" (with no arguments) just before closing each database connection. Long-running applications might also benefit from setting a timer to run "PRAGMA optimize" every few hours. https://www.sqlite.org/pragma.html#pragma_optimize
+
+```sql
+pragma auto_vacuum = incremental; -- once on first DB create
+pragma incremental_vacuum; -- regularily
+```
+
+Probably not useful unless you expect your DB to shrink significantly regularily.
+
+> The freelist pages are moved to the end of the database file and the database file is truncated to remove the freelist pages [...]. Note, however, that auto-vacuum only truncates the freelist pages from the file. Auto-vacuum does not defragment the database nor repack individual database pages the way that the VACUUM command does. In fact, because it moves pages around within the file, auto-vacuum can actually make fragmentation worse.
+
+## Regarding WAL mode
+
+WAL mode has some issues where depending on the write pattern, the WAL size can grow to infinity, slowing down performance a lot. I think this usually happens when you have lots of writes that lock the table so sqlite never gets to [doing wal_autocheckpoint](https://www.sqlite.org/wal.html#ckpt). There's a few ways to mitigate this:
+
+1. Reduce [wal_autocheckpoint interval](https://www.sqlite.org/pragma.html#pragma_wal_autocheckpoint). No guarantees since all autocheckpoints are passive.
+2. Run `pragma wal_checkpoint(full)` or `pragma wal_checkpoint(truncate)` sometimes. With `full`, the WAL file won't change size if other processes have the file open but still commit everything so new data will not cause the WAL file to grow. If you run `truncate` it will block other processes and reset the WAL file to zero bytes. Note that you _can_ run these from a separate process.
