@@ -9,7 +9,7 @@ SQLite is an embedded SQL database. It's extremely easy to setup, buildable as a
 
 SQLite is often seen as a toy database only suitable for databases with a few hundred entries and without any performance requirements, but you can scale a SQLite database to multiple GByte in size and many concurrent readers while maintaining high performance by applying the below optimizations.
 
-## Run these every time you connect to the db
+## Run these every time you connect to the DB
 
 Some of these are applied permanently, but others are reset on new connection, so it's recommended to run all of these each time you connect to the database.
 
