@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://phiresky.github.io/blog/</id>
     <title>phiresky's blog</title>
-    <updated>2020-06-26T12:01:59.263Z</updated>
+    <updated>2020-06-26T12:41:13.681Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <subtitle>About my personal projects and other stuff</subtitle>
     <rights>yup</rights>
@@ -42,10 +42,10 @@
         <summary type="html"><![CDATA[Using relational databases in a typed language is a pain unless you have great libraries to support you. There’s a lot of different libraries for TypeScript, but they all have their own advantages and flaws. Since it’s hard to find anything other than TypeORM, this is an overview of the...]]></summary>
     </entry>
     <entry>
-        <title type="html"><![CDATA[SQlite performance tuning - Scaling SQLite databases to many concurrent readers and multiple gigabytes while maintaining 100k SELECTs per second]]></title>
+        <title type="html"><![CDATA[SQLite performance tuning]]></title>
         <id>https://phiresky.github.io/blog/2020/sqlite-performance-tuning</id>
         <link href="https://phiresky.github.io/blog/2020/sqlite-performance-tuning"/>
         <updated>2020-06-26T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[SQLite is an embedded SQL database that mimics the PostgreSQL query syntax. It’s extremely easy to setup, with libraries existing for basically all common programming languages. It doesn’t need any server setup or configuration since the SQL logic is run in the host process, and the database...]]></summary>
+        <summary type="html"><![CDATA[SQLite is an embedded SQL database. It’s extremely easy to setup, buildable as a single C file with libraries existing for basically all common programming languages. It doesn’t need any server setup or configuration since the SQL logic is run in the host process, and the database consists of only...]]></summary>
     </entry>
 </feed>

@@ -4,7 +4,7 @@
         <title>phiresky's blog</title>
         <link>undefined</link>
         <description>About my personal projects and other stuff</description>
-        <lastBuildDate>Fri, 26 Jun 2020 12:01:59 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 26 Jun 2020 12:41:13 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>yup</copyright>
@@ -44,11 +44,11 @@
             <description><![CDATA[Using relational databases in a typed language is a pain unless you have great libraries to support you. There’s a lot of different libraries for TypeScript, but they all have their own advantages and flaws. Since it’s hard to find anything other than TypeORM, this is an overview of the...]]></description>
         </item>
         <item>
-            <title><![CDATA[SQlite performance tuning - Scaling SQLite databases to many concurrent readers and multiple gigabytes while maintaining 100k SELECTs per second]]></title>
+            <title><![CDATA[SQLite performance tuning]]></title>
             <link>https://phiresky.github.io/blog/2020/sqlite-performance-tuning</link>
             <guid>https://phiresky.github.io/blog/2020/sqlite-performance-tuning</guid>
             <pubDate>Fri, 26 Jun 2020 00:00:00 GMT</pubDate>
-            <description><![CDATA[SQLite is an embedded SQL database that mimics the PostgreSQL query syntax. It’s extremely easy to setup, with libraries existing for basically all common programming languages. It doesn’t need any server setup or configuration since the SQL logic is run in the host process, and the database...]]></description>
+            <description><![CDATA[SQLite is an embedded SQL database. It’s extremely easy to setup, buildable as a single C file with libraries existing for basically all common programming languages. It doesn’t need any server setup or configuration since the SQL logic is run in the host process, and the database consists of only...]]></description>
         </item>
     </channel>
 </rss>

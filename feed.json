@@ -35,8 +35,8 @@
         },
         {
             "url": "https://phiresky.github.io/blog/2020/sqlite-performance-tuning",
-            "title": "SQlite performance tuning - Scaling SQLite databases to many concurrent readers and multiple gigabytes while maintaining 100k SELECTs per second",
-            "summary": "SQLite is an embedded SQL database that mimics the PostgreSQL query syntax. It’s extremely easy to setup, with libraries existing for basically all common programming languages. It doesn’t need any server setup or configuration since the SQL logic is run in the host process, and the database...",
+            "title": "SQLite performance tuning",
+            "summary": "SQLite is an embedded SQL database. It’s extremely easy to setup, buildable as a single C file with libraries existing for basically all common programming languages. It doesn’t need any server setup or configuration since the SQL logic is run in the host process, and the database consists of only...",
             "date_modified": "2020-06-26T00:00:00.000Z"
         }
     ]
