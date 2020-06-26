@@ -1,7 +1,7 @@
 import React from "react"
 import { config } from "../config"
 
-function Footer(props: { override?: JSX.Element }) {
+function Footer(props: { override?: JSX.Element }): React.ReactElement {
 	return (
 		<footer className="center w5 f6 tc mt4">
 			<p>

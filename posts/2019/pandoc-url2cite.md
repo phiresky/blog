@@ -108,7 +108,12 @@ All citation data is cached (permanently) as bibtex as well as CSL to `citation-
 
     See [this example](https://github.com/phiresky/pandoc-url2cite/blob/master/example/doi-isbn.md).
 
-# Related Work (Longer Example)
+# Related Projects
+
+-   [Manubot](https://manubot.org/) is a more integrated and opinionated tool for creating scientific documents that has a similar method for creating citations without the hassle.
+-   [pandoc-url2cite-hs](https://github.com/Aver1y/pandoc-url2cite-hs) is a Haskell port of this tool (mostly compatible)
+
+# Longer Example
 
 [AlexNet][alexnet] first introduced CNNs to the ImageNet challenge. [@vgg; @googlenet; @resnet] further improved on the results.
 

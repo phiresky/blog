@@ -9,7 +9,7 @@ function Header(props: {
 	description?: string | undefined
 	siteDescription: string
 	stylesheets: string[] | undefined
-}) {
+}): React.ReactElement {
 	const description = props.description || props.siteDescription
 	const title = (props.title ? props.title + " - " : "") + props.siteTitle
 	return (

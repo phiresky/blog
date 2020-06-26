@@ -1,10 +1,10 @@
 import { promises as fs } from "fs"
 import { Feed } from "feed"
-import { config } from "../src/config"
+import { config } from "../client/config"
 import summary from "../posts-built/summary.json"
-import { makeUrl } from "../src/utils/content"
+import { makeUrl } from "../client/utils/content"
 import { join } from "path"
-const outDir = join(__dirname, "..", "src", "public", "blog")
+const outDir = join(__dirname, "..", "client", "public", "blog")
 
 const feed = new Feed({
 	title: config.siteTitle,
@@ -28,4 +28,4 @@ async function write() {
 	await fs.writeFile(join(outDir, "feed.json"), feed.json1())
 }
 
-if (require.main === module) write()
+if (require.main === module) write().catch((e) => console.error(e))

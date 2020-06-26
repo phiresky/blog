@@ -188,7 +188,7 @@ class ResponsiveContainer extends Component {
 					className,
 				)}
 				style={style}
-				ref={node => {
+				ref={(node) => {
 					this.container = node
 				}}
 			>

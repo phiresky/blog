@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import Header from "./Header"
 import Hero from "./Hero"
 import Footer from "./Footer"
@@ -10,7 +10,7 @@ function Page(_props: {
 	description?: string
 	footer?: JSX.Element
 	children: JSX.Element
-}) {
+}): ReactElement {
 	const props = { ...config, ..._props }
 	return (
 		<div>

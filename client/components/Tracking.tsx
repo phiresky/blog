@@ -11,7 +11,7 @@ function getGaScript(siteId: string) {
 `
 }
 
-function Tracking(props: { siteId: string }) {
+function Tracking(props: { siteId: string }): React.ReactElement {
 	return (
 		<div>
 			<script

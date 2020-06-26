@@ -11,6 +11,8 @@
 		"moduleResolution": "node",
 		"noEmit": true,
 		"noFallthroughCasesInSwitch": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"strict": true,
 		"target": "es2019",
 		"skipLibCheck": true,
@@ -18,5 +20,5 @@
 		"resolveJsonModule": true
 	},
 	"exclude": ["node_modules"],
-	"include": ["server/**/*.ts"]
+	"include": ["server/**/*.ts", "next-env.d.ts"]
 }

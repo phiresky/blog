@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import Link from "next/link"
 import { formatDate } from "../utils/date"
 
@@ -10,8 +10,9 @@ function PageLink(props: {
 	return (
 		<Link href={props.href}>
 			<a
-				className={`b black o-80 glow no-underline lh-solid ${props.className ||
-					""}`}
+				className={`b black o-80 glow no-underline lh-solid ${
+					props.className || ""
+				}`}
 			>
 				{props.children}
 			</a>
@@ -24,7 +25,7 @@ function PagePreview(props: {
 	title: React.ReactNode
 	preview: React.ReactNode
 	date: string
-}) {
+}): ReactElement {
 	return (
 		<div className="mb4 pb2 bb b--light-gray">
 			<PageLink href={props.href} className="f3">

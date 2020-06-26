@@ -1,31 +1,38 @@
 import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar } from "recharts"
-import { load } from "js-yaml"
+import * as yaml from "js-yaml"
 import CodeBlock from "./CodeBlock"
 import React from "react"
-import { isClientSide } from "../utils/content"
 import ResponsiveContainer from "./ResponsiveContainer"
 
 type CodeProps = { language?: string; value: string }
 
-export function Code(props: CodeProps) {
-	const components: { [name: string]: React.ComponentType<CodeProps> } = {
+export function Code(props: CodeProps): React.ReactElement {
+	const components: {
+		[name: string]: React.ComponentType<CodeProps> | undefined
+	} = {
 		barchart: CodeBarChart,
 	}
-	const Component = components[(props.language || "") as any]
+	const Component = components[props.language || ""]
 	if (Component) {
 		return <Component {...props} />
 	}
 	return <CodeBlock {...props} />
 }
-export function CodeBarChart(props: CodeProps) {
-	const info = load(props.value)
-	let data = info.data
-	if (typeof data === "object") {
-		data = Object.entries(data).map(([name, value]) => ({
-			name,
-			value,
-		}))
-	}
+
+type CodeChartYaml = {
+	title: string
+	subtitle?: string
+	series?: string
+	data: { [name: string]: number }
+}
+export function CodeBarChart(props: CodeProps): React.ReactElement {
+	const info = yaml.load(props.value) as CodeChartYaml
+	const dataObj = info.data
+	const data = Object.entries(dataObj).map(([name, value]) => ({
+		name,
+		value,
+	}))
+
 	/*const Wrap = isClientSide
 		? (p: { children: any }) => (
 				

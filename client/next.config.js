@@ -18,7 +18,7 @@ module.exports = withBundleAnalyzer(
 	withSass(
 		withCSS({
 			assetPrefix: isProd ? config.blogRoot : "/",
-			webpack: config => {
+			webpack: (config) => {
 				config.module.rules.push({
 					test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
 					use: {

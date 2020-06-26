@@ -1,7 +1,6 @@
 import { fromEntries } from "../utils/content"
 import { Elt } from "pandoc-filter"
 import Pandoc, { attrProps } from "./Pandoc"
-import css from "styled-jsx/css"
 import Tooltip from "rc-tooltip"
 import "rc-tooltip/assets/bootstrap_white.css"
 /**
@@ -9,10 +8,14 @@ import "rc-tooltip/assets/bootstrap_white.css"
  */
 export function TooltipLink({
 	c: [[id, clazz, kv], inline, [url, title]],
-}: Elt<"Link">) {
+}: Elt<"Link">): React.ReactElement {
 	const attrs = fromEntries(kv)
 	if (attrs["cite-meta"]) {
-		const m = JSON.parse(attrs["cite-meta"])
+		const m = JSON.parse(attrs["cite-meta"]) as {
+			shorttitle?: string
+			title: string
+			abstract?: string
+		}
 		return (
 			<Tooltip
 				placement="bottom"

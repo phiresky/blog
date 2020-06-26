@@ -1,9 +1,11 @@
 // server.js
 import next from "next"
-import routes from "../src/routes"
-const app = (next as any)({
+import routes from "../client/routes"
+import { createServer } from "http"
+
+const app = next({
 	dev: process.env.NODE_ENV !== "production",
-	dir: "./src",
+	dir: "./client",
 })
 
 const handler = routes.getRequestHandler(app)
@@ -17,7 +19,6 @@ app.prepare().then(() => {
 })*/
 
 // Without express
-const { createServer } = require("http")
-app.prepare().then(() => {
+void app.prepare().then(() => {
 	createServer(handler).listen(3000)
 })

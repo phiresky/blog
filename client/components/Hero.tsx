@@ -1,14 +1,13 @@
 import React from "react"
 import Link from "next/link"
 import { LinkInfo } from "../pages"
-import { config } from "../config"
 
 function Hero(props: {
 	backgroundClass: string
 	topLinks: LinkInfo[]
 	heroTitle: string
 	subtitle: string
-}) {
+}): React.ReactElement {
 	return (
 		<div className={`relative tc ${props.backgroundClass}`}>
 			<div className="mw7 center white">
@@ -30,7 +29,7 @@ function Hero(props: {
 						{props.topLinks &&
 							props.topLinks.length > 0 &&
 							props.topLinks.map((link, i) => {
-								const isExternal = link.href.match(/^https?:/)
+								const isExternal = /^https?:/.exec(link.href)
 								const cls = "dib f6 white no-underline pa1 ma1"
 								if (isExternal)
 									return (

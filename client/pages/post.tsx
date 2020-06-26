@@ -1,4 +1,5 @@
-import React, { Fragment } from "react"
+import * as React from "react"
+import { Fragment } from "react"
 import { withRouter } from "next/router"
 import Page from "../components/Page"
 import { NextPageContext } from "next"
@@ -26,9 +27,9 @@ declare module "react" {
 
 class PostUI extends React.Component<Props & WithRouterProps> {
 	static async getInitialProps(ctx: NextPageContext): Promise<Props> {
-		const slug = ctx.query.slug
+		const slug = ctx.query.slug as string
 		const url = config.blogRoot + slug
-		const post = require("../../posts-built/" + slug + ".md.json")
+		const post = (await import(`../../posts-built/${slug}.md.json`)) as Post
 
 		if (!post) throw Error(`could not find post ${url}`)
 		return { post }
@@ -116,11 +117,10 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 function PostDate({ post: { frontmatter: meta, filename } }: { post: Post }) {
 	let updated = null
 	if (meta.updated) {
-		const SLink = config.postSourceHistoryUrlBase
-			? ({ children = null as any }) => (
-					<a href={config.postSourceHistoryUrlBase + filename}>
-						{children}
-					</a>
+		const urlBase = config.postSourceHistoryUrlBase
+		const SLink = urlBase
+			? ({ children = null as React.ReactNode }) => (
+					<a href={urlBase + filename}>{children}</a>
 			  )
 			: Fragment
 		updated = (

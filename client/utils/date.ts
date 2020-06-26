@@ -1,4 +1,4 @@
-export function formatDate(dateString: string) {
+export function formatDate(dateString: string): string {
 	if (!dateString) return "[INV DATE]"
 	const utcString = new Date(dateString).toUTCString()
 	const splitDate = utcString.split(" ")

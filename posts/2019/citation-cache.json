@@ -688,6 +688,70 @@
 				"title-short": "pandoc-url2cite/example/doi-isbn.md",
 				"type": "no-type"
 			}
+		},
+		"https://manubot.org/": {
+			"fetched": "2020-06-26T12:01:15.790Z",
+			"bibtex": [
+				"",
+				"@misc{noauthor_manubot_nodate,",
+				"   title = {Manubot - {Manuscripts}, open and automated},",
+				"   url = {https://manubot.org/},",
+				"   abstract = {A tool set and workflow for scholarly publishing that is open, collaborative, continuous, automated, reproducible, and free.},",
+				"   urldate = {2020-06-26},",
+				"   journal = {manubot.org}",
+				"}"
+			],
+			"csl": {
+				"URL": "https://manubot.org/",
+				"abstract": "A tool set and workflow for scholarly publishing that is open, collaborative, continuous, automated, reproducible, and free.",
+				"accessed": {
+					"date-parts": [[2020, 6, 26]]
+				},
+				"container-title": "manubot.org",
+				"id": "https://manubot.org/",
+				"title": "Manubot - Manuscripts, open and automated",
+				"type": "no-type"
+			}
+		},
+		"https://github.com/Aver1y/pandoc-url2cite-hs": {
+			"fetched": "2020-06-26T12:01:17.215Z",
+			"bibtex": [
+				"",
+				"@misc{lila_aver1y/pandoc-url2cite-hs_2020,",
+				"   title = {Aver1y/pandoc-url2cite-hs},",
+				"   copyright = {AGPL-3.0 License",
+				"        , ",
+				"      ",
+				"",
+				"        AGPL-3.0 License},",
+				"   url = {https://github.com/Aver1y/pandoc-url2cite-hs},",
+				"   abstract = {A port of pandoc-url2cite to Haskell. Contribute to Aver1y/pandoc-url2cite-hs development by creating an account on GitHub.},",
+				"   urldate = {2020-06-26},",
+				"   author = {{Lila}},",
+				"   month = may,",
+				"   year = {2020},",
+				"   note = {original-date: 2020-05-14T22:44:30Z}",
+				"}"
+			],
+			"csl": {
+				"URL": "https://github.com/Aver1y/pandoc-url2cite-hs",
+				"abstract": "A port of pandoc-url2cite to Haskell. Contribute to Aver1y/pandoc-url2cite-hs development by creating an account on GitHub.",
+				"accessed": {
+					"date-parts": [[2020, 6, 26]]
+				},
+				"author": [
+					{
+						"literal": "Lila"
+					}
+				],
+				"id": "https://github.com/Aver1y/pandoc-url2cite-hs",
+				"issued": {
+					"date-parts": [[2020, 5]]
+				},
+				"note": "original-date: 2020-05-14T22:44:30Z",
+				"title": "Aver1y/pandoc-url2cite-hs",
+				"type": "no-type"
+			}
 		}
 	}
 }

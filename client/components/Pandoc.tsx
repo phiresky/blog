@@ -1,7 +1,6 @@
 import * as p from "pandoc-filter"
 import * as React from "react"
 import { Fragment } from "react"
-import { Code } from "./Code"
 
 type Renderers = Partial<
 	{ [k in p.EltType]: React.FunctionComponent<p.Elt<k>> }
@@ -16,7 +15,10 @@ const PandocConfigContext = React.createContext<PandocConfig>({})
 /**
  * convert pandoc AST Attr to react props (id and class)
  */
-function ap([id, classes, attrs]: p.Attr) {
+function ap([id, classes, _attrs]: p.Attr): {
+	id: string | undefined
+	className: string | undefined
+} {
 	// if (attrs.length > 0) console.log("unused attrs", attrs)
 	return { id: id || undefined, className: classes.join(" ") || undefined }
 }
@@ -62,11 +64,11 @@ export const defaultRenderers: Renderers = {
 			<Pandoc ele={inline} />
 		</a>
 	),
-	Space: _ => <> </>,
+	Space: (_) => <> </>,
 	Cite: ({ c: [cites, inline] }) => (
 		<span
 			className="citation"
-			data-cites={cites.map(e => e.citationId).join(" ")}
+			data-cites={cites.map((e) => e.citationId).join(" ")}
 		>
 			<Pandoc ele={inline} />
 		</span>
@@ -77,7 +79,7 @@ export const defaultRenderers: Renderers = {
 
 	// block
 	Header: ({ c: [lvl, attr, c] }) => {
-		const H = ("h" + lvl) as "h1"
+		const H = `h${lvl}` as "h1"
 		return (
 			<H {...ap(attr)}>
 				<Pandoc ele={c} />
@@ -139,12 +141,12 @@ export const defaultRenderers: Renderers = {
 		</dl>
 	),
 	Div: SimpAttr("div"),
-	Image: ({ c: [a, b, [src, title]] }) => (
+	Image: ({ c: [a, _b, [src, title]] }) => (
 		<img src={src} title={title} {...ap(a)} />
 	), // todo: alt text
 	RawBlock: ({ c: [type, content] }) => (
 		<PandocConfigContext.Consumer>
-			{config =>
+			{(config) =>
 				type === "html" && config.allowUnsanitizedHTML ? (
 					<div dangerouslySetInnerHTML={{ __html: content }} />
 				) : (
@@ -160,7 +162,7 @@ export default function Pandoc({
 	...config
 }: {
 	ele: p.AnyElt | p.AnyElt[]
-} & PandocConfig) {
+} & PandocConfig): React.ReactElement {
 	if (Object.keys(config).length > 0)
 		return (
 			<PandocConfigContext.Provider value={config}>
@@ -177,10 +179,12 @@ export default function Pandoc({
 		)
 	return (
 		<PandocConfigContext.Consumer>
-			{config => {
+			{(config) => {
 				const renderers = { ...defaultRenderers, ...config.renderers }
 				if (ele.t in renderers) {
-					const C = renderers[ele.t] as any
+					const C = renderers[ele.t] as React.FunctionComponent<
+						p.AnyElt
+					>
 					return <C {...ele} />
 				} else return <>[UNK:{ele.t}]</>
 			}}
