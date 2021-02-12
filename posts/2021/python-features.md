@@ -29,6 +29,47 @@ def get_params() -> EnvParams:
 
 ## Typing
 
+A must if you're used to typed programming languages. Makes it much easier to read and understand code, as well as fixing a whole class of bugs.
+
+```py
+def show_words(list_of_words):
+    for i, word in enumerate(list_of_words):
+        print(f"word {i}: {word}")
+```
+
+This function gets a list of lists of words:
+
+```py
+> show_words(["hello", "hi"])
+
+word 0: hello
+word 1: hi
+```
+
+Easy enough, right?
+
+But happens if that code is accidentally called with a string?
+
+```py
+show_words("hello")
+word 0: h
+word 1: e
+word 2: l
+word 3: l
+word 4: o
+```
+
+Since iterating works for strings as well, the code works fine, but not as expected. In this example the issue is easy to find, but if for example you have a multidimensional list where each text is processed in some way and passed further along into a neural network, you might not find this issue for a very long time.
+
+It's even worse because in python, chars are strings as well (e.g. `"a"[0][0][0] == "a"`), so you can have a nested loop of any depth that will still work when receiving a string.
+
+The solution is simple:
+
+```py
+def show_lists(words: list[str]) -> None:
+    # if you try to call this function with anything that's *not* a list of strings, your IDE (and mypy) will throw an error.
+```
+
 ## F strings
 
 ```py
