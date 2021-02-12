@@ -145,7 +145,7 @@ async function getMetaAndPreview(path: string) {
 			"url2cite-link-output=sup",
 			"--filter=" +
 				require.resolve("pandoc-url2cite/dist/pandoc-url2cite.js"),
-			"--filter=pandoc-citeproc",
+			"--citeproc",
 			"--csl=../ieee-with-url.csl",
 			"--",
 			path,

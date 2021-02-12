@@ -183,9 +183,9 @@ export default function Pandoc({
 			{(config) => {
 				const renderers = { ...defaultRenderers, ...config.renderers }
 				if (ele.t in renderers) {
-					const C = renderers[ele.t] as React.FunctionComponent<
-						p.AnyElt
-					>
+					const C = renderers[
+						ele.t
+					] as React.FunctionComponent<p.AnyElt>
 					return <C {...ele} />
 				} else return <>[UNK:{ele.t}]</>
 			}}
