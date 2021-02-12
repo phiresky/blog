@@ -42,7 +42,7 @@
         {
             "url": "https://phiresky.github.io/blog/2021/python-features",
             "title": "10 underused features of modern Python [incomplete]",
-            "summary": "Named tupleautomatic constructor generation etcstrong typingimmutablesame memory usage as normal tuplesdefault valuesmore safety than tuples, access params.name like objects, order does not mattercompatible API with tuplesTypingF strings Prints: for input 5.0, fn(x)=25 Similar to \"x is...",
+            "summary": "Named tupleautomatic constructor generation etcstrong typingimmutablesame memory usage as normal tuplesdefault valuesmore safety than tuples, access params.name like objects, order does not mattercompatible API with tuplesTyping A must if you’re used to typed programming languages. Makes it much...",
             "date_modified": "2021-02-15T00:00:00.000Z"
         },
         {

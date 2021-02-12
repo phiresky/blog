@@ -4,7 +4,7 @@
         <title>phiresky's blog</title>
         <link>undefined</link>
         <description>About my personal projects and other stuff</description>
-        <lastBuildDate>Fri, 12 Feb 2021 16:32:21 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 12 Feb 2021 16:47:29 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>yup</copyright>
@@ -55,7 +55,7 @@
             <link>https://phiresky.github.io/blog/2021/python-features</link>
             <guid>https://phiresky.github.io/blog/2021/python-features</guid>
             <pubDate>Mon, 15 Feb 2021 00:00:00 GMT</pubDate>
-            <description><![CDATA[Named tupleautomatic constructor generation etcstrong typingimmutablesame memory usage as normal tuplesdefault valuesmore safety than tuples, access params.name like objects, order does not mattercompatible API with tuplesTypingF strings Prints: for input 5.0, fn(x)=25 Similar to "x is...]]></description>
+            <description><![CDATA[Named tupleautomatic constructor generation etcstrong typingimmutablesame memory usage as normal tuplesdefault valuesmore safety than tuples, access params.name like objects, order does not mattercompatible API with tuplesTyping A must if you’re used to typed programming languages. Makes it much...]]></description>
         </item>
         <item>
             <title><![CDATA[sqlite-zstd: Transparent row-level compression for SQLite]]></title>
