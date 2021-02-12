@@ -4,7 +4,7 @@
         <title>phiresky's blog</title>
         <link>undefined</link>
         <description>About my personal projects and other stuff</description>
-        <lastBuildDate>Fri, 26 Jun 2020 13:35:15 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 12 Feb 2021 16:32:21 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>yup</copyright>
@@ -49,6 +49,20 @@
             <guid>https://phiresky.github.io/blog/2020/sqlite-performance-tuning</guid>
             <pubDate>Fri, 26 Jun 2020 00:00:00 GMT</pubDate>
             <description><![CDATA[SQLite is an embedded SQL database. It’s extremely easy to setup, buildable as a single C file with libraries existing for basically all common programming languages. It doesn’t need any server setup or configuration since the SQL logic is run in the host process, and the database consists of only...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[10 underused features of modern Python [incomplete]]]></title>
+            <link>https://phiresky.github.io/blog/2021/python-features</link>
+            <guid>https://phiresky.github.io/blog/2021/python-features</guid>
+            <pubDate>Mon, 15 Feb 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[Named tupleautomatic constructor generation etcstrong typingimmutablesame memory usage as normal tuplesdefault valuesmore safety than tuples, access params.name like objects, order does not mattercompatible API with tuplesTypingF strings Prints: for input 5.0, fn(x)=25 Similar to "x is...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[sqlite-zstd: Transparent row-level compression for SQLite]]></title>
+            <link>https://phiresky.github.io/blog/2021/sqlite-zstd</link>
+            <guid>https://phiresky.github.io/blog/2021/sqlite-zstd</guid>
+            <pubDate>Sun, 24 Jan 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[For my incomplete time-tracking tool, I store snapshots of the windows I have open in order to later analyze what I spend my time on. This data is pretty redundant - the open program doesn’t change that much, but I still want a snapshot every 30 seconds. Story? There’s a few solutions I could think ...]]></description>
         </item>
     </channel>
 </rss>
