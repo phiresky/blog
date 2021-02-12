@@ -31,13 +31,13 @@ def get_params() -> EnvParams:
 
 A must if you're used to typed programming languages. Makes it much easier to read and understand code, as well as fixing a whole class of bugs.
 
+Let's say you have some simple code to print a list of words:
+
 ```py
 def show_words(list_of_words):
     for i, word in enumerate(list_of_words):
         print(f"word {i}: {word}")
 ```
-
-This function gets a list of lists of words:
 
 ```py
 > show_words(["hello", "hi"])
@@ -70,7 +70,9 @@ def show_lists(words: list[str]) -> None:
     # if you try to call this function with anything that's *not* a list of strings, your IDE (and mypy) will throw an error.
 ```
 
-## F strings
+## F-strings
+
+There's many ways to format strings in python, with the original one being [`%` formatting](https://stackabuse.com/python-string-interpolation-with-the-percent-operator/). But the best way since Python 3.7 is literal f-strings:
 
 ```py
 def fn(x):
@@ -96,7 +98,7 @@ mydir = Path("foo")
 myfile = mydir / "filename.txt"
 ```
 
-If you pass file paths around as strings, you have to figure out when to add slashes and when not to, and unless you always use `os.path.sep` your code will work differently depending on the OS.
+If you pass file paths around as strings, you have to figure out when to add slashes and when not to, and unless you always use `os.path.sep` your code will work differently depending on the OS. With pathlib, you can join paths using just the `/` operator, regardless of the OS of the user.
 
 `Path`s have great methods for manipulating filenames that are much more readable than their `os.path` equivalents:
 
@@ -166,7 +168,7 @@ for key in x:
     # guaranteed to always go through keys in the order "c", "b", "d"!
 ```
 
-# Multiprocessing
+## Multiprocessing
 
 There's a ton of libraries for multithreading / multiprocessing in python, with varying degrees of magicness. But in Python 3, there's actually an integrated way to run a function on a large set of data quickly: [`multiprocessing.Pool`](https://docs.python.org/3/library/multiprocessing.html)
 
@@ -215,25 +217,10 @@ Here is all the stages of a Python developer's slow decent into madness:
 8.  The find out about the Official Modern Python Packaging tool [pipenv](https://pipenv.pypa.io/en/latest/)! Pipenv always and automatically manages a virtualenv with the exact dependencies as defined in a `Pipfile`, which is like a supercharged `requirements.txt`. It's amazing! Except you soon try to install a package and get a `Could not resolve dependencies` error. You google a while, and figure out that most pypi packages don't actually have correctly specified dependencies, and that pip just doesn't really care about that. You also find out that [pipenv only really pretended to be an official tool](https://chriswarrick.com/blog/2018/07/17/pipenv-promises-a-lot-delivers-very-little/).
 9.  You find out about [poetry](https://python-poetry.org/). It's like pipenv but actually good! It only takes 2 minutes to resolve dependencies instead of 10! It even puts your virtualenv in `~/.cache` because it _really_ doesn't matter if it gets deleted!
 
-# Typed Argparse
+## Typed Argparse
 
 Argparse is a neat library to create a simple command line interface. But arguments are declared as strings, and the IDE can't know about them.
 
 With [Typed-Argparse](https://github.com/swansonk14/typed-argument-parser), your arguments are parsed directly into a class instance!
 
 ![TAP example](https://raw.githubusercontent.com/swansonk14/typed-argument-parser/master/images/tap.png)
-
-````
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```
-````
