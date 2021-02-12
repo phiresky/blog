@@ -48,7 +48,7 @@ word 1: hi
 
 Easy enough, right?
 
-But happens if that code is accidentally called with a string?
+But what happens if that code is accidentally called with a string?
 
 ```py
 show_words("hello")
@@ -59,7 +59,7 @@ word 3: l
 word 4: o
 ```
 
-Since iterating works for strings as well, the code works fine, but not as expected. In this example the issue is easy to find, but if for example you have a multidimensional list where each text is processed in some way and passed further along into a neural network, you might not find this issue for a very long time.
+Since iterating works for strings as well, the code works - but not as expected. In this example the issue is easy to find, but if for example you have a multidimensional list where each text is processed in some way and passed further along into a neural network, you might not find this issue for a very long time.
 
 It's even worse because in python, chars are strings as well (e.g. `"a"[0][0][0] == "a"`), so you can have a nested loop of any depth that will still work when receiving a string.
 
@@ -67,7 +67,9 @@ The solution is simple:
 
 ```py
 def show_lists(words: list[str]) -> None:
-    # if you try to call this function with anything that's *not* a list of strings, your IDE (and mypy) will throw an error.
+    # if you try to call this function with anything
+    # that's *not* a list of strings, your IDE (and mypy)
+    # will throw an error.
 ```
 
 ## F-strings
