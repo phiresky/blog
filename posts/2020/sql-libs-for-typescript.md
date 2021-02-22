@@ -48,7 +48,7 @@ All of these have performance issues and regression issues, since the TS compile
 
 -   https://github.com/phiresky/ts-typed-sql
 
-    Works well, but unmaintained, missing features, and broken in TypeScript 3.8.
+    Works well, but unmaintained and missing some SQL features.
 
 -   https://github.com/AnyhowStep/tsql
 
