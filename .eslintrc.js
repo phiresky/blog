@@ -12,7 +12,6 @@ module.exports = {
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
 		"plugin:prettier/recommended",
 		"prettier",
-		"prettier/@typescript-eslint",
 	],
 	rules: {
 		"@typescript-eslint/no-unused-vars": "off", // let tsc handle this

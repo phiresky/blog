@@ -1,20 +1,34 @@
-import * as React from "react"
-import { Fragment } from "react"
-import { withRouter } from "next/router"
-import Page from "../components/Page"
-import { NextPageContext } from "next"
-import { Post } from "../../server/build-posts"
-//import htmlParser from "react-markdown/plugins/html-parser"
-import { Code } from "../components/Code"
+import "katex/dist/katex.min.css"
+import {
+	GetStaticPathsContext,
+	GetStaticPathsResult,
+	GetStaticPropsContext,
+	GetStaticPropsResult,
+} from "next"
 // import "prismjs/themes/prism-tomorrow.css"
 import { WithRouterProps } from "next/dist/client/with-router"
-import { config } from "../config"
-import { formatDate } from "../utils/date"
-import Pandoc from "../components/Pandoc"
-import { InlineMath, BlockMath } from "react-katex"
-import "katex/dist/katex.min.css"
-import { TooltipLink } from "../components/TooltipLink"
+import { withRouter } from "next/router"
+import * as React from "react"
+import { Fragment } from "react"
+import { Post } from "../../../server/build-posts"
+//import htmlParser from "react-markdown/plugins/html-parser"
+import { Code } from "../../components/Code"
+import Page from "../../components/Page"
+import Pandoc, { attrProps } from "../../components/Pandoc"
+import { TooltipLink } from "../../components/TooltipLink"
+import { config } from "../../config"
+import { makeUrl } from "../../utils/content"
+import { formatDate } from "../../utils/date"
+import dynamic from "next/dynamic"
 
+//import { BlockMath, InlineMath } from "react-katex"
+
+const BlockMath = dynamic<{ math: string }>(() =>
+	import("react-katex").then((m) => m.BlockMath),
+)
+const InlineMath = dynamic<{ math: string }>(() =>
+	import("react-katex").then((m) => m.InlineMath),
+)
 type Props = { post: Post }
 
 declare module "react" {
@@ -24,15 +38,30 @@ declare module "react" {
 	}
 }
 
-class PostUI extends React.Component<Props & WithRouterProps> {
-	static async getInitialProps(ctx: NextPageContext): Promise<Props> {
-		const slug = ctx.query.slug as string
-		const url = config.blogRoot + slug
-		const post = (await import(`../../posts-built/${slug}.md.json`)) as Post
-
-		if (!post) throw Error(`could not find post ${url}`)
-		return { post }
+export async function getStaticPaths(
+	_ctx: GetStaticPathsContext,
+): Promise<GetStaticPathsResult> {
+	const summary = await import("../../../posts-built/summary.json")
+	return {
+		paths: summary.posts.map((post) => "/" + makeUrl(post).slug),
+		fallback: false,
 	}
+}
+export async function getStaticProps(
+	ctx: GetStaticPropsContext<{ year: string; post: string }>,
+): Promise<GetStaticPropsResult<Props>> {
+	const slug = `${ctx.params?.year || ""}/${ctx.params?.post || ""}`
+	try {
+		const post = (await import(
+			`../../../posts-built/${slug}.md.json`
+		)) as Post
+		if (!post) throw Error(`null`)
+		return { props: { post: { ...post } } }
+	} catch (e: unknown) {
+		throw Error(`could not find post ${slug}: ${String(e)}`)
+	}
+}
+class PostUI extends React.Component<Props & WithRouterProps> {
 	render() {
 		const { post } = this.props
 		const meta = post.frontmatter
@@ -95,7 +124,11 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 							allowUnsanitizedHTML
 							renderers={{
 								CodeBlock: ({ c: [attr, text] }) => (
-									<Code language={attr[1][0]} value={text} />
+									<Code
+										{...attrProps(attr)}
+										language={attr[1][0]}
+										value={text}
+									/>
 								),
 								Math: ({ c: e }) => {
 									const [type, content] = e

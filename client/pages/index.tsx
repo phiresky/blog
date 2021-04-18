@@ -20,14 +20,14 @@ class Index extends React.Component<WithRouterProps> {
 					{postList
 						.filter((p) => !p.frontmatter.hidden)
 						.map((article, i) => {
-							const { url } = makeUrl(article)
+							const { slug } = makeUrl(article)
 							return (
 								<PagePreview
 									title={article.frontmatter.title}
 									subtitle={article.frontmatter.subtitle}
 									preview={article.preview}
 									date={article.frontmatter.date}
-									href={url}
+									href={"/" + slug}
 									key={i}
 								/>
 							)

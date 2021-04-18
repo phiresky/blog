@@ -1,5 +1,6 @@
 import React, { PureComponent, ReactNode } from "react"
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
+// TODO: import languages
 import theme from "react-syntax-highlighter/dist/cjs/styles/prism/tomorrow"
 // https://medium.com/young-developer/react-markdown-code-and-syntax-highlighting-632d2f9b4ada
 

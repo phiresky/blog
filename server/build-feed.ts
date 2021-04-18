@@ -17,7 +17,7 @@ for (const post of summary.posts) {
 	feed.addItem({
 		title: post.frontmatter.title,
 		date: new Date(post.frontmatter.date),
-		link: config.publicUrlBase + makeUrl(post).url,
+		link: config.publicUrlBase + config.blogRoot + makeUrl(post).slug,
 		description: post.preview + "...",
 	})
 }

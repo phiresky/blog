@@ -1,17 +1,13 @@
-import { Summary, PostSummary } from "../../server/build-posts"
-import { config } from "../config"
+import { PostSummary, Summary } from "../../server/build-posts"
 
 export const isClientSide = !!(
 	typeof window !== "undefined" &&
 	window.document &&
 	window.document.createElement
 )
-export function makeUrl(article: {
-	filename: string
-}): { url: string; slug: string } {
+export function makeUrl(article: { filename: string }): { slug: string } {
 	const slug = article.filename.replace(/\.[^.]+$/, "")
-	const url = `${config.blogRoot}` + slug
-	return { url, slug }
+	return { slug }
 }
 
 export function filterPosts(summary: Summary): PostSummary[] {

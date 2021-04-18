@@ -15,12 +15,18 @@ const PandocConfigContext = React.createContext<PandocConfig>({})
 /**
  * convert pandoc AST Attr to react props (id and class)
  */
-function ap([id, classes, _attrs]: p.Attr): {
-	id: string | undefined
-	className: string | undefined
-} {
+function ap([id, classes, attrs]: p.Attr): AttrProps {
 	// if (attrs.length > 0) console.log("unused attrs", attrs)
-	return { id: id || undefined, className: classes.join(" ") || undefined }
+	return {
+		id: id || undefined,
+		className: classes.join(" ") || undefined,
+		attrs: Object.fromEntries(attrs),
+	}
+}
+export type AttrProps = {
+	id?: string
+	className?: string
+	attrs: Record<string, string>
 }
 export const attrProps = ap
 

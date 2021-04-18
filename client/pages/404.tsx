@@ -3,11 +3,6 @@ import Page from "../components/Page"
 import { NextPageContext } from "next"
 
 class Error extends React.Component<{ statusCode: null | number }> {
-	static getInitialProps({ res, err }: NextPageContext): Error["props"] {
-		const statusCode = res?.statusCode || err?.statusCode || null
-		return { statusCode }
-	}
-
 	render(): ReactNode {
 		return (
 			<Page title="404">

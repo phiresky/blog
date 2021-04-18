@@ -8,6 +8,7 @@ date: 2019-12-13
 link-citations: true
 urlcolor: blue
 url2cite: all-links
+url2cite-cache: "./pandoc-url2cite-cache.json"
 ---
 
 [pandoc-url2cite][repo] allows you to instantly and transparently cite most papers directly given only a single URL.

@@ -7,7 +7,6 @@ require("ts-node").register({
 	project: "tsconfig.json",
 })
 const { config } = require("./config")
-const { makeUrl } = require("./utils/content")
 const summary = require("../posts-built/summary.json")
 // const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin")
 const isProd = process.env.NODE_ENV === "production"
@@ -15,29 +14,14 @@ const isProd = process.env.NODE_ENV === "production"
 module.exports = withBundleAnalyzer({
 	assetPrefix: isProd ? config.blogRoot : "/",
 	webpack: (config) => {
-		config.module.rules.push({
-			test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
-			use: {
-				loader: "url-loader",
-				options: {
-					limit: 100000,
-					name: "[name].[ext]",
-				},
-			},
-		})
+		console.log(config)
+		config.output.assetModuleFilename = "[name][ext]"
 		return config
 	},
-	async exportPathMap() {
-		const { posts } = summary
-		const o = {
-			[config.blogRoot]: { page: "/" },
-		}
-		for (const post of posts) {
-			const { url, slug } = makeUrl(post)
-			o[url] = { page: "/post", query: { slug } }
-		}
-		console.log(o)
-		return o
-	},
+	basePath: config.blogRoot.slice(0, -1),
+	assetPrefix: config.blogRoot.slice(0, -1),
 	trailingSlash: true,
+	future: {
+		webpack5: true,
+	},
 })
