@@ -60,7 +60,7 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 		config[cls] = true
 	}
 	React.useEffect(() => {
-		if (config.autorun) run()
+		if (config.autorun) void run()
 	}, [])
 	const [output, setOutput] = React.useState("")
 	async function run() {

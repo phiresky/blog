@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react"
 import Page from "../components/Page"
-import { NextPageContext } from "next"
 
 class Error extends React.Component<{ statusCode: null | number }> {
 	render(): ReactNode {

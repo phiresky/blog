@@ -4,7 +4,7 @@ import { config } from "../client/config"
 import summary from "../posts-built/summary.json"
 import { makeUrl } from "../client/utils/content"
 import { join } from "path"
-const outDir = join(__dirname, "..", "client", "public", "blog")
+const outDir = join(__dirname, "..", "client", "public")
 
 const feed = new Feed({
 	title: config.siteTitle,

@@ -5,8 +5,7 @@ cd "$dir"
 git worktree add dist gh-pages || true
 rm -r dist/*
 touch dist/.nojekyll
-cp -r client/out/blog/* dist
-cp -r client/out/_next client/out/404.html dist
+cp -r client/out/* dist
 
 (
     cd dist
