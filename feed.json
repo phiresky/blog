@@ -40,6 +40,12 @@
             "date_modified": "2020-06-26T00:00:00.000Z"
         },
         {
+            "url": "https://phiresky.github.io/blog/2021/hosting-sqlite-databases-on-github-pages",
+            "title": "Hosting SQLite databases on Github Pages",
+            "summary": "I was writing a tiny website to display statistics of how much sponsored content a Youtube creator has over time when I noticed that I often write a small tool as a website that queries some data from a database and then displays it in a graph, a table or similar. But if you want to use a database, ...",
+            "date_modified": "2021-04-17T00:00:00.000Z"
+        },
+        {
             "url": "https://phiresky.github.io/blog/2021/python-features",
             "title": "10 underused features of modern Python [incomplete]",
             "summary": "Named tupleautomatic constructor generation etcstrong typingimmutablesame memory usage as normal tuplesdefault valuesmore safety than tuples, access params.name like objects, order does not mattercompatible API with tuplesTyping A must if you’re used to typed programming languages. Makes it much...",
