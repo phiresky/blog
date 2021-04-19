@@ -11,6 +11,7 @@ const feed = new Feed({
 	description: config.siteDescription,
 	id: config.id,
 	copyright: "yup",
+	link: config.publicUrlBase + config.blogRoot,
 })
 
 for (const post of summary.posts) {

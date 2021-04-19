@@ -1,22 +1,24 @@
-import * as React from "react"
-import { createDbWorker, WorkerHttpvfs, SqliteStats } from "sql.js-httpvfs"
-//import workerUrl from "sql.js-httpvfs/dist/sqlite.worker.js?resource"
-//import wasmUrl from "sql.js-httpvfs/dist/sql-wasm.js?resource"
-import { CodeProps } from "../components/Code"
-import CodeBlock from "../components/CodeBlock"
-import { observer } from "mobx-react"
+import "@fortawesome/fontawesome-svg-core/styles.css"
 import {
-	faCircle,
-	faEdit,
 	faInfoCircle,
 	faKeyboard,
 	faPlay,
 	faSave,
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome"
+import { observer } from "mobx-react"
+import * as React from "react"
 import Modal from "react-modal"
-import "@fortawesome/fontawesome-svg-core/styles.css"
-import { storeAnnotation } from "mobx/dist/internal"
+import {
+	createDbWorker,
+	PageReadLog,
+	SqliteStats,
+	WorkerHttpvfs,
+} from "sql.js-httpvfs"
+//import workerUrl from "sql.js-httpvfs/dist/sqlite.worker.js?resource"
+//import wasmUrl from "sql.js-httpvfs/dist/sql-wasm.js?resource"
+import { CodeProps } from "../components/Code"
+import CodeBlock from "../components/CodeBlock"
 Modal.setAppElement(".lh-copy")
 
 class Store {
@@ -74,6 +76,10 @@ class Store {
 			workerUrl.toString(),
 			wasmUrl.toString(),
 		)
+
+		await store.worker?.db.query(
+			`pragma query_only = true; select * from sqlite_master`,
+		) // cache the main pages
 		return this.worker
 	}
 }
@@ -81,6 +87,7 @@ type Config = {
 	autorun?: true
 	diffstat?: true
 	logPageReads?: true
+	defaultPageReadTable?: true
 }
 type Z = (keyof Config)[]
 
@@ -102,7 +109,7 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 	const [code, setCode] = React.useState(props.value)
 	const [output, setOutput] = React.useState("")
 	const [diffstat, setDiffstat] = React.useState<SqliteStats | null>(null)
-	const [readPages, setReadPages] = React.useState<number[] | null>(null)
+	const [readPages, setReadPages] = React.useState<PageReadLog[] | null>(null)
 	const [editMode, setEditMode] = React.useState(false)
 	async function run() {
 		setOutput("[running...]")
@@ -137,6 +144,11 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 		}
 	}
 	function edit() {
+		if (!editMode) {
+			setReadPages(null)
+			setDiffstat(null)
+			setOutput("")
+		}
 		setEditMode(!editMode)
 	}
 
@@ -159,7 +171,12 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 					</div>
 				</div>
 				{!editMode ? (
-					<CodeBlock className="inner" language="sql" value={code} />
+					<CodeBlock
+						className="inner"
+						language="sql"
+						wrap
+						value={code}
+					/>
 				) : (
 					<textarea
 						className="like-codeblock inner"
@@ -174,7 +191,11 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 					{output ? (
 						<>
 							<div>Output JSON</div>{" "}
-							<div role="button" onClick={run}>
+							<div
+								role="button"
+								onClick={run}
+								className="floatright"
+							>
 								<Icon icon={faPlay} size="sm" /> Rerun
 							</div>
 						</>
@@ -186,8 +207,9 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 				</div>
 				{output ? (
 					<CodeBlock
-						className="inner"
+						className="inner maxheight"
 						language="json"
+						wrap
 						value={output}
 					/>
 				) : (
@@ -195,7 +217,11 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 				)}
 			</div>
 			{config.diffstat && diffstat && (
-				<SqliteStatsView stats={diffstat} readPages={readPages} />
+				<SqliteStatsView
+					stats={diffstat}
+					readPages={readPages}
+					defaultFlipped={config.defaultPageReadTable}
+				/>
 			)}
 		</div>
 	)
@@ -211,20 +237,109 @@ function formatBytes(b: number) {
 	return `${b}B`
 }
 
+type PageReadReq = PageReadLog & {
+	page?: PageInfo
+}
 const SqliteStatsView: React.FC<{
 	stats: SqliteStats
-	readPages: number[] | null
-}> = observer(({ stats, readPages }) => {
+	readPages: PageReadLog[] | null
+	defaultFlipped?: boolean
+}> = observer(({ stats, readPages, defaultFlipped }) => {
+	const store = getStore()
+	const [modalIsOpen, setIsOpen] = React.useState(false)
+	const [interacted, setInteracted] = React.useState(false)
+	const [data, setData] = React.useState(
+		"Loading..." as string | PageReadLog[],
+	)
+	React.useEffect(() => {
+		if (defaultFlipped && !modalIsOpen && readPages && !interacted) {
+			console.log("showing effect")
+			void show()
+		}
+	}, [defaultFlipped, modalIsOpen, readPages, interacted])
+	async function show() {
+		// asetAni(true)
+		// setTimeout(() => setAni(false), 500)
+		if (modalIsOpen) {
+			setIsOpen(false)
+			return
+		}
+		setIsOpen(true)
+		setInteracted(true)
+		if (!store.worker || !store.worker.db) {
+			setData("no db")
+			return
+		}
+		if (!readPages) return
+		try {
+			if (!store.statsConnected) {
+				await store.worker?.db.query(`attach 'dbstat.sqlite3' as stat`)
+				store.statsConnected = true
+			}
+			const pageinfos = (await store.worker?.db.query(`
+				select *, n.name, t.name as pagetype from stat.stat s
+				join stat.names n on n.id = s.name
+				join stat.pagetypes t on t.id = s.pagetype 
+				where pageno in (${readPages.map((i) => i.pageno).join(",")})
+			`)) as PageInfo[]
+			const pageInfoMap = new Map(pageinfos.map((a) => [a.pageno, a]))
+
+			setData(
+				readPages.map((readReq) => {
+					const pageInfo = pageInfoMap.get(readReq.pageno)
+					return { ...readReq, page: pageInfo }
+				}),
+			)
+		} catch (e) {
+			console.error(e)
+			setData(String(e))
+		}
+	}
+
 	return (
-		<div className="with-inner-title hanging">
-			<div className="inner-title">
-				<div>Sqlite stats</div>
-				{readPages && <PageReadsView pages={readPages} />}
-			</div>
-			<div className="inner like-codeblock">
-				fetched {formatBytes(stats.totalFetchedBytes)} in{" "}
-				{stats.totalRequests} requests (DB size:{" "}
-				{formatBytes(stats.totalBytes)})
+		<div className={`flip-box ${modalIsOpen ? "flipped" : "unflipped"}`}>
+			<div className="flip-box-inner">
+				<div className="flip-box-front">
+					<div className="with-inner-title hanging">
+						<div className="inner-title">
+							<div>Sqlite stats</div>
+							{readPages && (
+								<div
+									role="button"
+									className="floatright"
+									onClick={show}
+								>
+									<Icon icon={faInfoCircle} /> Show page read
+									log ({readPages.length})
+								</div>
+							)}
+						</div>
+						<div className="inner like-codeblock">
+							fetched {formatBytes(stats.totalFetchedBytes)} in{" "}
+							{stats.totalRequests} requests (DB size:{" "}
+							{formatBytes(stats.totalBytes)})
+						</div>
+					</div>
+				</div>
+				<div className="flip-box-back">
+					<div className="with-inner-title hanging">
+						<div className="inner-title">
+							<div>Sqlite Page Read Requests</div>
+							{readPages && (
+								<div
+									role="button"
+									className="floatright"
+									onClick={show}
+								>
+									<Icon icon={faInfoCircle} /> Back to stats
+								</div>
+							)}
+						</div>
+						<div className="inner page-list maxheight">
+							{data && <PageReadsView pages={data} />}
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	)
@@ -238,77 +353,65 @@ type PageInfo = {
 	payload_bytes: number
 	unused_bytes: number
 }
-const PageReadsView: React.FC<{ pages: number[] }> = observer(({ pages }) => {
-	const store = getStore()
-	const [data, setData] = React.useState("Loading..." as string | PageInfo[])
-	async function show() {
-		setIsOpen(true)
-		if (!store.worker || !store.worker.db) {
-			setData("no db")
-			return
-		}
-		try {
-			if (!store.statsConnected) {
-				await store.worker?.db.query(`attach 'dbstat.sqlite3' as stat`)
-				store.statsConnected = true
-			}
-			const res = (await store.worker?.db.query(`
-				select *, n.name, t.name as pagetype from stat.stat s
-				join stat.names n on n.id = s.name
-				join stat.pagetypes t on t.id = s.pagetype 
-				where pageno in (${pages.join(",")})
-			`)) as PageInfo[]
-			console.log(pages, res)
-			res.sort(
-				(a, b) => pages.indexOf(a.pageno) - pages.indexOf(b.pageno),
-			)
-			setData(res)
-		} catch (e) {
-			console.error(e)
-			setData(String(e))
-		}
-	}
-	const [modalIsOpen, setIsOpen] = React.useState(false)
-	console.log("ISOPEN", modalIsOpen)
-	return (
-		<>
-			<div role="button" className="floatright" onClick={show}>
-				<Icon icon={faInfoCircle} /> Show read pages ({pages.length})
-			</div>
-			<Modal isOpen={modalIsOpen} onRequestClose={() => setIsOpen(false)}>
-				Loaded pages:
-				{typeof data === "string" ? (
-					data
-				) : (
-					<table>
-						<thead>
-							<tr>
-								<th>Read Request</th>
-								<th>Page Number</th>
-								<th>Object</th>
-								<th>Page Type</th>
-								<th>Number of cells in page</th>
-								<th>Payload bytes</th>
-								<th>Unused bytes</th>
-							</tr>
-						</thead>
-						<tbody>
-							{data.map((e, i) => (
-								<tr key={i}>
-									<td>{i + 1}</td>
-									<td>{e.pageno}</td>
-									<td>{e.name}</td>
-									<td>{e.pagetype}</td>
-									<td>{e.number_of_cells}</td>
-									<td>{e.payload_bytes}</td>
-									<td>{e.unused_bytes}</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				)}
-				<button onClick={() => setIsOpen(false)}>Close</button>
-			</Modal>
-		</>
-	)
-})
+const PageReadsView: React.FC<{ pages: string | PageReadReq[] }> = observer(
+	({ pages }) => {
+		if (pages.length === 0) return <>[no data pages requested]</>
+		if (typeof pages === "string") return <>{pages}</>
+
+		return (
+			<table>
+				<thead>
+					<tr>
+						<th>Page</th>
+						<th>Cache</th>
+						<th>Access pattern</th>
+						<th>Table / Index</th>
+						<th>Page Type</th>
+						{/*<th>Number of cells in page</th>
+						<th>Payload</th>
+						<th>Unused</th>*/}
+					</tr>
+				</thead>
+				<tbody>
+					{pages.map((e, i) => (
+						<tr key={i}>
+							<td>{e.pageno}</td>
+							<td>{e.wasCached ? "hit" : "miss"}</td>
+							<td>
+								{e.wasCached
+									? ""
+									: (e.prefetch
+											? `sequential, prefetch ${e.prefetch} pages`
+											: `random`) +
+									  ` (${e.prefetch + 1} KiB XHR)`}
+							</td>
+							<td>{e.page?.name ?? "[system]"}</td>
+							<td>{e.page?.pagetype}</td>
+							{/*<td>{e.page?.number_of_cells}</td>
+							<td
+								title={`${
+									e.page?.payload_bytes || "?"
+								} Bytes Payload`}
+							>
+								{e.page
+									? (
+											100 *
+											(e.page.payload_bytes / 1024)
+									  ).toFixed(0) + "%"
+									: ""}
+							</td>
+							<td>
+								{e.page
+									? (
+											(100 * e.page.unused_bytes) /
+											1024
+									  ).toFixed(0) + "%"
+									: ""}
+									</td>*/}
+						</tr>
+					))}
+				</tbody>
+			</table>
+		)
+	},
+)

@@ -43,6 +43,11 @@ blockquote .source {
 }
 
 .sqlite-httpvfs-demo {
+	@media (min-width: 58rem) {
+		width: calc(100% + 10rem);
+		max-width: 100vw;
+		margin-left: -5rem;
+	}
 	border: 1px solid gray;
 	border-radius: 5px;
 	padding: 1ex;
@@ -135,6 +140,72 @@ blockquote .source {
 				top: 0;
 				transform: translatey(-50%);
 			}
+		}
+	}
+	.page-list {
+		background-color: rgb(45, 45, 45);
+		color: white;
+		padding: 1em;
+		text-align: left;
+		table {
+			margin: 0 auto;
+			border-collapse: collapse;
+			th,
+			td {
+				border: 1px solid gray;
+				padding: 0.4rem;
+			}
+		}
+	}
+	.maxheight {
+		max-height: 400px;
+	}
+
+	/* The flip box container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+	.flip-box {
+		background-color: transparent;
+		width: 100%;
+		perspective: 1000px; /* Remove this if you don't want the 3D effect */
+
+		/* This container is needed to position the front and back side */
+		.flip-box-inner {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			transition: transform 0.8s;
+			transform-style: preserve-3d;
+		}
+
+		/* Do an horizontal flip when you move the mouse over the flip box container */
+		&.flipped .flip-box-inner {
+			transform: rotateY(180deg);
+		}
+
+		/* Position the front and back side */
+		.flip-box-front,
+		.flip-box-back {
+			// position: absolute;
+			width: 100%;
+			height: 100%;
+			backface-visibility: hidden;
+		}
+
+		/* Style the front side */
+		.flip-box-front {
+		}
+
+		/* Style the back side */
+		.flip-box-back {
+			transform: rotateY(180deg);
+		}
+		&.flipped .flip-box-front {
+			position: absolute;
+			top: 0;
+		}
+		&.unflipped .flip-box-back {
+			position: absolute;
+			top: 0;
 		}
 	}
 }
