@@ -1,4 +1,6 @@
 #!/bin/bash
+set -eu
+
 dir="$(dirname "$(realpath "$0")")"
 cd "$dir"
 # need to have run git worktree add out/ gh-pages before build

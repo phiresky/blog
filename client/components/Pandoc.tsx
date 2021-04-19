@@ -2,7 +2,7 @@ import * as p from "pandoc-filter"
 import * as React from "react"
 import { Fragment } from "react"
 
-type Renderers = Partial<
+export type Renderers = Partial<
 	{ [k in p.EltType]: React.FunctionComponent<p.Elt<k>> }
 >
 type PandocConfig = {

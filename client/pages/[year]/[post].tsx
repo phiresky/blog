@@ -14,7 +14,7 @@ import { Post } from "../../../server/build-posts"
 //import htmlParser from "react-markdown/plugins/html-parser"
 import { Code } from "../../components/Code"
 import Page from "../../components/Page"
-import Pandoc, { attrProps } from "../../components/Pandoc"
+import Pandoc, { attrProps, Renderers } from "../../components/Pandoc"
 import { TooltipLink } from "../../components/TooltipLink"
 import { config } from "../../config"
 import { makeUrl } from "../../utils/content"
@@ -60,6 +60,18 @@ export async function getStaticProps(
 	} catch (e: unknown) {
 		throw Error(`could not find post ${slug}: ${String(e)}`)
 	}
+}
+
+const renderers: Renderers = {
+	CodeBlock: ({ c: [attr, text] }) => (
+		<Code {...attrProps(attr)} language={attr[1][0]} value={text} />
+	),
+	Math: ({ c: e }) => {
+		const [type, content] = e
+		if (type.t === "InlineMath") return <InlineMath math={content} />
+		else return <BlockMath math={content} />
+	},
+	Link: TooltipLink,
 }
 class PostUI extends React.Component<Props & WithRouterProps> {
 	render() {
@@ -122,22 +134,7 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 						<Pandoc
 							ele={post.content_ast}
 							allowUnsanitizedHTML
-							renderers={{
-								CodeBlock: ({ c: [attr, text] }) => (
-									<Code
-										{...attrProps(attr)}
-										language={attr[1][0]}
-										value={text}
-									/>
-								),
-								Math: ({ c: e }) => {
-									const [type, content] = e
-									if (type.t === "InlineMath")
-										return <InlineMath math={content} />
-									else return <BlockMath math={content} />
-								},
-								Link: TooltipLink,
-							}}
+							renderers={renderers}
 						/>
 						{/*<ReactMarkdown
 							escapeHtml={false}
