@@ -1,6 +1,7 @@
 {
     "version": "https://jsonfeed.org/version/1",
     "title": "phiresky's blog",
+    "home_page_url": "https://phiresky.github.io/blog/",
     "description": "About my personal projects and other stuff",
     "items": [
         {
@@ -42,7 +43,7 @@
         {
             "url": "https://phiresky.github.io/blog/2021/hosting-sqlite-databases-on-github-pages",
             "title": "Hosting SQLite databases on Github Pages",
-            "summary": "I was writing a tiny website to display statistics of how much sponsored content a Youtube creator has over time when I noticed that I often write a small tool as a website that queries some data from a database and then displays it in a graph, a table or similar. But if you want to use a database, ...",
+            "summary": "I was writing a tiny website to display statistics of how much sponsored content a Youtube creator has over time when I noticed that I often write a small tool as a website that queries some data from a database and then displays it in a graph, a table, or similar. But if you want to use a...",
             "date_modified": "2021-04-17T00:00:00.000Z"
         },
         {

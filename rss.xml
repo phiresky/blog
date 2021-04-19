@@ -2,9 +2,9 @@
 <rss version="2.0">
     <channel>
         <title>phiresky's blog</title>
-        <link>undefined</link>
+        <link>https://phiresky.github.io/blog/</link>
         <description>About my personal projects and other stuff</description>
-        <lastBuildDate>Mon, 19 Apr 2021 00:17:50 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 19 Apr 2021 16:18:24 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>yup</copyright>
@@ -55,7 +55,7 @@
             <link>https://phiresky.github.io/blog/2021/hosting-sqlite-databases-on-github-pages</link>
             <guid>https://phiresky.github.io/blog/2021/hosting-sqlite-databases-on-github-pages</guid>
             <pubDate>Sat, 17 Apr 2021 00:00:00 GMT</pubDate>
-            <description><![CDATA[I was writing a tiny website to display statistics of how much sponsored content a Youtube creator has over time when I noticed that I often write a small tool as a website that queries some data from a database and then displays it in a graph, a table or similar. But if you want to use a database, ...]]></description>
+            <description><![CDATA[I was writing a tiny website to display statistics of how much sponsored content a Youtube creator has over time when I noticed that I often write a small tool as a website that queries some data from a database and then displays it in a graph, a table, or similar. But if you want to use a...]]></description>
         </item>
         <item>
             <title><![CDATA[10 underused features of modern Python [incomplete]]]></title>
