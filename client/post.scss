@@ -41,3 +41,100 @@ blockquote .source {
 	font-style: normal;
 	margin-top: 1em;
 }
+
+.sqlite-httpvfs-demo {
+	border: 1px solid gray;
+	border-radius: 5px;
+	padding: 1ex;
+	padding-top: 0;
+	pre,
+	.like-codeblock {
+		border-radius: 3px;
+	}
+	[role="button"] {
+		cursor: pointer;
+	}
+	.like-codeblock {
+		color: rgb(204, 204, 204);
+		background: rgb(45, 45, 45) none repeat scroll 0% 0%;
+		font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+		font-size: 1em;
+		text-align: left;
+		white-space: pre;
+		word-spacing: normal;
+		word-break: normal;
+		overflow-wrap: normal;
+		line-height: 1.5;
+		hyphens: none;
+		padding: 1em;
+		margin: 0.5em 0px;
+		overflow: auto;
+		width: 100%;
+		border: medium none;
+	}
+	.box-title {
+		color: gray;
+		font-size: small;
+		text-transform: uppercase;
+		background: white;
+		padding: 0 0.15em;
+		transform: translatey(-50%);
+		width: max-content;
+	}
+
+	.with-inner-title {
+		.inner-title {
+			display: flex;
+			padding-bottom: 0;
+			transform: translatey(50%);
+
+			> div {
+				font-size: small;
+				width: max-content;
+				text-transform: uppercase;
+				padding: 0 0.3em;
+				margin-left: 1em;
+				color: white;
+				display: inline-block;
+				background: gray;
+				border-radius: 3px;
+			}
+			> div.floatright {
+				margin-left: auto;
+				margin-right: 1em;
+			}
+		}
+
+		> .inner {
+			margin-top: 0 !important;
+			margin-bottom: 0 !important;
+		}
+		> .hanging-button {
+			transform: translatey(-50%);
+			border-radius: 3px;
+			border: none;
+			margin-top: 0;
+			padding-top: 0;
+			box-sizing: border-box;
+			color: white;
+			background: #808080;
+			cursor: pointer;
+			text-transform: uppercase;
+			margin-left: 1em;
+			// margin-right: 1em;
+			padding: 0.2em 0.5em;
+			font-size: small;
+			vertical-align: top;
+		}
+		&.hanging {
+			margin-top: 2px;
+			position: relative;
+			.inner-title {
+				position: absolute;
+				width: 100%;
+				top: 0;
+				transform: translatey(-50%);
+			}
+		}
+	}
+}
