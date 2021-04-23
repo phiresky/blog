@@ -19,9 +19,10 @@ import {
 //import wasmUrl from "sql.js-httpvfs/dist/sql-wasm.js?resource"
 import { CodeProps } from "../components/Code"
 import CodeBlock from "../components/CodeBlock"
+import { FtsDemo } from "./FtsDemo"
 Modal.setAppElement(".lh-copy")
 
-class Store {
+export class Store {
 	worker: WorkerHttpvfs | null = null
 	error = ""
 	ready: Promise<WorkerHttpvfs>
@@ -77,9 +78,7 @@ class Store {
 			wasmUrl.toString(),
 		)
 
-		await store.worker?.db.query(
-			`pragma query_only = true; select * from sqlite_master`,
-		) // cache the main pages
+		await store.worker?.db.query(`select * from sqlite_master`) // cache the main pages
 		return this.worker
 	}
 }
@@ -88,6 +87,7 @@ type Config = {
 	diffstat?: true
 	logPageReads?: true
 	defaultPageReadTable?: true
+	ftsDemo?: true
 }
 type Z = (keyof Config)[]
 
@@ -103,6 +103,7 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 	for (const cls of (props.className?.split(" ") || []) as Z) {
 		config[cls] = true
 	}
+	if (config.ftsDemo) return <FtsDemo store={store} />
 	React.useEffect(() => {
 		if (config.autorun) void run()
 	}, [])
@@ -111,6 +112,7 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 	const [diffstat, setDiffstat] = React.useState<SqliteStats | null>(null)
 	const [readPages, setReadPages] = React.useState<PageReadLog[] | null>(null)
 	const [editMode, setEditMode] = React.useState(false)
+	const inputCodeBlockRef = React.useRef<HTMLDivElement>(null)
 	async function run() {
 		setOutput("[running...]")
 		console.log("running", code)
@@ -172,6 +174,7 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 				</div>
 				{!editMode ? (
 					<CodeBlock
+						ref={inputCodeBlockRef}
 						className="inner"
 						language="sql"
 						wrap

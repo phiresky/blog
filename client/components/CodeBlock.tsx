@@ -10,6 +10,7 @@ import bash from "react-syntax-highlighter/dist/cjs/languages/prism/bash"
 import sql from "react-syntax-highlighter/dist/cjs/languages/prism/sql"
 import python from "react-syntax-highlighter/dist/cjs/languages/prism/python"
 import typescript from "react-syntax-highlighter/dist/cjs/languages/prism/typescript"
+import json from "react-syntax-highlighter/dist/cjs/languages/prism/json"
 
 const SyntaxHighlighter = PrismLight as React.ComponentClass<any> & {
 	registerLanguage(x: string, mod: any): void
@@ -19,6 +20,7 @@ SyntaxHighlighter.registerLanguage("bash", bash)
 SyntaxHighlighter.registerLanguage("sql", sql)
 SyntaxHighlighter.registerLanguage("python", python)
 SyntaxHighlighter.registerLanguage("typescript", typescript)
+SyntaxHighlighter.registerLanguage("json", json)
 // https://medium.com/young-developer/react-markdown-code-and-syntax-highlighting-632d2f9b4ada
 
 class CodeBlock extends PureComponent<{
