@@ -3,7 +3,15 @@ import AsyncSelect from "react-select/async"
 import debounce from "debounce-promise"
 import { WorkerHttpvfs } from "sql.js-httpvfs"
 import { useState } from "react"
-
+type IndicatorInfo = {
+	indicator_code: string
+	topic: string
+	indicator_name: string
+	short_definition: string
+	long_definition: string
+	statistical_concept_and_methodology: string
+	development_relevance: string
+}
 export async function search(db: WorkerHttpvfs["db"], author: string) {
 	try {
 		const query_inner = author
@@ -12,9 +20,9 @@ export async function search(db: WorkerHttpvfs["db"], author: string) {
 			.map((e) => `"${e}"*`)
 			.join(" ")
 		const query = `${query_inner}`
-		const sql_query = `select z  from indicator_search where name match ? limit 20`
+		const sql_query = `select * from indicator_search where name match ? limit 20`
 		console.log("executing search query", query, sql_query)
-		const ret = (await db.query(sql_query, [query])) as { name: string }[]
+		const ret = (await db.query(sql_query, [query])) as IndicatorInfo[]
 		return ret
 	} catch (e) {
 		console.error("authorsSearch", e)
