@@ -14,7 +14,6 @@ const isProd = process.env.NODE_ENV === "production"
 module.exports = withBundleAnalyzer({
 	assetPrefix: isProd ? config.blogRoot : "/",
 	webpack: (config) => {
-		console.log(config)
 		config.output.assetModuleFilename = "[name][ext]"
 		return config
 	},

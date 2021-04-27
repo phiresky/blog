@@ -23,11 +23,10 @@ import { FtsDemo } from "./FtsDemo"
 Modal.setAppElement(".lh-copy")
 
 export class Store {
-	worker: WorkerHttpvfs | null = null
+	private worker: WorkerHttpvfs | null = null
 	error = ""
 	ready: Promise<WorkerHttpvfs>
 	constructor() {
-		console.log("STORE INIT")
 		if (typeof window === "undefined") {
 			this.ready = Promise.reject("[server side]")
 			this.ready.catch(() => {
@@ -79,6 +78,14 @@ export class Store {
 		)
 
 		await store.worker?.db.query(`select * from sqlite_master`) // cache the main pages
+		await store.worker?.worker.evalCode(`
+			function getFlag(country_code) {
+				// just some unicode magic
+				return String.fromCodePoint(...Array.from(country_code||"")
+					.map(c => 127397 + c.codePointAt()));
+			}
+			
+			await db.create_function("get_flag", getFlag)`)
 		return this.worker
 	}
 }
@@ -88,6 +95,7 @@ type Config = {
 	logPageReads?: true
 	defaultPageReadTable?: true
 	ftsDemo?: true
+	js?: true
 }
 type Z = (keyof Config)[]
 
@@ -112,18 +120,29 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 	const [diffstat, setDiffstat] = React.useState<SqliteStats | null>(null)
 	const [readPages, setReadPages] = React.useState<PageReadLog[] | null>(null)
 	const [editMode, setEditMode] = React.useState(false)
-	const inputCodeBlockRef = React.useRef<HTMLDivElement>(null)
+	const [inputHeight, setInputHeight] = React.useState(100)
 	async function run() {
 		setOutput("[running...]")
+		const isJS = config.js || false
 		console.log("running", code)
 		try {
 			const { db, worker } = await store.ready
 			let statBefore
 			if (config.diffstat) statBefore = await worker.getStats()
 			if (config.logPageReads) await worker.getResetAccessedPages()
-			const result = await db.query(code)
+			const result = await (isJS
+				? (worker.evalCode(code) as unknown)
+				: db.query(code))
 			console.log("DONE, setout")
-			setOutput(JSON.stringify(result, null, 2))
+			let out = JSON.stringify(result, null, 2)
+			if (!out)
+				out =
+					"[no output, make sure your last statement has `return` before it]"
+			if (out.length > 50000)
+				out =
+					out.slice(0, 50000) +
+					`\n[... (output truncated, total length ${out.length})]`
+			setOutput(out)
 			if (config.diffstat) {
 				const statAfter = await worker.getStats()
 				if (statBefore && statAfter) {
@@ -156,10 +175,10 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 
 	return (
 		<div className="sqlite-httpvfs-demo">
-			<div className="box-title">Demo</div>
+			<div className="box-title">{config.js ? "JS " : ""}Demo</div>
 			<div className="with-inner-title">
 				<div className="inner-title">
-					<div>Input SQL</div>
+					<div>Input {config.js ? "JavaScript" : "SQL"}</div>
 					<div role="button" className="floatright" onClick={edit}>
 						{editMode ? (
 							<>
@@ -173,16 +192,22 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 					</div>
 				</div>
 				{!editMode ? (
-					<CodeBlock
-						ref={inputCodeBlockRef}
-						className="inner"
-						language="sql"
-						wrap
-						value={code}
-					/>
+					<div
+						className="inner-body"
+						ref={(e) => e && setInputHeight(e?.clientHeight)}
+					>
+						<CodeBlock
+							className="inner-body"
+							language={config.js ? "typescript" : "sql"}
+							wrap
+							value={code}
+						/>
+					</div>
 				) : (
 					<textarea
-						className="like-codeblock inner"
+						spellCheck={false}
+						className="like-codeblock inner-body"
+						style={{ height: inputHeight }}
 						value={code}
 						onChange={(e) => setCode(e.currentTarget.value)}
 					/>
@@ -210,7 +235,7 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 				</div>
 				{output ? (
 					<CodeBlock
-						className="inner maxheight"
+						className="inner-body maxheight"
 						language="json"
 						wrap
 						value={output}
@@ -269,17 +294,14 @@ const SqliteStatsView: React.FC<{
 		}
 		setIsOpen(true)
 		setInteracted(true)
-		if (!store.worker || !store.worker.db) {
-			setData("no db")
-			return
-		}
+		const { db } = await store.ready
 		if (!readPages) return
 		try {
 			if (!store.statsConnected) {
-				await store.worker?.db.query(`attach 'dbstat.sqlite3' as stat`)
+				await db.query(`attach 'dbstat.sqlite3' as stat`)
 				store.statsConnected = true
 			}
-			const pageinfos = (await store.worker?.db.query(`
+			const pageinfos = (await db.query(`
 				select *, n.name, t.name as pagetype from stat.stat s
 				join stat.names n on n.id = s.name
 				join stat.pagetypes t on t.id = s.pagetype 
@@ -317,7 +339,7 @@ const SqliteStatsView: React.FC<{
 								</div>
 							)}
 						</div>
-						<div className="inner like-codeblock">
+						<div className="inner-body like-codeblock">
 							fetched {formatBytes(stats.totalFetchedBytes)} in{" "}
 							{stats.totalRequests} requests (DB size:{" "}
 							{formatBytes(stats.totalBytes)})
@@ -338,7 +360,7 @@ const SqliteStatsView: React.FC<{
 								</div>
 							)}
 						</div>
-						<div className="inner page-list maxheight">
+						<div className="inner-body page-list maxheight">
 							{data && <PageReadsView pages={data} />}
 						</div>
 					</div>

@@ -13,37 +13,40 @@ Hosting a static website is much easier than a backend server - there's many fre
 
 So I wrote a tool to be able to use a real SQL database in a statically hosted website!
 
-Here's a demo using the [World Development Indicators dataset](https://github.com/phiresky/world-development-indicators-sqlite/){target="\_blank"} - a dataset with 6 tables and over 8 million rows (600MByte total).
+Here's a demo using the [World Development Indicators dataset](https://github.com/phiresky/world-development-indicators-sqlite/){target="\_blank"} - a dataset with 6 tables and over 8 million rows (670 MiByte total).
 
 ```{.sqlite-httpvfs-demo .autorun .diffstat}
 select country_code, long_name from wdi_country limit 3;
 ```
 
-As you can see, we can query the `wdi_country` table while only using 33kB of data!
+As you can see, we can query the `wdi_country` table while fetching only 1kB of data!
 
-This is a full SQLite query engine. As such, we can use e.g. the [JSON functions](https://www.sqlite.org/json1.html){target="\_blank"}:
+This is a full SQLite query engine. As such, we can use e.g. the [SQLite JSON functions](https://www.sqlite.org/json1.html){target="\_blank"}:
 
 ```{.sqlite-httpvfs-demo .autorun}
-select json_extract('{"foo": {"bar": 123}}', '$.foo.bar') as value
+select json_extract(arr.value, '$.foo.bar') as bar
+  from json_each('[{"foo": {"bar": 123}}, {"foo": {"bar": "baz"}}]') as arr
 ```
 
-We can also call JS functions from within a query:
+We can also register JS functions so they can be called from within a query. Here's an example with a `getFlag` function that gets the flag emoji for a country:
 
-```{.sqlite-httpvfs-demo js}
-// just some magic
-const get_flag = country_code => Array.from(country_code)
-  .map(letter =>
-    String.fromCodePoint(127462
-      + letter.codePointAt(0) - "a".codePointAt(0))
-  )
-  .join("")
-);
-await db.create_or_replace_function("get_flag", get_flag);
+```{.sqlite-httpvfs-demo .js .diffstat .logPageReads}
+function getFlag(country_code) {
+  // just some unicode magic
+  return String.fromCodePoint(...Array.from(country_code||"")
+    .map(c => 127397 + c.codePointAt()));
+}
 
-await db.query(`
-  select get_flag("2-alpha_code"), long_name from country;
-`);
+await db.create_function("get_flag", getFlag)
+return await db.query(`
+  select long_name, get_flag("2-alpha_code") as flag from wdi_country
+    where region is not null and currency_unit = 'Euro';
+`)
 ```
+
+<div class="flex items-center justify-center ph3 bg-lightest-blue navy">
+  <span class="lh-title">Press the Run button to run the following demos. You can change the code in any way you like, though if you make a query too broad it *will* fetch large amounts of data ;)</span>
+</div>
 
 Note that this website is 100% hosted on a static file hoster (GitHub Pages).
 
@@ -52,24 +55,24 @@ Firstly, SQLite is compiled to WebAssembly. SQLite can be compiled with EMScript
 
 sql.js only allows you to create and read from databases that are fully in memory though - so I implemented a virtual file system that fetches chunks of the database with HTTP Range requests when SQLite tries to read from the filesystem. From SQLite's perspective, it just looks like it's living on a normal computer with an empty filesystem except for a file called `/wdi.sqlite3` that it can read from.
 
-[info about pages / page sizes]
+Since fetching data via HTTP has a pretty large overhead, we need to fetch data in chunks and find some balance between the number of requests and the used bandwidth. Thankfully, SQLite already organizes its database in "pages" with a user-defined [page size](https://www.sqlite.org/pgszchng2016.html) (4 KiB by default). I've set the page size to 1 KiB for this database.
 
 Here's an example of a simple index lookup query:
 
 ```{.sqlite-httpvfs-demo .diffstat .logPageReads .defaultPageReadTable}
-select indicator_code, long_description from wdi_series where indicator_name
+select indicator_code, long_definition from wdi_series where indicator_name
     = 'Literacy rate, youth total (% of people ages 15-24)'
 ```
 
 Run the above query and look at the page read log. SQLite does 7 page reads for that query.
 
--   Three page reads are just schema reads (that are already cached)
+-   Three page reads are just some to get some schema information (these are already cached)
 -   Two page reads are the index lookup in the index `on wdi_series (indicator_name)`
 -   Two page reads are on the `wdi_series` table data.
 
 Both the index as well as the table reads are B-Tree lookups.
 
-A more complex query: What are countries with the lowest youth literacy rate, based on the newest data from after 2010?
+A more complex query: What are the countries with the lowest youth literacy rate, based on the newest data from after 2010?
 
 ```{.sqlite-httpvfs-demo .diffstat .logPageReads}
 with newest_datapoints as (
@@ -80,36 +83,58 @@ with newest_datapoints as (
     and year > 2010
   group by country_code
 )
-select c.long_name as country, printf('%.1f %%', value) as "Youth Literacy Rate"
+select c.short_name as country, printf('%.1f %%', value) as "Youth Literacy Rate"
 from wdi_data
   join wdi_country c using (country_code)
   join newest_datapoints using (indicator_code, country_code, year)
 order by value asc limit 10
 ```
 
-The above query should do around 30 GET requests, fetching a total of 200KiB.
+The above query should do around 20 GET requests, fetching a total of 270KiB. Note that it only has to do 20 requests and not 270 (as would be expected when fetching 1KiB at a time). That's because I implemented a pre-fetching system that tries to detect access patterns through three separate virtual read heads and exponentially increases the request size for sequential reads. This means that index scans or table scans reading more than a few KiB of data will only cause a number of requests that is logarithmic in the total byte length of the scan. You can see the effect of this by looking at the "Access pattern" column in the page read log above.
+
+We can also make use of the SQLite [FTS](https://sqlite.org/fts5.html) module so we can do a full-text search on the more text-heavy information in the database - in this case there are over 1000 human development indicators in the database with longer descriptions.
 
 ```{.sqlite-httpvfs-demo .diffstat .logPageReads}
-select sum(length(long_definition)) from wdi_series;
+select * from indicator_search
+where indicator_search match 'educatio* femal*'
+order by rank limit 10
 ```
 
-```{.sqlite-httpvfs-demo .diffstat .logPageReads}
-select snippet(indicator_search, -1, '[[', ']]', ' [...] ', 32) as snippet, * from indicator_search
-where indicator_search match 'educatio*'
-order by rank
-limit 10
-```
+The total amount of data in the `indicator_search` FTS table is around 8 MByte. The above query should only fetch around 70 KiB. You can see how it is constructed [here](https://github.com/phiresky/world-development-indicators-sqlite/blob/gh-pages/postproc.sh#L15).
 
 ```{.sqlite-httpvfs-demo .ftsDemo}
 
 ```
 
+---
+
+Bonus: Since we're already running a database in our browser, why not pretend our browser is a database?
+
+```{.sqlite-httpvfs-demo}
+select count(*) as number_of_demos from dom
+  where selector match '.content div.sqlite-httpvfs-demo';
+select count(*) as sqlite_mentions from dom
+  where selector match '.content p' and textContent like '%SQLite%';
+```
+
+We can even insert elements directly into the DOM:
+
 ```{.sqlite-httpvfs-demo}
 insert into dom (parent, tagName, textContent)
-    select 'ul#outtable1', 'li', long_name
-    from wdi_country
+    select 'ul#outtable1', 'li', short_name
+    from wdi_country where currency_unit = 'Euro'
 ```
 
 Output:
 
 <ul id="outtable1"></ul>
+
+And update elements in the DOM:
+
+```{.sqlite-httpvfs-demo}
+update dom set textContent =
+  get_flag("2-alpha_code") || textContent
+from wdi_country
+where selector match 'ul#outtable1 > li'
+  and textContent = wdi_country.short_name
+```

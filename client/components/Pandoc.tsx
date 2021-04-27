@@ -162,6 +162,17 @@ export const defaultRenderers: Renderers = {
 			}
 		</PandocConfigContext.Consumer>
 	),
+	RawInline: ({ c: [type, content] }) => (
+		<PandocConfigContext.Consumer>
+			{(config) =>
+				type === "html" && config.allowUnsanitizedHTML ? (
+					<span dangerouslySetInnerHTML={{ __html: content }} />
+				) : (
+					<span className={`raw raw-${type}`}>{content}</span>
+				)
+			}
+		</PandocConfigContext.Consumer>
+	),
 }
 
 export default function Pandoc({
