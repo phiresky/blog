@@ -1,20 +1,11 @@
-import { Store } from "./SqliteHttpvfsDemo"
-import AsyncSelect from "react-select/async"
 import debounce from "debounce-promise"
 import React, { useEffect, useState } from "react"
 import { FormatOptionLabelMeta } from "react-select"
-import {
-	Bar,
-	BarChart,
-	Legend,
-	Line,
-	LineChart,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from "recharts"
-import ResponsiveContainer from "../components/ResponsiveContainer"
+import AsyncSelect from "react-select/async"
 import VisibilitySensor from "react-visibility-sensor"
+import { Legend, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts"
+import ResponsiveContainer from "../components/ResponsiveContainer"
+import { Store } from "./SqliteHttpvfsDemo"
 
 type CountryInfo = {
 	country_code: string

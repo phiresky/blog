@@ -10,7 +10,7 @@
 		"feed": "yarn runts server/build-feed.ts",
 		"typecheck": "tsc",
 		"lint": "eslint . --ext .ts,.tsx",
-		"build": "yarn typecheck && yarn lint && yarn posts && yarn feed && yarn next build client && yarn next export client",
+		"build": "rm -r client/out/* && yarn typecheck && yarn lint && yarn posts && yarn feed && yarn next build client && yarn next export client",
 		"commit": "yarn build && ./postprocess.sh"
 	},
 	"devDependencies": {
