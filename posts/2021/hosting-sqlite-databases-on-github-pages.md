@@ -53,7 +53,7 @@ Note that this website is 100% hosted on a static file hoster (GitHub Pages).
 So how do you use a database on a static file hoster?
 Firstly, SQLite (written in C) is compiled to WebAssembly. SQLite can be compiled with [emscripten](https://emscripten.org/) without any modifications, and the [sql.js](https://github.com/sql-js/sql.js/) library is a thin JS wrapper around the wasm code.
 
-sql.js only allows you to create and read from databases that are fully in memory though - so I implemented a virtual file system that fetches chunks of the database with HTTP Range requests when SQLite tries to read from the filesystem [sql.js-httpvfs](https://github.com/phiresky/sql.js-httpvfs). From SQLite's perspective, it just looks like it's living on a normal computer with an empty filesystem except for a file called `/wdi.sqlite3` that it can read from.
+sql.js only allows you to create and read from databases that are fully in memory though - so I implemented a virtual file system that fetches chunks of the database with HTTP Range requests when SQLite tries to read from the filesystem: [sql.js-httpvfs](https://github.com/phiresky/sql.js-httpvfs). From SQLite's perspective, it just looks like it's living on a normal computer with an empty filesystem except for a file called `/wdi.sqlite3` that it can read from. Of course it can't write to this file, but a read-only database is still very useful.
 
 Since fetching data via HTTP has a pretty large overhead, we need to fetch data in chunks and find some balance between the number of requests and the used bandwidth. Thankfully, SQLite already organizes its database in "pages" with a user-defined [page size](https://www.sqlite.org/pgszchng2016.html) (4 KiB by default). I've set the page size to 1 KiB for this database.
 
@@ -104,7 +104,7 @@ order by rank limit 10
 
 The total amount of data in the `indicator_search` FTS table is around 8 MByte. The above query should only fetch around 70 KiB. You can see how it is constructed [here](https://github.com/phiresky/world-development-indicators-sqlite/blob/gh-pages/postproc.sh#L15).
 
-And finally, here's a more complete demonstration of the usefulness of this system - here's a interactive graph showing the development of a few countries over time, for any countries you want using any indicator from the dataset:
+And finally, here's a more complete demonstration of the usefulness of this system - here's an interactive graph showing the development of a few countries over time, for any countries you want using any indicator from the dataset:
 
 ```{.sqlite-httpvfs-demo .ftsDemo}
 [this will insert the FtsDemo.tsx component]

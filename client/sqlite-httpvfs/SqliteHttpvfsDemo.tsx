@@ -361,7 +361,7 @@ const SqliteStatsView: React.FC<{
 									onClick={show}
 								>
 									<Icon icon={faInfoCircle} /> Show page read
-									log ({readPages.length})
+									log ({readPages.length} reads)
 								</div>
 							)}
 						</div>
