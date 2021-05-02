@@ -187,7 +187,7 @@ export const FtsDemo: React.FC<{ store: Store }> = ({ store }) => {
 	}, [indicator, countries, visible])
 	return (
 		<VisibilitySensor onChange={(e) => setVisible(e)}>
-			<div>
+			<div className="sqlite-httpvfs-demo">
 				Countries:{" "}
 				<AsyncSelect<CountryInfo, true>
 					value={countries}
@@ -244,6 +244,36 @@ export const FtsDemo: React.FC<{ store: Store }> = ({ store }) => {
 						</LineChart>
 					</ResponsiveContainer>
 				)}
+				{/*
+					indicator_code: "IT.NET.USER.ZS",
+	topic: "Infrastructure: Communications",
+	indicator_name: "Individuals using the Internet (% of population)",
+	short_definition: null,
+	long_definition:
+		"Internet users are individuals who have used the Internet (from any location) in the last 3 months. The Internet can be used via a computer, mobile phone, personal digital assistant, games machine, digital TV etc.",
+	statistical_concept_and_methodology:
+		"The Internet is a world-wide public computer network. It provides access to a number of communication services including the World Wide Web and carries email, news, entertainment and data files, irrespective of the device used (not assumed to be only via a computer - it may also be by mobile phone, PDA, games machine, digital TV etc.). Access can be via a fixed or mobile network. For additional/latest information on sources and country notes, please also refer to: https://www.itu.int/en/ITU-D/Statistics/Pages/stat/default.aspx",
+	development_relevance:
+		"The digital and information revolution has changed the way the world learns, communicates, does business, and treats illnesses. New information and communications technologies (ICT) offer vast opportunities for progress in all walks of life in all countries - opportunities for economic growth, improved health, better service delivery, learning through distance education, and social and cultural advances.\n\nToday's smartphones and tablets have computer power equivalent to that of yesterday's computers and provide a similar range of functions. Device convergence is thus rendering the conventional definition obsolete.\n\nComparable statistics on access, use, quality, and affordability of ICT are needed to formulate growth-enabling policies for the sector and to monitor and evaluate the sector's impact on development. Although basic access data are available for many countries, in most developing countries little is known about who uses ICT; what they are used for (school, work, business, research, government); and how they affect people and businesses. The global Partnership on Measuring ICT for Development is helping to set standards, harmonize information and communications technology statistics, and build statistical capacity in developing countries. However, despite significant improvements in the developing world, the gap between the ICT haves and have-nots remains.",
+	snippet: "",
+}
+
+*/}
+				<details>
+					<summary>Extra information about this indicator</summary>
+					<dl className="maxheight">
+						<dt>Indicator Code</dt>
+						<dd>{indicator?.indicator_code}</dd>
+						<dt>Long definition</dt>
+						<dd>{indicator?.long_definition}</dd>
+						<dt>Statistical concept and methodology</dt>
+						<dd>
+							{indicator?.statistical_concept_and_methodology}
+						</dd>
+						<dt>Development relevance</dt>
+						<dd>{indicator?.development_relevance}</dd>
+					</dl>
+				</details>
 			</div>
 		</VisibilitySensor>
 	)

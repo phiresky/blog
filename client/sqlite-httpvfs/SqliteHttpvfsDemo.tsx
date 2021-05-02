@@ -39,13 +39,13 @@ export class Store {
 	}
 	statsConnected = false
 	async init() {
-		/*
-		const workerUrl = new URL(
-			"sql.js-httpvfs/dist/sqlite.worker.js",
+		/*const workerUrl = new URL(
+			"../../node_modules/sql.js-httpvfs/dist/sqlite.worker.js",
 			import.meta.url,
 		)
+		console.log("worker url", workerUrl)
 		const wasmUrl = new URL(
-			"sql.js-httpvfs/dist/sql-wasm.wasm",
+			"../../node_modules/sql.js-httpvfs/dist/sql-wasm.wasm",
 			import.meta.url,
 		)*/
 		// until nextjs fixes their webpack5 support:
@@ -116,7 +116,7 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 		if (config.autorun) void run()
 	}, [])
 	const [code, setCode] = React.useState(props.value)
-	const [output, setOutput] = React.useState("")
+	const [output, setOutput] = React.useState("" as string | JSX.Element)
 	const [diffstat, setDiffstat] = React.useState<SqliteStats | null>(null)
 	const [readPages, setReadPages] = React.useState<PageReadLog[] | null>(null)
 	const [editMode, setEditMode] = React.useState(false)
@@ -133,7 +133,6 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 			const result = await (isJS
 				? (worker.evalCode(code) as unknown)
 				: db.query(code))
-			console.log("DONE, setout")
 			let out = JSON.stringify(result, null, 2)
 			if (!out)
 				out =
@@ -161,7 +160,24 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 				setReadPages(await worker.getResetAccessedPages())
 			}
 		} catch (e) {
-			setOutput(`[error: ${String(e)}]`)
+			if (String(e).includes("SharedArrayBuffer")) {
+				setOutput(
+					<>
+						[error: {String(e)}]<br />
+						Your browser might either be too old to support
+						SharedArrayBuffer, or too new and have some Spectre
+						protections enabled that don't work on GitHub Pages
+						since they don't allow setting the necessary isolation
+						headers. Try going to{" "}
+						<a href="https://phiresky.netlify.app/blog/2021/hosting-sqlite-databases-on-github-pages/">
+							the Netlify mirror of this blog
+						</a>{" "}
+						for the DOM demos.
+					</>,
+				)
+			} else {
+				setOutput(`[error: ${String(e)}]`)
+			}
 		}
 	}
 	function edit() {
@@ -171,6 +187,25 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 			setOutput("")
 		}
 		setEditMode(!editMode)
+	}
+
+	let outputDiv
+
+	if (output) {
+		if (typeof output === "string") {
+			outputDiv = (
+				<CodeBlock
+					className="inner-body maxheight"
+					language="json"
+					wrap
+					value={output}
+				/>
+			)
+		} else {
+			outputDiv = <div className="like-codeblock">{output}</div>
+		}
+	} else {
+		outputDiv = <div style={{ paddingBottom: "1ex" }} />
 	}
 
 	return (
@@ -233,16 +268,7 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 						</div>
 					)}
 				</div>
-				{output ? (
-					<CodeBlock
-						className="inner-body maxheight"
-						language="json"
-						wrap
-						value={output}
-					/>
-				) : (
-					<div style={{ paddingBottom: "1ex" }} />
-				)}
+				{outputDiv}
 			</div>
 			{config.diffstat && diffstat && (
 				<SqliteStatsView

@@ -66,6 +66,7 @@
 		"remark-react": "^8.0.0",
 		"remark-stringify": "^9.0.1",
 		"sass": "^1",
+		"sql.js-httpvfs": "^0.8.6",
 		"strip-markdown": "^4.0.0",
 		"tachyons": "^4.11.1",
 		"ts-loader": "^9.1.1",

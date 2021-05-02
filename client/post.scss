@@ -134,6 +134,7 @@ pre {
 		overflow: auto;
 		width: 100%;
 		border: medium none;
+		white-space: pre-wrap;
 	}
 	.box-title {
 		color: gray;
@@ -266,5 +267,8 @@ pre {
 			position: absolute;
 			top: 0;
 		}
+	}
+	details summary {
+		cursor: pointer;
 	}
 }
