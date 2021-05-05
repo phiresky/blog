@@ -188,6 +188,14 @@ with Pool() as p:
 
 This code does the same as `for i in [1,2,3]: f(i)` except using all your CPU cores.
 
+## Typed Argparse
+
+[Argparse](https://docs.python.org/3/library/argparse.html) is a neat library to create a simple command line interface. But arguments are declared as strings, and the IDE can't know about them.
+
+With [Typed-Argparse](https://github.com/swansonk14/typed-argument-parser), your arguments are parsed directly into a class instance! It's a separate library, not integrated in python like argparse, but it's much neater.
+
+![TAP example](https://raw.githubusercontent.com/swansonk14/typed-argument-parser/master/images/tap.png)
+
 ## Poetry
 
 Here is all the stages of a Python developer's slow decent into madness:
@@ -211,18 +219,15 @@ Here is all the stages of a Python developer's slow decent into madness:
 
     Then you try running the project, but it turns out it actually also needs `sklearn`. So you try `pip install sklearn` only to realize that `sklearn` is actually a random package from someone else and to get `sklearn` you actually need to install `scikit-learn`. You realize that package names are not actually related to the names of python modules (except incidentally) and feel enlightened by the power!
 
-    But the code still doesn't run, theer's some weird issue. After an hour of investigation, you find some obscure bug [caused by an incompatible change](http://blog.khinsen.net/posts/2017/11/16/a-plea-for-stability-in-the-scipy-ecosystem/) some time 5 years ago in numpy. You try some old numpy versions until you find one that works. You learn about semver and freezing, and you feel enlightened! The developer should have just put `numpy==1.10` into their requirements.txt!
+    But the code still doesn't run, theer's some weird issue. After an hour of investigation, you find some obscure bug [caused by an incompatible change](http://blog.khinsen.net/posts/2017/11/16/a-plea-for-stability-in-the-scipy-ecosystem/) some time 5 years ago in numpy. You try some old numpy versions until you find one that works. You learn about [semver](https://devhints.io/semver) and [freezing](https://tech.instacart.com/freezing-pythons-dependency-hell-in-2018-f1076d625241), and you feel enlightened! The developer should have just put `numpy==1.10` into their requirements.txt!
 
-6.  You find [something that recommends using Conda](https://pytorch.org/get-started/locally/). You are somewhat confused why the conda download is taking so long and eats up 2GB of bandwidth.
+6.  You find [something that recommends using Conda](https://pytorch.org/get-started/locally/). You are somewhat confused why the conda download is taking so long and eating up 2GB of bandwidth.
     After accepting a random EULA and having your shell changed prompt always say `(base) $`, you realize that in conda, everything is an env! It's so quick to add libraries, [even weird native ones](https://anaconda.org/anaconda/mkl) ! You feel enlightened.
-7.  You read some documentation and call a python function, but the function does not exist. After some reading, you see that the package you installed via conda is an outdated version. You now understand that conda is a completely different package manager from pip, and that conda packages are actually managed by third parties, some of which are outdated, and many don't exist at all. You start using `pip` for some things and `conda` for other things, all in the same environment.
+7.  You read some documentation and call a python function, but the function does not exist. After some reading, you see that the package you installed via conda is an outdated version. You now understand that conda is a completely different package manager from pip, and that conda packages are actually managed by third parties, some of which are outdated, and many don't exist at all. You start using `pip` for some things and `conda` for other things, all in the same environment. Sometimes you randomly add `-c conda-forge` when conda install doesn't work.
 8.  The find out about the Official Modern Python Packaging tool [pipenv](https://pipenv.pypa.io/en/latest/)! Pipenv always and automatically manages a virtualenv with the exact dependencies as defined in a `Pipfile`, which is like a supercharged `requirements.txt`. It's amazing! Except you soon try to install a package and get a `Could not resolve dependencies` error. You google a while, and figure out that most pypi packages don't actually have correctly specified dependencies, and that pip just doesn't really care about that. You also find out that [pipenv only really pretended to be an official tool](https://chriswarrick.com/blog/2018/07/17/pipenv-promises-a-lot-delivers-very-little/).
-9.  You find out about [poetry](https://python-poetry.org/). It's like pipenv but actually good! It only takes 2 minutes to resolve dependencies instead of 10! It even puts your virtualenv in `~/.cache` because it _really_ doesn't matter if it gets deleted!
+9.  You find out about [poetry](https://python-poetry.org/). It's like pipenv but actually fairly good! It only takes 2 minutes to resolve dependencies instead of 10! It even puts your virtualenv in `~/.cache` because it _really_ doesn't matter if it gets deleted!
+10. A while later you find the latest development of python dependency management: [pyflow](https://github.com/David-OConnor/pyflow#why-add-another-python-manager) and [pdm](https://github.com/pdm-project/pdm). It uses the same standard `pyproject.toml` format as poetry, but it puts your dependencies in a `./__pypackages__` directory so when running stuff you don't have to care about activating a virtualenv or always using `poetry run python`. ... Wait, isn't that literally just [node_modules](https://www.reddit.com/r/ProgrammerHumor/comments/6s0wov/heaviest_objects_in_the_universe/)? The thing JS devs have been complaining about for a decade?
 
-## Typed Argparse
+Tl;dr:
 
-Argparse is a neat library to create a simple command line interface. But arguments are declared as strings, and the IDE can't know about them.
-
-With [Typed-Argparse](https://github.com/swansonk14/typed-argument-parser), your arguments are parsed directly into a class instance!
-
-![TAP example](https://raw.githubusercontent.com/swansonk14/typed-argument-parser/master/images/tap.png)
+![xkcd](https://imgs.xkcd.com/comics/python_environment.png)
