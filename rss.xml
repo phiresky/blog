@@ -4,7 +4,7 @@
         <title>phiresky's blog</title>
         <link>https://phiresky.github.io/blog/</link>
         <description>About my personal projects and other stuff</description>
-        <lastBuildDate>Sun, 02 May 2021 16:52:51 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 05 May 2021 10:19:29 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>yup</copyright>
@@ -37,11 +37,11 @@
             <description><![CDATA[This is a set of tests for pandoc. Most of them are adapted from John Gruber’s markdown test suite.HeadersLevel 2 with an embedded linkLevel 3 with emphasisLevel 4Level 5Level 1Level 2 with emphasisLevel 3 with no blank lineLevel 2 with no blank lineParagraphs Here’s a regular paragraph. In...]]></description>
         </item>
         <item>
-            <title><![CDATA[An overview of SQL libraries for TypeScript]]></title>
+            <title><![CDATA[An overview of typed SQL libraries for TypeScript]]></title>
             <link>https://phiresky.github.io/blog/2020/sql-libs-for-typescript</link>
             <guid>https://phiresky.github.io/blog/2020/sql-libs-for-typescript</guid>
             <pubDate>Sat, 27 Jun 2020 00:00:00 GMT</pubDate>
-            <description><![CDATA[Using relational databases in a typed language is a pain unless you have great libraries to support you. There’s a lot of different libraries for TypeScript, but they all have their own advantages and flaws. Since it’s hard to find anything other than TypeORM, this is an overview of the...]]></description>
+            <description><![CDATA[Using relational databases in a typed language is a pain unless you have great libraries to support you. There’s a lot of different libraries for TypeScript, but they all have their own advantages and flaws. Since it’s hard to find anything other than TypeORM, this is a short list of the...]]></description>
         </item>
         <item>
             <title><![CDATA[SQLite performance tuning]]></title>

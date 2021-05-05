@@ -30,8 +30,8 @@
         },
         {
             "url": "https://phiresky.github.io/blog/2020/sql-libs-for-typescript",
-            "title": "An overview of SQL libraries for TypeScript",
-            "summary": "Using relational databases in a typed language is a pain unless you have great libraries to support you. There’s a lot of different libraries for TypeScript, but they all have their own advantages and flaws. Since it’s hard to find anything other than TypeORM, this is an overview of the...",
+            "title": "An overview of typed SQL libraries for TypeScript",
+            "summary": "Using relational databases in a typed language is a pain unless you have great libraries to support you. There’s a lot of different libraries for TypeScript, but they all have their own advantages and flaws. Since it’s hard to find anything other than TypeORM, this is a short list of the...",
             "date_modified": "2020-06-27T00:00:00.000Z"
         },
         {
