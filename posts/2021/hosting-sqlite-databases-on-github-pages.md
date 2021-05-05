@@ -2,6 +2,7 @@
 title: "Hosting SQLite databases on Github Pages"
 subtitle: "(or any static file hoster)"
 date: 2021-04-17
+updated: 2021-05-03
 hidden: false
 ---
 

@@ -3,6 +3,7 @@ title: "SQLite performance tuning"
 subtitle: "Scaling SQLite databases to many concurrent readers and multiple gigabytes while maintaining 100k SELECTs per second"
 date: 2020-06-26
 hidden: false
+updated: 2021-05-05
 ---
 
 SQLite is an embedded SQL database. It's extremely easy to setup, buildable as a single C file with libraries existing for basically all common programming languages. It doesn't need any server setup or configuration since the SQL logic is run in the host process, and the database consists of only two files you can easily copy or move around. You can still connect to and query the same database concurrently with multiple processes, though only one write operation can happen at the same time.
@@ -19,16 +20,15 @@ Some of these are applied permanently, but others are reset on new connection, s
     pragma journal_mode = WAL;
     ```
 
-    Instead of writing changes directly to the db file, write to a write-ahead-log instead and regularily commit the changes. This allows multiple concurrent readers, and can significantly improve performance.
+    Instead of writing changes directly to the db file, write to a write-ahead-log instead and regularily commit the changes. This allows multiple concurrent readers even during an open write transaction, and can significantly improve performance.
 
 -   Synchronous Commit
-
 
     ```sql
     pragma synchronous = normal;
     ```
 
-    or even `synchronous=off`. The default is `full`, which means every single update has to wait for [FSYNC](https://en.wikipedia.org/wiki/Sync_(Unix)). Normal is still completely corruption safe in WAL mode, and means only WAL checkpoints have to wait for FSYNC. Off can cause db corruption, though I've never had problems. See here: https://www.sqlite.org/pragma.html#pragma_synchronous
+    or even `synchronous=off`. The default is `full`, which means every single update has to wait for [FSYNC](<https://en.wikipedia.org/wiki/Sync_(Unix)>). Normal is still completely corruption safe in WAL mode, and means only WAL checkpoints have to wait for FSYNC. Off can cause db corruption, though I've never had problems. See here: https://www.sqlite.org/pragma.html#pragma_synchronous
 
 -   Temporary files location
 
@@ -36,7 +36,7 @@ Some of these are applied permanently, but others are reset on new connection, s
     pragma temp_store = memory;
     ```
 
-    Stores temporary indices / tables in memory. sqlite automatically [creates temporary indices](https://www.sqlite.org/tempfiles.html#transient_indices) for some queries. Not sure how much this one helps.
+    Stores temporary indices / tables in memory. sqlite automatically [creates temporary indices](https://www.sqlite.org/tempfiles.html#transient_indices) for some queries. Not sure how much this one helps. If your SQLite is creating temporary indices (check with `EXPLAIN QUERY PLAN`) you should probably create those indexes yourself in any case.
 
 -   Enable memory mapping
 
@@ -44,7 +44,9 @@ Some of these are applied permanently, but others are reset on new connection, s
     pragma mmap_size = 30000000000;
     ```
 
-    Uses memory mapping instead of read/write calls when db is < mmap_size. Less syscalls, and pages and caches will be managed by the OS, so the performance of this depends on your operating system. Note that it will not use this amount of physical memory, just virtual memory. Should be much faster on at least Linux.
+    Uses memory mapping instead of read/write calls when the database is < mmap_size in bytes. Less syscalls, and pages and caches will be managed by the OS, so the performance of this depends on your operating system. Note that it will not use the amount of physical memory, it will just reserve virtual memory. The OS will then decide which pages are evicted and which stay in memory based on its usual "disk caching" logic. Should be much faster, at least on Linux and if you have a fair amount of memory for your SQLite process. If your database is larger than the given mmap_size, the first part of the database will still be memory mapped, the rest will be handled with read() / write() syscalls.
+
+    If you are on a 32-bit system you can probably only set this to $2^{31} - 1$.
 
 -   Increase the page size
 
@@ -52,7 +54,7 @@ Some of these are applied permanently, but others are reset on new connection, s
     pragma page_size = 32768;
     ```
 
-    This improved performance and db size a lot for me in one project, but it's probably only useful if you are storing somewhat large blobs in your database and might not be good for other projects where rows are small.
+    This improved performance and db size a lot for me in one project, but it's probably only useful if you are storing somewhat large blobs in your database and might not be good for other projects where rows are small. For writing queries SQLite will always only replace whole pages, so this increases the overhead of write queries.
 
 ### Summary
 

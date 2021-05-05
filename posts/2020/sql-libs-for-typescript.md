@@ -1,12 +1,14 @@
 ---
-title: "An overview of SQL libraries for TypeScript"
+title: "An overview of typed SQL libraries for TypeScript"
 date: 2020-06-27
-hidden: true
+updated: 2021-05-05
 ---
 
-Using relational databases in a typed language is a pain unless you have great libraries to support you. There's a lot of different libraries for TypeScript, but they all have their own advantages and flaws. Since it's hard to find anything other than TypeORM, this is an overview of the possibilities.
+Using relational databases in a typed language is a pain unless you have great libraries to support you. There's a lot of different libraries for TypeScript, but they all have their own advantages and flaws. Since it's hard to find anything other than TypeORM, this is a short list of the possibilities (not an extensive review).
 
-This is complete overview of SQL libraries for TypeScript. If I'm missing a library, please let me know.
+I'm only including SQL libraries for TypeScript that fulfill the following criteria. If I'm missing a library, please let me know.
+
+-   The result of a query should automatically have the correct type. You don't need to cast it or declare the type yourself.
 
 ## Object Relation Mappers (ORMs)
 
@@ -16,11 +18,15 @@ I'm not a huge fan of ORMs since they always have the same issues: If you have s
 
 -   https://github.com/typeorm/typeorm
 
-    By far the most popular solution.
+    By far the most popular solution, but has some pretty bad [issues](https://github.com/typeorm/typeorm/issues/6607).
 
 -   https://github.com/mikro-orm/mikro-orm
 
-    Seems pretty nice. There's a comparison between the two [here](https://github.com/mikro-orm/mikro-orm/issues/12)
+    Seems pretty nice. There's a comparison between this and TypeORM [here](https://github.com/mikro-orm/mikro-orm/issues/12)
+
+-   https://github.com/Seb-C/kiss-orm
+
+    A different approach from the other two, it's a bit of a mix between a query builder and an ORM where you declare your model and relationships in TypeScript but filter the results with raw SQL.
 
 ## Query Builder / ORM combinations
 
@@ -44,7 +50,7 @@ For these you declare your tables in TypeScript, and write your queries in TypeS
 
 The library is then able to (ab)use the TypeScript type system to infer the return types of any type of complex query.
 
-All of these have performance issues and regression issues, since the TS compiler is not optimized for very complex operations, and TS is not backwards compatible, so these libraries often break when a new TS version is released.
+In theory this method is really elegant, but all of these have performance issues and regression issues, since the TS compiler is not optimized for very complex operations, and TS is not backwards compatible, so these libraries often break when a new TS version is released.
 
 -   https://github.com/phiresky/ts-typed-sql
 
