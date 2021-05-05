@@ -46,7 +46,9 @@ Some of these are applied permanently, but others are reset on new connection, s
 
     Uses memory mapping instead of read/write calls when the database is < mmap_size in bytes. Less syscalls, and pages and caches will be managed by the OS, so the performance of this depends on your operating system. Note that it will not use the amount of physical memory, it will just reserve virtual memory. The OS will then decide which pages are evicted and which stay in memory based on its usual "disk caching" logic. Should be much faster, at least on Linux and if you have a fair amount of memory for your SQLite process. If your database is larger than the given mmap_size, the first part of the database will still be memory mapped, the rest will be handled with read() / write() syscalls.
 
-    If you are on a 32-bit system you can probably only set this to $2^{31} - 1$.
+    If you are on a 32-bit system you can probably only set this to less than $2^{32}$ bytes since the size of the virtual memory space is limited.
+
+    Memory mapping can also have implications when there are I/O errors, see [the official documentation](https://sqlite.org/mmap.html).
 
 -   Increase the page size
 
