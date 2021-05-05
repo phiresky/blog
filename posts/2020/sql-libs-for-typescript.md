@@ -28,7 +28,7 @@ I'm not a huge fan of ORMs since they always have the same issues: If you have s
 
     A different approach from the other two, it's a bit of a mix between a query builder and an ORM where you declare your model and relationships in TypeScript but filter the results with raw SQL.
 
-## Query Builder / ORM combinations
+## Query Builder / ORM combinations that extract types from a live database
 
 These all connect to a dev instance of the database at compile time or in a preprocessing step to figure out the database schema and create the TypeScript types and/or code for it.
 
@@ -44,7 +44,7 @@ These all connect to a dev instance of the database at compile time or in a prep
 
     Reads raw SQL queries, and figures out the TypeScript input and return types for them by connecting to a dev instance of the database and asking it to interpret the query. Thus it is very flexible while still being statically typed. PostgreSQL only.
 
-## Fully Typed Query builders
+## Fully typed query builders
 
 For these you declare your tables in TypeScript, and write your queries in TypeScript in a way that is as similar as possible to raw SQL.
 
@@ -54,7 +54,7 @@ In theory this method is really elegant, but all of these have performance issue
 
 -   https://github.com/phiresky/ts-typed-sql
 
-    Works well, but unmaintained and missing some SQL features.
+    Works great, but unmaintained and missing some SQL features.
 
 -   https://github.com/AnyhowStep/tsql
 
