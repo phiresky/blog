@@ -20,8 +20,6 @@ module.exports = withBundleAnalyzer({
 	basePath: config.blogRoot.slice(0, -1),
 	assetPrefix: config.blogRoot.slice(0, -1),
 	trailingSlash: true,
-	future: {
-		webpack5: true,
-	},
 	reactStrictMode: true,
+	eslint: { ignoreDuringBuilds: true },
 })

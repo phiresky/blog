@@ -8,6 +8,7 @@ module.exports = {
 	plugins: ["@typescript-eslint", "prettier"],
 	extends: [
 		"eslint:recommended",
+		"plugin:@next/next/recommended",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
 		"plugin:prettier/recommended",
