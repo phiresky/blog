@@ -10,12 +10,13 @@
 		"feed": "yarn runts server/build-feed.ts",
 		"typecheck": "tsc",
 		"lint": "eslint . --ext .ts,.tsx",
-		"build": "rm -r client/out/* && yarn typecheck && yarn lint && yarn posts && yarn feed && yarn next build client && yarn next export client",
+		"build": "rm -rf client/out/* && yarn typecheck && yarn lint && yarn posts && yarn feed && yarn next build client && yarn next export client",
 		"commit": "yarn build && ./postprocess.sh"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^4.15.0",
 		"@typescript-eslint/parser": "^4.15.0",
+		"comlink": "^4.3.1",
 		"eslint-config-prettier": "^8.2.0",
 		"eslint-plugin-prettier": "^3.1.4",
 		"husky": "^6.0.0",

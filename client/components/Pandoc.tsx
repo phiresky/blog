@@ -113,15 +113,17 @@ export const defaultRenderers: Renderers = {
 		<ol
 			start={a}
 			type={
-				({
-					Decimal: "1",
-					LowerAlpha: "a",
-					UpperAlpha: "A",
-					LowerRoman: "i",
-					UpperRoman: "I",
-					DefaultStyle: "1",
-					Example: undefined,
-				} as const)[b.t]
+				(
+					{
+						Decimal: "1",
+						LowerAlpha: "a",
+						UpperAlpha: "A",
+						LowerRoman: "i",
+						UpperRoman: "I",
+						DefaultStyle: "1",
+						Example: undefined,
+					} as const
+				)[b.t]
 			}
 		>
 			{blocks.map((e, i) => (

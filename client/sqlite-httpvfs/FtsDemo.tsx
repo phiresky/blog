@@ -27,7 +27,7 @@ export async function indicatorSearch(
 	author: string,
 ): Promise<IndicatorInfo[]> {
 	if (author.length < 3) {
-		return [({ error: "Type more..." } as unknown) as IndicatorInfo]
+		return [{ error: "Type more..." } as unknown as IndicatorInfo]
 	}
 	try {
 		const { db } = await store.ready

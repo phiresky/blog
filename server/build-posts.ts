@@ -176,11 +176,8 @@ export async function parsePosts(): Promise<Post[]> {
 			if (!/\.md$/.test(file)) continue
 			const path = join(dir, file)
 
-			const {
-				frontmatter,
-				preview,
-				content_ast,
-			} = await getMetaAndPreview(join(d, dir, file))
+			const { frontmatter, preview, content_ast } =
+				await getMetaAndPreview(join(d, dir, file))
 
 			posts.push({
 				filename: path,
