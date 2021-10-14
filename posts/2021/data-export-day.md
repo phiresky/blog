@@ -2,6 +2,7 @@
 title: Data Export Day
 subtitle: Online data tends to disappear. I have a reminder so once per year I export as much data as I can from all online services that I use.
 date: 2021-10-05
+hidden: true
 ---
 
 A few years ago, I was trying to get all transactions I had with a bank into a spreadsheet - but I realized that it only allowed me to export a CSV with the transactions from the past year. So all the older stuff I now only have in the form of paper or shitty PDFs. So I set myself a reminder to do the export every year. Over time I added more services, and by now it's kind of an event for me to download and organize all the data from online services once per year.
