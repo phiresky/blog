@@ -1,4 +1,5 @@
 // https://github.com/recharts/recharts/issues/531
+/* eslint-disable */
 /**
  * @fileOverview Wrapper component to make charts adapt to the size of parent * DOM
  */

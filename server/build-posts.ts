@@ -48,7 +48,9 @@ function mergeStrsReduce(eles: AnyElt[], next: AnyElt) {
 			eles.pop()
 			return [
 				...eles,
-				Str(gtrs[left.t]!(left as any) + gtrs[next.t]!(next as any)),
+				Str(
+					gtrs[left.t]!(left as never) + gtrs[next.t]!(next as never),
+				),
 			]
 		}
 	}

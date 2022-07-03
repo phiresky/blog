@@ -253,14 +253,14 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 							<div>Output JSON</div>{" "}
 							<div
 								role="button"
-								onClick={run}
+								onClick={() => void run()}
 								className="floatright"
 							>
 								<Icon icon={faPlay} size="sm" /> Rerun
 							</div>
 						</>
 					) : (
-						<div role="button" onClick={run}>
+						<div role="button" onClick={() => void run()}>
 							<Icon icon={faPlay} size="sm" /> Run
 						</div>
 					)}
@@ -355,7 +355,7 @@ const SqliteStatsView: React.FC<{
 								<div
 									role="button"
 									className="floatright"
-									onClick={show}
+									onClick={() => void show()}
 								>
 									<Icon icon={faInfoCircle} /> Show page read
 									log ({readPages.length} reads)
@@ -377,7 +377,7 @@ const SqliteStatsView: React.FC<{
 								<div
 									role="button"
 									className="floatright"
-									onClick={show}
+									onClick={() => void show()}
 								>
 									<Icon icon={faInfoCircle} /> Back to stats
 								</div>

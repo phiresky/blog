@@ -186,7 +186,9 @@ export const FtsDemo: React.FC<{ store: Store }> = ({ store }) => {
 		void plot()
 	}, [indicator, countries, visible])
 	return (
-		<VisibilitySensor onChange={(e: any) => setVisible(e)}>
+		<VisibilitySensor
+			onChange={(e: React.SetStateAction<boolean>) => setVisible(e)}
+		>
 			<div className="sqlite-httpvfs-demo">
 				Countries:{" "}
 				<AsyncSelect<CountryInfo, true>
