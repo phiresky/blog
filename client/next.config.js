@@ -8,7 +8,6 @@ require("ts-node").register({
 })
 const { config } = require("./config")
 const summary = require("../posts-built/summary.json")
-// const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin")
 const isProd = process.env.NODE_ENV === "production"
 
 module.exports = withBundleAnalyzer({
@@ -22,4 +21,5 @@ module.exports = withBundleAnalyzer({
 	trailingSlash: true,
 	reactStrictMode: true,
 	eslint: { ignoreDuringBuilds: true },
+	swcMinify: true,
 })
