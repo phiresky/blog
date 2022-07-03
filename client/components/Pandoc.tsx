@@ -1,6 +1,8 @@
+import { CaughtException } from "mobx/dist/internal"
 import * as p from "pandoc-filter"
 import * as React from "react"
 import { Fragment } from "react"
+import internal from "stream"
 
 export type Renderers = Partial<{
 	[k in p.EltType]: React.FunctionComponent<p.Elt<k>>
@@ -191,6 +193,104 @@ export const defaultRenderers: Renderers = {
 			}
 		</PandocConfigContext.Consumer>
 	),
+	Table: ({ c }) => {
+		type Table = [
+			p.Attr,
+			Caption,
+			ColSpec[],
+			TableHead,
+			TableBody[],
+			TableFoot,
+		]
+		type Caption = [ShortCaption | null, p.Block[]]
+		type ShortCaption = p.Inline[]
+		type ColSpec = [p.Alignment, { t: "ColWidth"; c: number }]
+		type TableHead = [p.Attr, Row[]]
+		type Row = [p.Attr, Cell[]]
+		type Cell = [p.Attr, p.Alignment, RowSpan, ColSpan, p.Block[]]
+		type RowSpan = number
+		type ColSpan = number
+		/** A body of a table, with an intermediate head, intermediate body, and the specified number of row header columns in the intermediate body. */
+		type TableBody = [p.Attr, RowHeadColumns, Row[], Row[]]
+		type RowHeadColumns = number
+		type TableFoot = [p.Attr, Row[]]
+
+		const [
+			attr,
+			caption,
+			colspec,
+			[theadattr, thead],
+			tablebody,
+			tablefoot,
+		] = c as any as Table
+		console.log("body", tablebody)
+		return (
+			<table>
+				<thead {...ap(theadattr)}>
+					{thead.map(([attr, row], i) => (
+						<tr {...ap(attr)} key={i}>
+							{row.map(
+								(
+									[attr, alignment, rowspan, colspan, blocks],
+									i,
+								) => (
+									<th {...ap(attr)} key={i}>
+										<Pandoc ele={blocks} />
+									</th>
+								),
+							)}
+						</tr>
+					))}
+				</thead>
+				<tbody>
+					{tablebody.map(([attr, rowheadcols, r1, r2], i) => (
+						<Fragment key={i}>
+							{r1.map(([attr, row], i) => (
+								<tr key={`r1-${i}`}>
+									{row.map(
+										(
+											[
+												attr,
+												alignment,
+												rowspan,
+												colspan,
+												blocks,
+											],
+											i,
+										) => (
+											<td key={i}>
+												<Pandoc ele={blocks} />
+											</td>
+										),
+									)}
+								</tr>
+							))}
+							{r2.map(([attr, row], i) => (
+								<tr key={`r2-${i}`}>
+									{row.map(
+										(
+											[
+												attr,
+												alignment,
+												rowspan,
+												colspan,
+												blocks,
+											],
+											i,
+										) => (
+											<td key={i}>
+												<Pandoc ele={blocks} />
+											</td>
+										),
+									)}
+								</tr>
+							))}
+						</Fragment>
+					))}
+				</tbody>
+			</table>
+		) // todo: caption
+	},
 }
 
 export default function Pandoc({
@@ -222,7 +322,7 @@ export default function Pandoc({
 						ele.t
 					] as React.FunctionComponent<p.AnyElt>
 					return <C {...ele} />
-				} else return <>[UNK:{ele.t}]</>
+				} else return <>[Not implemented markdown element:{ele.t}]</>
 			}}
 		</PandocConfigContext.Consumer>
 	)
