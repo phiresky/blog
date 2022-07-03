@@ -6,7 +6,8 @@
 		"skipLibCheck": true,
 		"module": "esnext",
 		"moduleResolution": "node",
-		"jsx": "preserve"
+		"jsx": "preserve",
+		"incremental": true
 	},
 	"exclude": ["node_modules"],
 	"include": ["**/*.ts", "**/*.tsx"]

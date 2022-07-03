@@ -2,9 +2,9 @@ import * as p from "pandoc-filter"
 import * as React from "react"
 import { Fragment } from "react"
 
-export type Renderers = Partial<
-	{ [k in p.EltType]: React.FunctionComponent<p.Elt<k>> }
->
+export type Renderers = Partial<{
+	[k in p.EltType]: React.FunctionComponent<p.Elt<k>>
+}>
 type PandocConfig = {
 	allowUnsanitizedHTML?: boolean
 	renderers?: Renderers

@@ -67,7 +67,7 @@ export async function countrySearch(
 const countrySearchDebounce = debounce(countrySearch, 250)
 function IndicatorOption(
 	indicator: IndicatorInfo,
-	meta: FormatOptionLabelMeta<IndicatorInfo, false>,
+	meta: FormatOptionLabelMeta<IndicatorInfo>,
 ) {
 	if (indicator.error) return indicator.error
 	if (meta.context === "value") return indicator.indicator_name
@@ -186,7 +186,7 @@ export const FtsDemo: React.FC<{ store: Store }> = ({ store }) => {
 		void plot()
 	}, [indicator, countries, visible])
 	return (
-		<VisibilitySensor onChange={(e) => setVisible(e)}>
+		<VisibilitySensor onChange={(e: any) => setVisible(e)}>
 			<div className="sqlite-httpvfs-demo">
 				Countries:{" "}
 				<AsyncSelect<CountryInfo, true>

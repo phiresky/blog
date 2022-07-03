@@ -38,7 +38,7 @@ export class Store {
 		}
 	}
 	statsConnected = false
-	async init() {
+	async init(): Promise<WorkerHttpvfs> {
 		/*const workerUrl = new URL(
 			"../../node_modules/sql.js-httpvfs/dist/sqlite.worker.js",
 			import.meta.url,

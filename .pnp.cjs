@@ -41,6 +41,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@next/eslint-plugin-next", "npm:12.2.0"],\
             ["@types/debounce-promise", "npm:3.1.4"],\
             ["@types/js-yaml", "npm:4.0.5"],\
+            ["@types/node", "npm:18.0.0"],\
             ["@types/rc-tooltip", "npm:3.7.6"],\
             ["@types/react", "npm:18.0.14"],\
             ["@types/react-dom", "npm:18.0.5"],\
@@ -5525,6 +5526,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@next/eslint-plugin-next", "npm:12.2.0"],\
             ["@types/debounce-promise", "npm:3.1.4"],\
             ["@types/js-yaml", "npm:4.0.5"],\
+            ["@types/node", "npm:18.0.0"],\
             ["@types/rc-tooltip", "npm:3.7.6"],\
             ["@types/react", "npm:18.0.14"],\
             ["@types/react-dom", "npm:18.0.5"],\
@@ -7751,7 +7753,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@tsconfig/node12", "npm:1.0.11"],\
             ["@tsconfig/node14", "npm:1.0.3"],\
             ["@tsconfig/node16", "npm:1.0.3"],\
-            ["@types/node", null],\
+            ["@types/node", "npm:18.0.0"],\
             ["@types/swc__core", null],\
             ["@types/swc__wasm", null],\
             ["@types/typescript", null],\

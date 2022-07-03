@@ -6,6 +6,11 @@ module.exports = {
 		project: ["./tsconfig.json", "./client/tsconfig.json"],
 	},
 	plugins: ["@typescript-eslint", "prettier"],
+	settings: {
+		next: {
+			rootDir: "client",
+		},
+	},
 	extends: [
 		"eslint:recommended",
 		"plugin:@next/next/recommended",
