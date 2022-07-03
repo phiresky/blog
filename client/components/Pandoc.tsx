@@ -98,7 +98,11 @@ export const defaultRenderers: Renderers = {
 		</pre>
 	),
 	Span: SimpAttr("span"),
-	Para: Simp("p"),
+	Para: ({ c }) => {
+		// hack for figures which can't be inside a p in html
+		if (c.length === 1 && c[0].t === "Image") return Simp("div")({ c })
+		return Simp("p")({ c })
+	},
 	BlockQuote: Simp("blockquote"),
 	BulletList: ({ c: blocks }) => (
 		<ul>
