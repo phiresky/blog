@@ -1,3 +1,4 @@
+// https://github.com/recharts/recharts/issues/531
 /**
  * @fileOverview Wrapper component to make charts adapt to the size of parent * DOM
  */
@@ -27,6 +28,8 @@ export interface Props {
 	debounce?: number
 	id?: string | number
 	className?: string | number
+	initialWidth?: number
+	initialHeight?: number
 }
 
 interface State {
@@ -47,12 +50,14 @@ export const ResponsiveContainer = forwardRef(
 			debounce = 0,
 			id,
 			className,
+			initialWidth = -1,
+			initialHeight = -1,
 		}: Props,
 		ref,
 	) => {
 		const [sizes, setSizes] = useState<State>({
-			containerWidth: -1,
-			containerHeight: -1,
+			containerWidth: initialWidth,
+			containerHeight: initialHeight,
 		})
 		const containerRef = useRef<HTMLDivElement>(null)
 		useImperativeHandle(ref, () => containerRef, [containerRef])
