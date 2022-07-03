@@ -41,10 +41,22 @@
             "date_modified": "2020-06-26T00:00:00.000Z"
         },
         {
+            "url": "https://phiresky.github.io/blog/2021/data-export-day",
+            "title": "Data Export Day",
+            "summary": "A few years ago, I was trying to get all transactions I had with a bank into a spreadsheet - but I realized that it only allowed me to export a CSV with the transactions from the past year. So all the older stuff I now only have in the form of paper or shitty PDFs. So I set myself a reminder to do...",
+            "date_modified": "2021-10-05T00:00:00.000Z"
+        },
+        {
             "url": "https://phiresky.github.io/blog/2021/hosting-sqlite-databases-on-github-pages",
             "title": "Hosting SQLite databases on Github Pages",
             "summary": "I was writing a tiny website to display statistics of how much sponsored content a Youtube creator has over time when I noticed that I often write a small tool as a website that queries some data from a database and then displays it in a graph, a table, or similar. But if you want to use a...",
             "date_modified": "2021-04-17T00:00:00.000Z"
+        },
+        {
+            "url": "https://phiresky.github.io/blog/2021/led-strips-for-indoor-lighting",
+            "title": "Knowledge dump about LED Strips for indoor lighting",
+            "summary": "Introduction / Motivation Most people use LED strips only for decorative/moon lighting (with intense colours but not very bright). I have done this too. But I thought why not replace all lighting with LED strips? By now, most people have heard that reducing artifical or blue or any light during the ...",
+            "date_modified": "2021-10-14T00:00:00.000Z"
         },
         {
             "url": "https://phiresky.github.io/blog/2021/python-features",

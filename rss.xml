@@ -4,7 +4,7 @@
         <title>phiresky's blog</title>
         <link>https://phiresky.github.io/blog/</link>
         <description>About my personal projects and other stuff</description>
-        <lastBuildDate>Mon, 23 Aug 2021 14:38:39 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 03 Jul 2022 13:03:52 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>yup</copyright>
@@ -51,11 +51,25 @@
             <description><![CDATA[SQLite is an embedded SQL database. It’s extremely easy to setup, buildable as a single C file with libraries existing for basically all common programming languages. It doesn’t need any server setup or configuration since the SQL logic is run in the host process, and the database consists of only...]]></description>
         </item>
         <item>
+            <title><![CDATA[Data Export Day]]></title>
+            <link>https://phiresky.github.io/blog/2021/data-export-day</link>
+            <guid>https://phiresky.github.io/blog/2021/data-export-day</guid>
+            <pubDate>Tue, 05 Oct 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[A few years ago, I was trying to get all transactions I had with a bank into a spreadsheet - but I realized that it only allowed me to export a CSV with the transactions from the past year. So all the older stuff I now only have in the form of paper or shitty PDFs. So I set myself a reminder to do...]]></description>
+        </item>
+        <item>
             <title><![CDATA[Hosting SQLite databases on Github Pages]]></title>
             <link>https://phiresky.github.io/blog/2021/hosting-sqlite-databases-on-github-pages</link>
             <guid>https://phiresky.github.io/blog/2021/hosting-sqlite-databases-on-github-pages</guid>
             <pubDate>Sat, 17 Apr 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[I was writing a tiny website to display statistics of how much sponsored content a Youtube creator has over time when I noticed that I often write a small tool as a website that queries some data from a database and then displays it in a graph, a table, or similar. But if you want to use a...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Knowledge dump about LED Strips for indoor lighting]]></title>
+            <link>https://phiresky.github.io/blog/2021/led-strips-for-indoor-lighting</link>
+            <guid>https://phiresky.github.io/blog/2021/led-strips-for-indoor-lighting</guid>
+            <pubDate>Thu, 14 Oct 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[Introduction / Motivation Most people use LED strips only for decorative/moon lighting (with intense colours but not very bright). I have done this too. But I thought why not replace all lighting with LED strips? By now, most people have heard that reducing artifical or blue or any light during the ...]]></description>
         </item>
         <item>
             <title><![CDATA[10 underused features of modern Python [incomplete]]]></title>
