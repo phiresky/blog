@@ -1,7 +1,7 @@
 import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar } from "recharts"
 import * as yaml from "js-yaml"
 import React from "react"
-import ResponsiveContainer from "./ResponsiveContainer"
+import { ResponsiveContainer } from "./ResponsiveContainer"
 
 import { AttrProps } from "./Pandoc"
 

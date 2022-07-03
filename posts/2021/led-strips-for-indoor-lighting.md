@@ -48,7 +48,7 @@ Sadly the CRI is [not that great of a measure of light quality](https://en.wikip
 
 Higher CRI lights are less efficient (can be something like 20%, a significant difference) and sometimes more expensive:
 
-![Efficiency depending on CRI of a random LEDBUILDERS led strip](led-strips-for-indoor-lighting/2021-10-14-12-47-54.png)
+![Efficiency depending on CRI of a random LEDBUILDERS led strip](./2021-10-14-12-47-54.png)
 
 Tunable White LED strips are much less common than static white, especially in high efficiency and high brightness settings.
 
@@ -78,7 +78,7 @@ LED strips always work by having a chunk of around 4-10 LEDs in sequence. They a
 
 ## Dimming
 
-You should always dim LEDs with pulse width modulation (that's how pretty much all LED controllers work). Dimming by voltage works ok-ish for CV LED strips but is much less efficient. You can get Wifi LED controllers for 10 - 30 $. Make sure they can handle the power of your strips. I burned through two cheap 10$ ones by just driving them with 100W (even though they were rated 100W).
+You should always dim LEDs with pulse width modulation (that's how pretty much all LED controllers work). Dimming by voltage works ok-ish for CV LED strips but is much less efficient. You can get Wifi LED controllers for 10 - 30$. Make sure they can handle the power of your strips. I burned through two cheap 10$ ones by just driving them with 100W (even though they were rated 100W).
 
 ## LED Types
 
@@ -94,7 +94,7 @@ For the best performance, LEDs need to be driven by a constant current (e.g. 230
 
 Most cheap LED strips are constant voltage. This means they are driven by a constant voltage source (mostly 12V or 24V DC). In order to get and keep the current to an acceptable level, current limiting resistors are used. There's a good explanation of how exactly that works here: [Why do we need current limiting resistors?](https://www.waveformlighting.com/pcb-designs/when-and-why-do-leds-need-current-limiting-resistors).
 
-![One segment of a single color constant voltage LED strip. The black boxes are 56Ω and 68Ω resistors to keep the current in a good range. They also convert some of your electricity directly to heat. The exact layout will differ.](led-strips-for-indoor-lighting/cv-led-strip.png)
+![One segment of a single color constant voltage LED strip. The black boxes are 56Ω and 68Ω resistors to keep the current in a good range. They also convert some of your electricity directly to heat. The exact layout will differ.](./cv-led-strip.png)
 
 Constant voltage LED strips have two issues:
 
@@ -108,11 +108,11 @@ More sources: [Master Lighting](https://www.master.lighting/technology/constant-
 
 CC LED strips try to feed the same current to all LEDs by using either a constant current power source or by having a constant current integrated circuit (IC) before every group of LEDs. The constant current power source method is useless for longer strips because it can't regulate the current for each part of the strip individually, when the voltage drops. For the CC IC method the strip is driven by a normal constant voltage power source. A good 24V CC IC strip can have each segment driven by anywhere between 20V - 30V without any change in light output.
 
-![Constant current LED strip with a current regulator based on two transistors (Q1 and Q2) and two resistors (R1 and R2). The layout is probably similar to the one [described on this page](http://www.dieelektronikerseite.de/Lections/Konstantstromquelle%20-%20Immer%20das%20Gleiche.htm)](posts/2021/led-strips-for-indoor-lighting/2021-10-14-16-21-57.png)
+![Constant current LED strip with a current regulator based on two transistors (Q1 and Q2) and two resistors (R1 and R2). The layout is probably similar to the one [described on this page](http://www.dieelektronikerseite.de/Lections/Konstantstromquelle%20-%20Immer%20das%20Gleiche.htm)](./2021-10-14-16-21-57.png)
 
-![Tunable White (CCT) constant current (CC) LED strip. Both colors have their own current regulator per segment.](led-strips-for-indoor-lighting/cct-cc-led.png)
+![Tunable White (CCT) constant current (CC) LED strip. Both colors have their own current regulator per segment.](./cct-cc-led.png)
 
-![CC LED strip with the CC IC integrated into each LED.](led-strips-for-indoor-lighting/2021-10-14-16-34-01.png)
+![CC LED strip with the CC IC integrated into each LED.](./2021-10-14-16-34-01.png)
 
 ## Voltage drop and strip length
 

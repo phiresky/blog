@@ -39,18 +39,15 @@ export class Store {
 	}
 	statsConnected = false
 	async init(): Promise<WorkerHttpvfs> {
-		/*const workerUrl = new URL(
-			"../../node_modules/sql.js-httpvfs/dist/sqlite.worker.js",
+		const workerUrl = new URL(
+			"sql.js-httpvfs/dist/sqlite.worker.js",
 			import.meta.url,
 		)
 		console.log("worker url", workerUrl)
 		const wasmUrl = new URL(
-			"../../node_modules/sql.js-httpvfs/dist/sql-wasm.wasm",
+			"sql.js-httpvfs/dist/sql-wasm.wasm",
 			import.meta.url,
-		)*/
-		// until nextjs fixes their webpack5 support:
-		const workerUrl = "/blog/sqlite.worker.js"
-		const wasmUrl = "/blog/sql-wasm.wasm"
+		)
 
 		const dbDir =
 			new URLSearchParams(location.search).get("dbUrl") ||

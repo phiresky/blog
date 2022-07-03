@@ -4,7 +4,7 @@ import { FormatOptionLabelMeta } from "react-select"
 import AsyncSelect from "react-select/async"
 import VisibilitySensor from "react-visibility-sensor"
 import { Legend, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts"
-import ResponsiveContainer from "../components/ResponsiveContainer"
+import { ResponsiveContainer } from "../components/ResponsiveContainer"
 import { Store } from "./SqliteHttpvfsDemo"
 
 type CountryInfo = {

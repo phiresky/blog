@@ -14,8 +14,8 @@ import React, {
 	useEffect,
 } from "react"
 import ReactResizeDetector from "react-resize-detector"
-import { isPercent } from "../util/DataUtils"
-import { warn } from "../util/LogUtils"
+import { isPercent } from "recharts/lib/util/DataUtils"
+import { warn } from "recharts/lib/util/LogUtils"
 
 export interface Props {
 	aspect?: number

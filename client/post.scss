@@ -272,3 +272,35 @@ pre {
 		cursor: pointer;
 	}
 }
+
+/* figure */
+figure {
+	max-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 1ex;
+	border: 1px solid gray;
+}
+
+/* figure caption */
+figcaption {
+	padding: 0;
+	padding-top: 10px;
+	font-style: italic;
+}
+
+/* figure image element */
+figure > img,
+figure > svg {
+	max-width: 100%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* figure auto-number */
+img + figcaption > span:first-of-type,
+svg + figcaption > span:first-of-type {
+	font-weight: bold;
+	margin-right: 5px;
+}

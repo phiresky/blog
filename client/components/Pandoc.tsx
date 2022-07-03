@@ -150,9 +150,21 @@ export const defaultRenderers: Renderers = {
 		</dl>
 	),
 	Div: SimpAttr("div"),
-	Image: ({ c: [a, _b, [src, title]] }) => (
-		<img src={src} title={title} {...ap(a)} />
-	), // todo: alt text
+	Image: ({ c: [a, inlines, [src, title]] }) => {
+		// todo: alt text
+		const img = <img src={src} title={title} {...ap(a)} />
+		if (inlines.length > 0) {
+			return (
+				<figure>
+					{img}
+					<figcaption>
+						<Pandoc ele={inlines} />
+					</figcaption>
+				</figure>
+			)
+		}
+		return img
+	},
 	RawBlock: ({ c: [type, content] }) => (
 		<PandocConfigContext.Consumer>
 			{(config) =>

@@ -7,3 +7,5 @@ declare module "react-katex" {
 declare module "*.scss"
 
 declare module "*?resource"
+
+declare module "recharts/lib/util/*"

@@ -174,6 +174,7 @@ export async function parsePosts(): Promise<Post[]> {
 		for (const file of await fs.readdir(join(d, dir))) {
 			if (!/\.md$/.test(file)) continue
 			const path = join(dir, file)
+			console.log("processing", path)
 
 			const { frontmatter, preview, content_ast } =
 				await getMetaAndPreview(join(d, dir, file))
