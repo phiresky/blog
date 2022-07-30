@@ -304,3 +304,23 @@ svg + figcaption > span:first-of-type {
 	font-weight: bold;
 	margin-right: 5px;
 }
+
+table {
+	td {
+		padding: 1ex;
+	}
+	border-collapse: collapse;
+	thead tr th {
+		border-bottom: 1px solid black;
+	}
+}
+
+.clickable {
+	cursor: pointer;
+	color: #0365a5;
+}
+.footnote {
+	cursor: pointer;
+	border: 1px solid gray;
+	padding: 0 1em;
+}

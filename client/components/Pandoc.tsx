@@ -22,13 +22,13 @@ function ap([id, classes, attrs]: p.Attr): AttrProps {
 	return {
 		id: id || undefined,
 		className: classes.join(" ") || undefined,
-		attrs: Object.fromEntries(attrs),
-	}
+		...Object.fromEntries(attrs.map(([k, v]) => [`data-${k}`, v])),
+	} as AttrProps
 }
 export type AttrProps = {
 	id?: string
 	className?: string
-	attrs: Record<string, string>
+	[attrs: string]: string | undefined
 }
 export const attrProps = ap
 
@@ -223,7 +223,6 @@ export const defaultRenderers: Renderers = {
 			tablebody,
 			tablefoot,
 		] = c as any as Table
-		console.log("body", tablebody)
 		return (
 			<table>
 				<thead {...ap(theadattr)}>
@@ -290,6 +289,21 @@ export const defaultRenderers: Renderers = {
 				</tbody>
 			</table>
 		) // todo: caption
+	},
+	Note: ({ c }) => {
+		const [shown, setShown] = React.useState(false)
+		return (
+			<>
+				<span onClick={(e) => setShown(!shown)}>
+					<span className="clickable">*</span>
+					{shown && (
+						<div className="footnote">
+							<Pandoc ele={c} />
+						</div>
+					)}
+				</span>
+			</>
+		)
 	},
 }
 
