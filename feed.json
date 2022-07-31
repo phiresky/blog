@@ -67,8 +67,8 @@
         {
             "url": "https://phiresky.github.io/blog/2022/sqlite-zstd",
             "title": "sqlite-zstd: Transparent dictionary-based row-level compression for SQLite",
-            "summary": "Motivation For my incomplete automatic time-tracking tool timetrackrs, I try to collect a lot of information about my habits for later analysis. The main component collects data from my computer about what programs are open every 30 seconds, but another component for example imports usage data from ...",
-            "date_modified": "2022-07-03T00:00:00.000Z"
+            "summary": "Motivation (or side side projects) While working on my startup (DishDetective) I started a side project of an automatic time-tracking tool (timetrackrs), where I try to collect a lot of information about my habits for later analysis. The main component collects data from my computer about what...",
+            "date_modified": "2022-07-31T00:00:00.000Z"
         }
     ]
 }
