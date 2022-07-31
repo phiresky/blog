@@ -1,14 +1,14 @@
 ---
 title: "rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc."
 date: 2019-06-16
-updated: 2019-10-21
+updated: 2022-07-31
 ---
 
 [rga](https://github.com/phiresky/ripgrep-all) is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome [ripgrep] and enables it to search in pdf, docx, sqlite, jpg, zip, tar.\*, movie subtitles (mkv, mp4), etc.
 
-[![github repo](https://img.shields.io/badge/repo-github.com%2Fphiresky%2Fripgrep--all-informational.svg)](https://github.com/phiresky/ripgrep-all)
-[![Crates.io](https://img.shields.io/crates/v/ripgrep-all.svg)](https://crates.io/crates/ripgrep-all)
-[![fearless concurrency](https://img.shields.io/badge/concurrency-fearless-success.svg)](https://www.reddit.com/r/rustjerk/top/?sort=top&t=all)
+[![](https://img.shields.io/badge/repo-github.com%2Fphiresky%2Fripgrep--all-informational.svg)](https://github.com/phiresky/ripgrep-all)
+[![](https://img.shields.io/crates/v/ripgrep-all.svg)](https://crates.io/crates/ripgrep-all)
+[![](https://img.shields.io/badge/concurrency-fearless-success.svg)](https://www.reddit.com/r/rustjerk/top/?sort=top&t=all)
 
 ## Examples
 
@@ -121,7 +121,6 @@ During the extraction, rga-preproc will compress the data with ZSTD to a memory 
 
 ## Future Work
 
--   I wanted to add a photograph adapter (based on object classification / detection) for fun, so you can grep for "mountain" and it will show pictures of mountains, like in Google Photos. It worked with [YOLO](https://pjreddie.com/darknet/yolo/), but something more useful and state-of-the art [like this](https://github.com/aimagelab/show-control-and-tell) proved very hard to integrate.
 -   7z adapter (couldn't find a nice to use Rust library with streaming)
 -   Allow per-adapter configuration options (probably via env (RGA_ADAPTERXYZ_CONF=json))
 -   Maybe use a different disk kv-store as a cache instead of rkv, because I had some [weird problems](https://github.com/phiresky/ripgrep-all/blob/05835c1c42bc3575023a81e5494c5530078730fc/src/preproc_cache.rs#L30) with that. SQLite is great. All other Rust alternatives I could find don't allow writing from multiple processes.

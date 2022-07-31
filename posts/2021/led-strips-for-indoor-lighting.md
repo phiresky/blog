@@ -78,7 +78,7 @@ LED strips always work by having a chunk of around 4-10 LEDs in sequence. They a
 
 ## Dimming
 
-You should always dim LEDs with pulse width modulation (that's how pretty much all LED controllers work). Dimming by voltage works ok-ish for CV LED strips but is much less efficient. You can get Wifi LED controllers for 10 - 30$. Make sure they can handle the power of your strips. I burned through two cheap 10$ ones by just driving them with 100W (even though they were rated 100W).
+You should always dim LEDs with pulse width modulation (that's how pretty much all LED controllers work). Dimming by voltage works ok-ish for CV LED strips but is much less efficient. You can get Wifi LED controllers for 10 - 30\$. Make sure they can handle the power of your strips. I burned through two cheap 10\$ ones by just driving them with 100W (even though they were rated 100W).
 
 ## LED Types
 

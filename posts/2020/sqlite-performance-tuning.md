@@ -3,7 +3,7 @@ title: "SQLite performance tuning"
 subtitle: "Scaling SQLite databases to many concurrent readers and multiple gigabytes while maintaining 100k SELECTs per second"
 date: 2020-06-26
 hidden: false
-updated: 2021-05-05
+updated: 2022-07-31
 ---
 
 SQLite is an embedded SQL database. It's extremely easy to setup, buildable as a single C file with libraries existing for basically all common programming languages. It doesn't need any server setup or configuration since the SQL logic is run in the host process, and the database consists of only two files you can easily copy or move around. You can still connect to and query the same database concurrently with multiple processes, though only one write operation can happen at the same time.
@@ -105,4 +105,4 @@ pragma mmap_size = 30000000000;
 WAL mode has some issues where depending on the write pattern, the WAL size can grow to infinity, slowing down performance a lot. I think this usually happens when you have lots of writes that lock the table so sqlite never gets to [doing wal_autocheckpoint](https://www.sqlite.org/wal.html#ckpt). There's a few ways to mitigate this:
 
 1. Reduce [wal_autocheckpoint interval](https://www.sqlite.org/pragma.html#pragma_wal_autocheckpoint). No guarantees since all autocheckpoints are passive.
-2. Run `pragma wal_checkpoint(full)` or `pragma wal_checkpoint(truncate)` sometimes. With `full`, the WAL file won't change size if other processes have the file open but still commit everything so new data will not cause the WAL file to grow. If you run `truncate` it will block other processes and reset the WAL file to zero bytes. Note that you _can_ run these from a separate process.
+2. Run `pragma wal_checkpoint(full)` or `pragma wal_checkpoint(truncate)` sometimes. With `full`, the WAL file won't change size if other processes have the file open but still commit everything so new data will not cause the WAL file to grow. If you run `truncate` it will block other processes and reset the WAL file to zero bytes. Note that you _can_ run these from a separate process, it will just block other write queries for a bit.
