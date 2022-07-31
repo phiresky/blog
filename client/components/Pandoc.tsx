@@ -1,8 +1,6 @@
-import { CaughtException } from "mobx/dist/internal"
 import * as p from "pandoc-filter"
 import * as React from "react"
 import { Fragment } from "react"
-import internal from "stream"
 
 export type Renderers = Partial<{
 	[k in p.EltType]: React.FunctionComponent<p.Elt<k>>
@@ -216,12 +214,12 @@ export const defaultRenderers: Renderers = {
 		type TableFoot = [p.Attr, Row[]]
 
 		const [
-			attr,
-			caption,
-			colspec,
+			_attr,
+			_caption,
+			_colspec,
 			[theadattr, thead],
 			tablebody,
-			tablefoot,
+			_tablefoot,
 		] = c as any as Table
 		return (
 			<table>

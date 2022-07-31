@@ -19,7 +19,5 @@ module.exports = {
 		"plugin:prettier/recommended",
 		"prettier",
 	],
-	rules: {
-		"@typescript-eslint/no-unused-vars": "off", // let tsc handle this
-	},
+	rules: {},
 }

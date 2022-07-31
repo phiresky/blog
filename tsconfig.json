@@ -11,8 +11,6 @@
 		"moduleResolution": "node",
 		"noEmit": true,
 		"noFallthroughCasesInSwitch": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
 		"strict": true,
 		"target": "es2019",
 		"skipLibCheck": true,
