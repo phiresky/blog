@@ -4,7 +4,7 @@
         <title>phiresky's blog</title>
         <link>https://phiresky.github.io/blog/</link>
         <description>About my personal projects and other stuff</description>
-        <lastBuildDate>Sun, 03 Jul 2022 13:03:52 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 31 Jul 2022 10:24:56 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>yup</copyright>
@@ -27,7 +27,7 @@
             <link>https://phiresky.github.io/blog/2019/rga--ripgrep-for-zip-targz-docx-odt-epub-jpg</link>
             <guid>https://phiresky.github.io/blog/2019/rga--ripgrep-for-zip-targz-docx-odt-epub-jpg</guid>
             <pubDate>Sun, 16 Jun 2019 00:00:00 GMT</pubDate>
-            <description><![CDATA[rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome ripgrep and enables it to search in pdf, docx, sqlite, jpg, zip, tar.*, movie subtitles (mkv, mp4), etc. github repo Crates.io fearless concurrencyExamplesPDFs Say you have a...]]></description>
+            <description><![CDATA[rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome ripgrep and enables it to search in pdf, docx, sqlite, jpg, zip, tar.*, movie subtitles (mkv, mp4), etc. ExamplesPDFs Say you have a large folder of papers or lecture slides,...]]></description>
         </item>
         <item>
             <title><![CDATA[Pandoc Test Suite]]></title>
@@ -79,11 +79,11 @@
             <description><![CDATA[Named tupleautomatic constructor generation etcstrong typingimmutablesame memory usage as normal tuplesdefault valuesmore safety than tuples, access params.name like objects, order does not mattercompatible API with tuplesTyping A must if you’re used to typed programming languages. Makes it much...]]></description>
         </item>
         <item>
-            <title><![CDATA[sqlite-zstd: Transparent row-level compression for SQLite]]></title>
-            <link>https://phiresky.github.io/blog/2021/sqlite-zstd</link>
-            <guid>https://phiresky.github.io/blog/2021/sqlite-zstd</guid>
-            <pubDate>Sun, 24 Jan 2021 00:00:00 GMT</pubDate>
-            <description><![CDATA[For my incomplete time-tracking tool, I store snapshots of the windows I have open in order to later analyze what I spend my time on. This data is pretty redundant - the open program doesn’t change that much, but I still want a snapshot every 30 seconds. Story? There’s a few solutions I could think ...]]></description>
+            <title><![CDATA[sqlite-zstd: Transparent dictionary-based row-level compression for SQLite]]></title>
+            <link>https://phiresky.github.io/blog/2022/sqlite-zstd</link>
+            <guid>https://phiresky.github.io/blog/2022/sqlite-zstd</guid>
+            <pubDate>Sun, 03 Jul 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[Motivation For my incomplete automatic time-tracking tool timetrackrs, I try to collect a lot of information about my habits for later analysis. The main component collects data from my computer about what programs are open every 30 seconds, but another component for example imports usage data from ...]]></description>
         </item>
     </channel>
 </rss>
