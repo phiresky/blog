@@ -1,6 +1,6 @@
 ---
 title: "sqlite-zstd: Transparent dictionary-based row-level compression for SQLite"
-subtitle: ""
+subtitle: "An sqlite extension written in Rust to reduce the database size without losing functionality"
 date: 2022-07-03
 hidden: true
 ---
@@ -44,19 +44,19 @@ Compressing the whole database file reduces the size by _90%_, but that way the 
 
 My sqlite extension reduces the size by _75%_ without modification to the application code and while retaining all normal querying capabilities.
 
-## Options for compressing data in a database
+## Other options for compressing data in a database
 
 There's a few solutions I could think of when you have compressible data in your database:
 
-1.  Normalize your data as much as possible, bringing it into the [strict normal form](https://en.wikipedia.org/wiki/Boyce%E2%80%93Codd_normal_form). In theory, my above table could be split into dozens of smaller tables that each have no redundancy and perfectly clean relations with each other. This is how you traditionally "should" use a relational database.
+1.  Normalize your data as much as possible, bringing it into a [strict normal form](https://en.wikipedia.org/wiki/Boyce%E2%80%93Codd_normal_form). In theory, my above table could be split into dozens of smaller tables that each have no redundancy and perfectly clean relations with each other. This is how you traditionally "should" use a relational database.
 
-    This would reduce the database size because in normal form, my data wouldn't really be all that compressible, it's mostly just compressible because of the way its stored. JSON stores all the same keys every time, and I also store the metadata of every open program again every time. All this could be fixed by normalizing the data. I think the same would apply for a lot of use cases of compressible data in databases. But there's a reason ~~NoSQL~~ NoRelational databases have become popular. For my use case, the main issues would be:
+    For my use case this would reduce the database size because in normal form, it wouldn't really be all that compressible. It's mostly just compressible because of the way its stored. JSON stores all the same keys every time, and I also store the metadata of every open program again every time. All this could be fixed by normalizing the data. I think the same would apply for a lot of use cases of compressible data in databases such as event logs / analytics. But there's a reason ~~NoSQL~~ NoRelational databases have become popular. Looking at my example, the main issues would be:
 
     -   I'd have to duplicate all the structure I already have in my application code in SQL code for no real benefit - Here I always just want to fetch the whole data of one event, and not some smaller parts filtered by some criteria. I also don't want to bother with complex join queries just to get the same information I already
     -   My schema would be come very inflexible. Whenever I add more options or convert some types I'd have to write SQL migrations for it and think about the best way to store the new data.
     -   For extensibility, I might not actually know the exact structure of the data before storing it, for example if it is imported from an external tool.
 
-    So in general I prefer to have a mix of relational structure in the database (where it makes sense) together with denormalized data stored in a text column. This gives me the best mix of flexibility and structure. The popularity of the JSON column type in PostgreSQL shows that I'm not the only one. You could maybe even [reimplement MongoDB using just the PostgreSQL JSON column type](https://www.enterprisedb.com/blog/documentdb-really-postgresql).
+    So in general I prefer to have a mix of relational structure in the database (where it makes sense) together with denormalized data stored in a json column. This gives me the best mix of flexibility and structure. The popularity of the JSON column type in PostgreSQL shows that I'm not the only one. For example you can filter by individual members of the json with [indexes on expressions](https://www.postgresql.org/docs/current/indexes-expressional.html). You could maybe even [reimplement MongoDB using just the PostgreSQL JSON column type](https://www.enterprisedb.com/blog/documentdb-really-postgresql).
 
 2.  Just store the data compressed individually. On insert, `compress(data)`, on every select decompress it.
 
@@ -64,7 +64,7 @@ There's a few solutions I could think of when you have compressible data in your
 
     PostgreSQL does something similar for large blobs with its [TOAST storage](https://www.enterprisedb.com/blog/configurable-lz4-toast-compression).
 
-3.  Split the database into separate files (for example weekly), then compress the older partitions into single files.
+3.  Split the database into separate files (for example weekly), then compress the older partitions.
 
     If you need to access older data, simply decompress the whole week of data to RAM, then read from that database. This would work okay for my use case since it's pretty much append-only time-series data; older data is not read often, and when it is it is read pretty sequentially.
 
@@ -78,10 +78,14 @@ There's a few solutions I could think of when you have compressible data in your
 
 # Introducing sqlite-zstd
 
-My approach is kind of a mix of column-oriented storage, partitioning, and individual row compression.
+My approach here is kind of a mix of column-oriented storage, partitioning, and individual row compression.
 I don't know of this method being used anywhere else (please let me know), so it might be interesting to other database systems as well. The whole thing should work just as well for PostgreSQL.
 
-The idea is to define a way to split the rows of the table into chunks, then train a `zstd` dictionary for each chunk and compress each row in the chunk with it. When selecting a row, the dictionary is loaded first and the data is decompressed with the dictionary. To improve performance, the least recently used dictionaries are cached, and the compression / chunking happens in a lazy fashion when the database is not busy.
+The idea is to define a way to split the rows of the table into chunks, then train a `zstd` dictionary for each chunk and compress each row in the chunk with it.
+
+[zstd](https://github.com/facebook/zstd) is pretty much the state of the art for many kinds of data compression. The "training" feature works by taking a set of data samples and finding the most useful common strings in these samples. The resulting file is called a "dictionary" and can be used to compress other values similar to the seen samples to even smaller sizes.
+
+In sqlite-zstd it's used like this: When selecting a row, the dictionary is loaded first and the data is decompressed with the dictionary. To improve performance, the least recently used dictionaries are cached, and the compression / chunking happens in a lazy fashion when the database is not busy by using the existing rows in the database for the training.
 
 The whole thing is implemented by replacing the table with a view so most of the application code doesn't need any changes.
 
@@ -94,7 +98,7 @@ $ ls -lh imdb.sqlite3
 -rw-r--r-- 2.0G imdb.sqlite3
 $ sqlite3 -header imdb.sqlite3 'select * from title_basic limit 1'
 id|data
-1|{"tconst":"tt0000001","titleType":"short",
+ 1|{"tconst":"tt0000001","titleType":"short",
    "primaryTitle":"Carmencita","originalTitle":"Carmencita",
    "isAdult":0,"startYear":"1894","endYear":null,
    "runtimeMinutes":"1","genres":["Documentary", "Short"]}
@@ -121,9 +125,10 @@ $ ls -lh imdb.sqlite3
 While querying still works just fine:
 
 ```bash
-$ sqlite3 -header imdb.sqlite3 -cmd '.load libsqlite_zstd.so' 'select * from title_basic limit 1'
+$ sqlite3 -header imdb.sqlite3 -cmd '.load libsqlite_zstd.so' \
+    'select * from title_basic limit 1'
 id|data
-1|{"tconst":"tt0000001","titleType":"short",
+ 1|{"tconst":"tt0000001","titleType":"short",
    "primaryTitle":"Carmencita","originalTitle":"Carmencita",
    "isAdult":0,"startYear":"1894","endYear":null,
    "runtimeMinutes":"1","genres":["Documentary", "Short"]}
@@ -131,7 +136,7 @@ id|data
 
 ## How it works
 
-The `select zstd_enable_transparent` converts the table into a view. `dict_chooser` is an SQL expression that decides how to partition the data. Example partitioning keys:
+The `zstd_enable_transparent(config)` converts the table into a view. `config.dict_chooser` is an SQL expression that decides how to partition the data. Example partitioning keys:
 
 | Use case                                   | Partitioning SQL expression                        | Explanation                                                                                   |
 | ------------------------------------------ | -------------------------------------------------- | --------------------------------------------------------------------------------------------- |
@@ -198,15 +203,69 @@ The maintenance does the following:
     3. For each chunk, compress the data in the chunk in one transaction. This ensures the function can be interrupted / killed at any time.
     4. If the given database load is reached, wait. If the given time limit is reached, stop. This ensures the database stays functional during the maintenance.
 
+## Data size benchmarks
+
+For the example above as well as my use case with [timetrackrs](https://github.com/phiresky/timetrackrs), this extension is pretty effective. One GitHub someone mentioned they were using it for a private dataset on Android devices to great success:
+
+> I can't say it in detail, but I have a 800M database, after using this extension, the database's size shrink to 72M.
+> That's enough for us to find a way to using this extension on mobile device. [(source)](https://github.com/phiresky/sqlite-zstd/issues/7)
+
+It's kind of hard to give any guarantees because how well it works depends on many factors. Please let me know if you have another use case or statistic ;)
+
+## Why it works well
+
+There's a few design choices I made to make this transparent compression work well:
+
+-   I'm making the compressed data as small as zstd allows by skipping the magic header (saves 4 bytes), skipping the checksum (saves 4 bytes), and not storing the data size.
+
+-   Every row knows which dictionary it was compressed with. This reduces the efficiency of the storage, but it also means that the whole thing is very robust: You can swap out the dictionary chooser / configuration however you want and incrementally (re)compress the data or change the dictionaries. The overhead is not too bad, because SQLite internally does some optimizations to store [small integers very compactly](https://www.sqlite.org/fileformat2.html#varint).
+
+-   Newly inserted/updated data is not compressed. zstd has very fast decompression but somewhat slow compression. This way the performance (theoretically, see below) of INSERT and UPDATE queries stays the same. Compression can then happen outside of transactions and during low DB load times.
+-   You can exclude your "hot set" of data from compression to reduce the performance impact further. You just need to return null from the dict_chooser expression, see [this example](https://github.com/phiresky/sqlite-zstd/blob/16d8ccdea7e1267ad30ac325085a1803037a7c00/src/transparent.rs#L65).
+-   You can compress any number of tables and columns in one table. They can use the same dictionaries or separate dictionaries.
+-   The used dictionaries are cached. zstd needs some time to parse dictionaries, so the instantiated version is kept in memory. After the first row is selected with one dictionary, the next rows decompress very fast.
+-   The `incremental_maintenance()` function is made for parallel operation. It doesn't affect read operations at all (with WAL mode enabled). You can choose for how much time it runs, as well as make it run for only part of the time to allow other write operations to take place. It does the compression in chunks, so it can be interrupted at any time without losing much progress, while still keeping the overhead low (the chunk size is estimated so each chunk always takes around 0.5 seconds).
+-   The dictionary size is configurable. By default the dictionary is limited to 1% of the total data size (e.g. with 1GB of data the dictionary will be 10MB). The training can use only a sample of all rows. By default it uses the recommended 100x dictionary size amount of data (e.g. to train a 1MB dictionary it will sample the rows to get a total of 100MB of data).
+
+## Why it doesn't work well
+
+There's also a few limitations and reasons why sqlite-zstd doesn't work as well as it maybe could.
+
+-   Zstd is not optimized for tiny data. In theory if we have an enum-like column in our database (e.g. all rows have one of the values `in_progress`, `cancelled`, `success`) then the dictionary should contain these three values and the resulting data should be a single byte, creating a compression ratio of around 7x. As is though, the compression only really works if the average row size is at least 15-20 bytes.
+-   Dictionary-based compression doesn't really help for huge data. If each row has more than maybe 30-50kB of data, then usually the dictionary does not improve the compression much. The reason is that the redundancy within one sample makes the redundancy between multiple samples less important. You can still use this extension to get the transparent-compression goodness though with a dict_chooser of `[nodict]` though.
+
+-   Indexes into compressed data are not really supported (yet).
+
+    In theory you can index values within a JSON data structure using
+
+    ```sql
+    CREATE INDEX startyearidx on _title_basics_zstd(
+        zstd_decompress_col(data, 1, _data_dict, true)->>'startYear'
+    );
+    ```
+
+    And this index is used fine when querying \_title_basics_zstd directly. But when querying the `data` column in the `title_basics` view, the index is not used:
+
+    ```
+    sqlite> explain query plan select * from title_basics
+                where data->>'startYear' == '1992' limit 1;
+    QUERY PLAN
+    `--SCAN _title_basics_zstd
+    ```
+
+    This sadly seems to be a limitation of SQLite of not combining expressions when figuring out index usability, even though it does pass down other normal indexable WHEREs. There might be some solutions using `GENERATED` columns instead of views.
+
+    Right now, the workaround would be to store the columns you want to index in real columns.
+
 ## Performance Benchmarks
 
 ### Setup
 
-For testing (including the chart above), I used the imdb `title.basics.tsv` file https://datasets.imdbws.com/title.basics.tsv.gz imported such that all the data is stored in a single JSON column. ^[For this simple example it would be probably smarter to insert every column into a separate SQLite column since the schema is simple. Note that the same database with separate columns was 855 MByte though, while the transparently compressed JSON database is only 433 MByte]
+For testing (including the teaser chart at the beginning), I used the imdb `title.basics.tsv` file https://datasets.imdbws.com/title.basics.tsv.gz imported such that all the info is stored in a single JSON column. The database has 9 million rows and the average length of the JSON string is 215 Bytes. ^[For this simple example it would be probably smarter to insert every column into a separate SQLite column since the schema is simple. This stops working for more complex tables though for the reasons outlined above. Also note that the same database with separate columns was 855 MByte, while the transparently compressed JSON database is only 433 MByte].
 
-The code to create the test databases and run the benchmark is [here](https://github.com/phiresky/sqlite-zstd/tree/master/src/bin/). Before every benchmark, the operating system cache is cleared.
+The Rust code to create the test databases and run the benchmark is [here](https://github.com/phiresky/sqlite-zstd/tree/master/src/bin/). Before every benchmark, the operating system cache is cleared. I ran the benchmarks on Arch Linux with Ryzen 3900X CPU.
 
-### Selecting data sequentially.
+### Selecting data sequentially
 
 ```barchart
 title: Fetch 1000 sequential values starting from a random ID
@@ -236,7 +295,11 @@ data:
       uncompressed: 37291
 ```
 
-For my use case and probably many other use cases, you have a "hot set" of data that is queried very often, while the rest stays mostly untouched.
+On an SSD with this database, sqlite-zstd can handle 250k SELECTs per seconds. (did I mention SQLite is fast?)
+
+For my use case and probably many other use cases, you have a "hot set" of data that is queried very often, while the rest stays mostly untouched. When fetching sequential data the OS will start prefetching more data and then caching most of it, which is why the performance here is very high. sqlite-zstd reduces the performance a fair bit. The dictionary based decompression is faster than without dictionary, probably because there's less data to process.
+
+Interestingly the performance is still reduced a bit when the storage device is the bottleneck, probably because of the way SQLite (and sqlite-zstd) is fully synchronous.
 
 ### Selecting data randomly
 
@@ -268,7 +331,9 @@ data:
       uncompressed: 86
 ```
 
-Doing an analysis that crosses a few partitions but most of the queries stay within the same partition.
+This is a bit surprising: When data is selected randomly, the performance of sqlite-zstd is actually better than the uncompressed database. I'd assume this is because there's less data to read and thus the B-tree is smaller and more of the data is prefetched and cached by the operating system.
+
+Note that the example database only has four dictionaries since I used a dict_chooser of `id/3000000`. With more different dictionaries, there would be more overhead because random access means sqlite-zstd probably has to load and parse all of them once.
 
 ### Inserting new data
 
@@ -300,9 +365,9 @@ data:
       uncompressed: 3960
 ```
 
-The performance of inserting data is almost the same as without `sqlite-zstd`.
+The performance of inserting data is reduced a bit. Since the data is not compressed on insert, this overhead probably just comes from the way SQLite triggers work.
 
-### Updating sequential rows
+### Updating rows
 
 ```barchart
 title: Update 1000 sequential rows with a random new value
@@ -332,8 +397,6 @@ data:
       uncompressed: 4126
 ```
 
-### Updating random rows
-
 ```barchart
 title: Update 1000 random rows with a random new value
 subtitle: iterations/s, higher is better
@@ -362,45 +425,10 @@ data:
       uncompressed: 72
 ```
 
-## Data size benchmarks
+Honestly I'm not sure what to make of this one. For some reason the performance of updating random rows is much lower with sqlite-zstd, even though no compression is taking place. This might be because of the way the `UPDATE` trigger has a `SELECT` inside so there's multiple b-tree lookups, but I don't know.
 
-For the example above, this extension is pretty effective. One GitHub someone mentioned they were using it for a private dataset on Android devices to great success:
+## Conclusion
 
-> I can't say it in detail, but I have a 800M database, after using this extension, the database's size shrink to 72M.
-> That's enough for us to find a way to using this extension on mobile device. [source](https://github.com/phiresky/sqlite-zstd/issues/7)
+For some use cases, sqlite-zstd is great. It can reduce the size of your database by 50 to 95%. The performance impact is there, but considering most operations still run at over 50k per seconds you'll probably have other bottlenecks. There's other optimizations to be done
 
-Please let me know if you have another use case ;)
-
-## Why it works well
-
--   zstd nomagic mode
--   stable compression dicts stored by row
--   allow excluding recent data by returning null from expression
--   supports multiple columns
--   dictionary is cached
--   incremental_maintenance
-    -   max duration
-    -   db_load
-    -   computed chunk size by compression speed
--   heuristics for dictionary size, sampling
-
-## Why it doesn't work well
-
--   zstd is not optimized for tiny data
--   huge data doesn't really improve much
-
--   indexes into compressed data are not supported
-
-    In theory you can index values within a JSON data structure using
-
-    `CREATE INDEX startyearidx on _title_basics_zstd(zstd_decompress_col(data, 1, _data_dict, true)->>'startYear');`
-
-    And this index is used fine when querying \_title_basics_zstd directly. But when querying the `data` column in the view, the index is not used:
-
-    ```
-    sqlite> explain query plan select * from title_basics where data->>'startYear' == '1992' limit 1;
-    QUERY PLAN
-    `--SCAN _title_basics_zstd
-    ```
-
-    This sadly seems to be a limitation of SQLite, even though it does pass down other normal indexable WHEREs.
+The same method should work for other databases, with barely any modifications required for e.g. PostgreSQL. I'm not sure why no one has done this before or maybe I just couldn't find it.

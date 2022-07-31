@@ -295,7 +295,7 @@ export const defaultRenderers: Renderers = {
 		return (
 			<>
 				<span onClick={(e) => setShown(!shown)}>
-					<span className="clickable">*</span>
+					<button>note</button>
 					{shown && (
 						<div className="footnote">
 							<Pandoc ele={c} />
