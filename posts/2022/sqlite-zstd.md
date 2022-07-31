@@ -1,13 +1,15 @@
 ---
 title: "sqlite-zstd: Transparent dictionary-based row-level compression for SQLite"
 subtitle: "An sqlite extension written in Rust to reduce the database size without losing functionality"
-date: 2022-07-03
-hidden: true
+date: 2022-07-31
+hidden: false
 ---
 
-## Motivation
+[![](https://img.shields.io/badge/repo-github.com%2Fphiresky%2Fsqlite--zstd-informational.svg)](https://github.com/phiresky/sqlite-zstd)
 
-For my incomplete automatic time-tracking tool [_timetrackrs_](https://github.com/phiresky/timetrackrs), I try to collect a lot of information about my habits for later analysis. The main component collects data from my computer about what programs are open every 30 seconds, but another component for example imports usage data from my phone via [App Usage](https://play.google.com/store/apps/details?id=com.a0soft.gphone.uninstaller).
+## Motivation (or "side side projects")
+
+While working on my startup ([DishDetective](https://dishdetective.app)) I started a side project of an automatic time-tracking tool ([_timetrackrs_](https://github.com/phiresky/timetrackrs)), where I try to collect a lot of information about my habits for later analysis. The main component collects data from my computer about what programs are open every 30 seconds, but another component for example imports usage data from my phone (via _App Usage_).
 
 I store all this data as "events" in an SQLite database, but each event is pretty redundant - for example the open program doesn't change that much. But I still want to store detailed, raw snapshots with the aggregation happening later so I can change the parameters of the analysis without losing any information.
 
@@ -23,15 +25,15 @@ The main events-log SQLite table looks somewhat like this:
 
 After a year of collecting data, the SQLite database is already **7.6 GByte** in size.
 
-Of course this is an extreme example of redundancy, but storing similar redundant data into databases is pretty common. SQLite doesn't have any compression features, so I built my own:
+Of course this is an extreme example of redundancy, but storing similar redundant data in databases is pretty common. SQLite doesn't have any compression features, so of course I had to start a _side-side-project_ and build my own. Here's a teaser of the results:
 
 ```barchart
 title: Size of 7 million titles from IMDb stored as JSON in sqlite3
-subtitle: All compression done with zstd level 19
+subtitle: All compression done with zstd level 19 (lower is better)
 nossr: true
 series: File size
 height: 300
-categoryWidth: 200
+categoryWidth: 150
 xUnit: MB
 data:
    Uncompressed DB: 2130
@@ -50,13 +52,13 @@ There's a few solutions I could think of when you have compressible data in your
 
 1.  Normalize your data as much as possible, bringing it into a [strict normal form](https://en.wikipedia.org/wiki/Boyce%E2%80%93Codd_normal_form). In theory, my above table could be split into dozens of smaller tables that each have no redundancy and perfectly clean relations with each other. This is how you traditionally "should" use a relational database.
 
-    For my use case this would reduce the database size because in normal form, it wouldn't really be all that compressible. It's mostly just compressible because of the way its stored. JSON stores all the same keys every time, and I also store the metadata of every open program again every time. All this could be fixed by normalizing the data. I think the same would apply for a lot of use cases of compressible data in databases such as event logs / analytics. But there's a reason ~~NoSQL~~ NoRelational databases have become popular. Looking at my example, the main issues would be:
+    My data is mostly just compressible because of the way its stored. JSON stores all the same keys every time, and many adjacent events have similar contents. All this could be fixed by normalizing the data. I think the same would apply for a lot of use cases of compressible data in databases such as event logs / analytics. But there's a reason ~~NoSQL~~ NoRelational databases have become popular:
 
-    -   I'd have to duplicate all the structure I already have in my application code in SQL code for no real benefit - Here I always just want to fetch the whole data of one event, and not some smaller parts filtered by some criteria. I also don't want to bother with complex join queries just to get the same information I already
-    -   My schema would be come very inflexible. Whenever I add more options or convert some types I'd have to write SQL migrations for it and think about the best way to store the new data.
+    -   I'd have to duplicate all the types and data structure I already have in my application code in SQL code for little benefit - Here I always just want to fetch the whole data of one event, and not some smaller parts filtered by some criteria. I also don't want to bother with complex join queries just to get the same information every time.
+    -   My schema would become very inflexible. Whenever I add more options or convert some types I'd have to write SQL migrations for it and think about the best way to store the new data.
     -   For extensibility, I might not actually know the exact structure of the data before storing it, for example if it is imported from an external tool.
 
-    So in general I prefer to have a mix of relational structure in the database (where it makes sense) together with denormalized data stored in a json column. This gives me the best mix of flexibility and structure. The popularity of the JSON column type in PostgreSQL shows that I'm not the only one. For example you can filter by individual members of the json with [indexes on expressions](https://www.postgresql.org/docs/current/indexes-expressional.html). You could maybe even [reimplement MongoDB using just the PostgreSQL JSON column type](https://www.enterprisedb.com/blog/documentdb-really-postgresql).
+    I personally prefer to have a mix of a somewhat simple relational structure in the database (where it makes sense) together with denormalized data stored in a json column. This gives me the best mix of flexibility and structure. The popularity of the JSON column type in PostgreSQL shows that I'm not the only one. It's has a lot of functionality, for example you can query by individual members of the JSON with [indexes on expressions](https://www.postgresql.org/docs/current/indexes-expressional.html). You could maybe even [reimplement MongoDB using just the PostgreSQL JSON column type](https://www.enterprisedb.com/blog/documentdb-really-postgresql).
 
 2.  Just store the data compressed individually. On insert, `compress(data)`, on every select decompress it.
 
@@ -64,30 +66,28 @@ There's a few solutions I could think of when you have compressible data in your
 
     PostgreSQL does something similar for large blobs with its [TOAST storage](https://www.enterprisedb.com/blog/configurable-lz4-toast-compression).
 
-3.  Split the database into separate files (for example weekly), then compress the older partitions.
+3.  Split the database into separate files / partitions (for example weekly), then compress the less used partitions.
 
-    If you need to access older data, simply decompress the whole week of data to RAM, then read from that database. This would work okay for my use case since it's pretty much append-only time-series data; older data is not read often, and when it is it is read pretty sequentially.
+    If you need to access older data, simply decompress the whole chunk of data to RAM, then read from that database. This would work okay for my use case since it's pretty much append-only time-series data; older data is not read often, and when it is it is read pretty sequentially.
 
-    In SQLite you can attach multiple database files into a single instance using `ATTACH DATABASE`, and then join across tables of the different files.
-
-    This idea is kind of similar to table partitioning and tablespaces in PostgreSQL. There you could put the older partitions on a slower storage device like an HDD with file system level compression enabled.
+    In SQLite you can attach multiple database files into a single instance using `ATTACH DATABASE`, and then join across tables of the different files. In PostgreSQL you have table partitioning and tablespaces. You could also put the older partitions on a slower storage device like an HDD with file system level compression enabled.
 
 4.  Store the data in a column-oriented fashion. That way you can compress blocks of data much better. This is done in many database systems used for larger scale time-series data with less need for a complex schema, such as InfluxDB or ClickHouse.
 
-5.  Do some weird mix of the above. My solution falls into this category. Another example of a weird mix would be [timescaledb](https://docs.timescale.com/timescaledb/latest/how-to-guides/compression/about-compression/), which from what I understand does compression by converting data to a semi column-oriented format in chunks, then storing those chunks inside single rows in the row-oriented PostgreSQL table.
+5.  And finally: **Do some weird mix of the above**. My solution falls into this category. Another example of a weird mix would be [timescaledb](https://docs.timescale.com/timescaledb/latest/how-to-guides/compression/about-compression/), which from what I understand does compression by converting data to a semi column-oriented format in chunks, then storing those chunks inside single rows in the row-oriented PostgreSQL table.
 
-# Introducing sqlite-zstd
+# Introducing [sqlite-zstd](https://github.com/phiresky/sqlite-zstd)
 
-My approach here is kind of a mix of column-oriented storage, partitioning, and individual row compression.
-I don't know of this method being used anywhere else (please let me know), so it might be interesting to other database systems as well. The whole thing should work just as well for PostgreSQL.
+My approach here is kind of a mix of partitioning and individual row compression with some of the benefits of column-oriented storage.
+I don't know of this method being used anywhere else (please let me know), so it might be interesting to other database systems as well. The whole thing should work just as well for e.g. PostgreSQL.
 
 The idea is to define a way to split the rows of the table into chunks, then train a `zstd` dictionary for each chunk and compress each row in the chunk with it.
 
 [zstd](https://github.com/facebook/zstd) is pretty much the state of the art for many kinds of data compression. The "training" feature works by taking a set of data samples and finding the most useful common strings in these samples. The resulting file is called a "dictionary" and can be used to compress other values similar to the seen samples to even smaller sizes.
 
-In sqlite-zstd it's used like this: When selecting a row, the dictionary is loaded first and the data is decompressed with the dictionary. To improve performance, the least recently used dictionaries are cached, and the compression / chunking happens in a lazy fashion when the database is not busy by using the existing rows in the database for the training.
+In [sqlite-zstd](https://github.com/phiresky/sqlite-zstd) it's used like this: When selecting a row, the dictionary is loaded first and the data is decompressed with the dictionary. To improve performance, the least recently used dictionaries are kept instantiated, and the compression / chunking happens in a lazy fashion when the database is not busy by using the existing rows in the database for the training.
 
-The whole thing is implemented by replacing the table with a view so most of the application code doesn't need any changes.
+The whole thing is implemented by replacing the table with an updatable view so most of the application code doesn't need any changes.
 
 ## How to use it
 
@@ -138,12 +138,12 @@ id|data
 
 The `zstd_enable_transparent(config)` converts the table into a view. `config.dict_chooser` is an SQL expression that decides how to partition the data. Example partitioning keys:
 
-| Use case                                   | Partitioning SQL expression                        | Explanation                                                                                   |
-| ------------------------------------------ | -------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Generic data                               | `rowid/100000`                                     | Compress every 100k inserted rows with the same dictionary                                    |
-| Generic time-series data                   | `strftime(created, '%Y-%m')`                       | Compress every month of data together                                                         |
-| A limited amount of different data formats | `data_type ‖ '.' ‖ strftime(created, 'weekday 0')` | Compress every data format separately per week (useful if they have very different structure) |
-| A write-once, read-often database          | `'a'`                                              | all the rows are compressed with the same dictionary                                          |
+| Use case                                   | Partitioning SQL expression                     | Explanation                                                                                |
+| ------------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Generic data                               | `rowid/100000`                                  | Compress every 100k inserted rows with the same dictionary                                 |
+| Generic time-series data                   | `strftime(created, '%Y-%m')`                    | Compress every month of data together                                                      |
+| A limited amount of different data formats | `source ‖ '.' ‖ strftime(created, 'weekday 0')` | Compress every `source` separately per week (useful if they have very different structure) |
+| A write-once, read-often database          | `'a'`                                           | all the rows are compressed with the same dictionary                                       |
 
 For real world use cases you might want a more complex key, for example one that keeps the "hot set" of data (e.g. the current week) uncompressed.
 
@@ -205,7 +205,7 @@ The maintenance does the following:
 
 ## Data size benchmarks
 
-For the example above as well as my use case with [timetrackrs](https://github.com/phiresky/timetrackrs), this extension is pretty effective. One GitHub someone mentioned they were using it for a private dataset on Android devices to great success:
+For the example above as well as my use case with [timetrackrs](https://github.com/phiresky/timetrackrs), this extension is pretty effective. On GitHub someone mentioned they were using it for a private dataset within an Android app to great success:
 
 > I can't say it in detail, but I have a 800M database, after using this extension, the database's size shrink to 72M.
 > That's enough for us to find a way to using this extension on mobile device. [(source)](https://github.com/phiresky/sqlite-zstd/issues/7)
@@ -226,6 +226,7 @@ There's a few design choices I made to make this transparent compression work we
 -   The used dictionaries are cached. zstd needs some time to parse dictionaries, so the instantiated version is kept in memory. After the first row is selected with one dictionary, the next rows decompress very fast.
 -   The `incremental_maintenance()` function is made for parallel operation. It doesn't affect read operations at all (with WAL mode enabled). You can choose for how much time it runs, as well as make it run for only part of the time to allow other write operations to take place. It does the compression in chunks, so it can be interrupted at any time without losing much progress, while still keeping the overhead low (the chunk size is estimated so each chunk always takes around 0.5 seconds).
 -   The dictionary size is configurable. By default the dictionary is limited to 1% of the total data size (e.g. with 1GB of data the dictionary will be 10MB). The training can use only a sample of all rows. By default it uses the recommended 100x dictionary size amount of data (e.g. to train a 1MB dictionary it will sample the rows to get a total of 100MB of data).
+-   Did I mention it's written in Rust?
 
 ## Why it doesn't work well
 
@@ -331,7 +332,7 @@ data:
       uncompressed: 86
 ```
 
-This is a bit surprising: When data is selected randomly, the performance of sqlite-zstd is actually better than the uncompressed database. I'd assume this is because there's less data to read and thus the B-tree is smaller and more of the data is prefetched and cached by the operating system.
+This is a bit surprising: When data is selected randomly, the performance of sqlite-zstd is actually better than the uncompressed database. I'd assume this is because there's less data to read and thus the B-tree is smaller and more of the data cached more quickly by the operating system.
 
 Note that the example database only has four dictionaries since I used a dict_chooser of `id/3000000`. With more different dictionaries, there would be more overhead because random access means sqlite-zstd probably has to load and parse all of them once.
 
@@ -432,3 +433,5 @@ Honestly I'm not sure what to make of this one. For some reason the performance 
 For some use cases, sqlite-zstd is great. It can reduce the size of your database by 50 to 95%. The performance impact is there, but considering most operations still run at over 50k per seconds you'll probably have other bottlenecks. There's other optimizations to be done
 
 The same method should work for other databases, with barely any modifications required for e.g. PostgreSQL. I'm not sure why no one has done this before or maybe I just couldn't find it.
+
+Check out the GitHub repo: https://github.com/phiresky/sqlite-zstd
