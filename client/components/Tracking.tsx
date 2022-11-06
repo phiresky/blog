@@ -1,3 +1,4 @@
+import Script from "next/script"
 import React from "react"
 
 function getGaScript(siteId: string) {
@@ -14,9 +15,19 @@ function getGaScript(siteId: string) {
 function Tracking(props: { siteId: string }): React.ReactElement {
 	return (
 		<div>
-			<script
-				dangerouslySetInnerHTML={{ __html: getGaScript(props.siteId) }}
+			<Script
+				src={`https://www.googletagmanager.com/gtag/js?id=${props.siteId}`}
+				strategy="afterInteractive"
 			/>
+			<Script id="google-analytics" strategy="afterInteractive">
+				{`
+					window.dataLayer = window.dataLayer || [];
+					function gtag(){window.dataLayer.push(arguments);}
+					gtag('js', new Date());
+
+					gtag('config', '${props.siteId}');
+				`}
+			</Script>
 		</div>
 	)
 }

@@ -37,7 +37,7 @@ export const config: ConfigJson = {
 		},
 	],
 	backgroundClass: "bg-dark-gray",
-	siteId: "UA-39197996-3",
+	siteId: "G-MN8GSWEESP",
 	blogRoot: "/blog/",
 	blogSourceUrl: "https://github.com/phiresky/blog",
 	postSourceUrlBase: "https://github.com/phiresky/blog/blob/master/posts/",
