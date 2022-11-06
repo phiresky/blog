@@ -4,7 +4,7 @@
         <title>phiresky's blog</title>
         <link>https://phiresky.github.io/blog/</link>
         <description>About my personal projects and other stuff</description>
-        <lastBuildDate>Sun, 31 Jul 2022 17:42:35 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 06 Nov 2022 21:33:03 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>yup</copyright>
@@ -77,6 +77,13 @@
             <guid>https://phiresky.github.io/blog/2021/python-features</guid>
             <pubDate>Mon, 15 Feb 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[Named tupleautomatic constructor generation etcstrong typingimmutablesame memory usage as normal tuplesdefault valuesmore safety than tuples, access params.name like objects, order does not mattercompatible API with tuplesTyping A must if you’re used to typed programming languages. Makes it much...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Want to rant about something you’re passionate about? Please write it down and publish it.]]></title>
+            <link>https://phiresky.github.io/blog/2022/more-rants-please</link>
+            <guid>https://phiresky.github.io/blog/2022/more-rants-please</guid>
+            <pubDate>Tue, 01 Nov 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[It’s really hard to write an objective and unbiased article. This even seems to become harder the more you know about the topic, because you inevitably become more involved when you see more detail, you get more passionate and probably start seeing advantages and disadvantages of small opinions...]]></description>
         </item>
         <item>
             <title><![CDATA[sqlite-zstd: Transparent dictionary-based row-level compression for SQLite]]></title>
