@@ -52,6 +52,10 @@ The library is then able to (ab)use the TypeScript type system to infer the retu
 
 In theory this method is really elegant, but all of these have performance issues and regression issues, since the TS compiler is not optimized for very complex operations, and TS is not backwards compatible, so these libraries often break when a new TS version is released.
 
+-   https://github.com/koskimas/kysely
+
+    By far the most popular and most well maintained.
+    
 -   https://github.com/phiresky/ts-typed-sql
 
     Works great, but unmaintained and missing some SQL features.
