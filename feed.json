@@ -65,12 +65,6 @@
             "date_modified": "2021-02-15T00:00:00.000Z"
         },
         {
-            "url": "https://phiresky.github.io/blog/2022/more-rants-please",
-            "title": "Want to rant about something you’re passionate about? Please write it down and publish it.",
-            "summary": "It’s really hard to write an objective and unbiased article. This even seems to become harder the more you know about the topic, because you inevitably become more involved when you see more detail, you get more passionate and probably start seeing advantages and disadvantages of small opinions...",
-            "date_modified": "2022-11-01T00:00:00.000Z"
-        },
-        {
             "url": "https://phiresky.github.io/blog/2022/sqlite-zstd",
             "title": "sqlite-zstd: Transparent dictionary-based row-level compression for SQLite",
             "summary": "Motivation (or side side projects) While working on my startup (DishDetective) I started a side project of an automatic time-tracking tool (timetrackrs), where I try to collect a lot of information about my habits for later analysis. The main component collects data from my computer about what...",
