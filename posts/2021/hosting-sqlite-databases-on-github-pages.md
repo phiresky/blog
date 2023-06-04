@@ -1,8 +1,8 @@
 ---
 title: "Hosting SQLite databases on Github Pages"
-subtitle: "(or any static file hoster)"
+subtitle: "(or IPFS or any static file hoster)"
 date: 2021-04-17
-updated: 2021-05-03
+updated: 2023-06-04
 hidden: false
 ---
 
@@ -149,3 +149,11 @@ where selector match 'ul#outtable1 > li'
 ---
 
 Of course, everything here is open source. The main implementation of the sqlite wrapper is in [sql.js-httpvfs](https://github.com/phiresky/sql.js-httpvfs). The source code of this blog post is [a pandoc markdown file](https://github.com/phiresky/blog/blob/master/posts/2021/hosting-sqlite-databases-on-github-pages.md), with the demos being a [custom "fenced code block" React component](https://github.com/phiresky/blog/tree/master/client/sqlite-httpvfs).
+
+## Update 2023: Future Work
+
+Since I wrote this article in 2021, a lot of interesting things have happened in this space, many inspired by this proof of concept! Here's some highlights:
+
+-   [libgen-ipfs](https://news.ycombinator.com/item?id=28585208): implements a search engine for the [Library Genesis](https://en.wikipedia.org/wiki/Library_Genesis) based on IPFS and sql.js-httpvfs.
+-   [absurd-sql](https://jlongster.com/future-sql-web): implements a backend for sql.js (sqlite3 compiled for the web) that treats IndexedDB like a disk and stores data in blocks there. Inspired by this article.
+-   sqlite itself has now added [official support for wasm](https://sqlite.org/wasm/doc/trunk/index.md), citing absurd-sql as related work!
