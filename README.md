@@ -6,6 +6,6 @@ The posts are written in Markdown that is parsed by Pandoc, with the Pandoc AST 
 
 It also generates an RSS feed for people that are into that.
 
-Run `yarn posts` to generate the posts, then `yarn dev` for the hot-reloading dev server.
+Run `yarn posts` to generate the posts, then `yarn dev` for the hot-reloading dev server (navigate to http://localhost:3000/blog/ )
 
 Run `yarn build` to run all the build steps, or `yarn commit` to commit a new blog version ready for pushing.
