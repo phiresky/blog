@@ -164,32 +164,40 @@ async function getMetaAndPreview(path: string) {
 	const preview = text
 		.trim()
 		.replace(/\s+/g, " ")
-		.substr(0, 300)
+		.slice(0, 300)
 		.replace(/\s*\S+$/, "") // remove cut off word
 	return { frontmatter, preview, content_ast: parsed.blocks }
 }
+async function parsePost(
+	root: string,
+	dir: string,
+	file: string,
+): Promise<Post> {
+	const path = join(dir, file)
+	console.log("processing", path)
+
+	const { frontmatter, preview, content_ast } = await getMetaAndPreview(
+		join(root, dir, file),
+	)
+
+	return {
+		filename: path,
+		frontmatter,
+		preview,
+		content_ast,
+	}
+}
 export async function parsePosts(): Promise<Post[]> {
-	const d = join(__dirname, "/../posts")
+	const root = join(__dirname, "/../posts")
 	const posts = []
-	for (const dir of await fs.readdir(d)) {
-		if (!(await fs.stat(join(d, dir))).isDirectory()) continue
-		for (const file of await fs.readdir(join(d, dir))) {
+	for (const dir of await fs.readdir(root)) {
+		if (!(await fs.stat(join(root, dir))).isDirectory()) continue
+		for (const file of await fs.readdir(join(root, dir))) {
 			if (!/\.md$/.test(file)) continue
-			const path = join(dir, file)
-			console.log("processing", path)
-
-			const { frontmatter, preview, content_ast } =
-				await getMetaAndPreview(join(d, dir, file))
-
-			posts.push({
-				filename: path,
-				frontmatter,
-				preview,
-				content_ast,
-			})
+			posts.push(parsePost(root, dir, file))
 		}
 	}
-	return posts
+	return await Promise.all(posts)
 }
 
 export type Post = {

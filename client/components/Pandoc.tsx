@@ -103,6 +103,16 @@ export const defaultRenderers: Renderers = {
 		if (c.length === 1 && c[0].t === "Image") return Simp("div")({ c })
 		return Simp("p")({ c })
 	},
+	Figure: ({ c: [_attr, [_shortCaption, longCaption], content] }) => {
+		return (
+			<figure>
+				<Pandoc ele={content} />
+				<figcaption>
+					<Pandoc ele={longCaption}></Pandoc>
+				</figcaption>
+			</figure>
+		)
+	},
 	BlockQuote: Simp("blockquote"),
 	BulletList: ({ c: blocks }) => (
 		<ul>
@@ -157,7 +167,7 @@ export const defaultRenderers: Renderers = {
 	Image: ({ c: [a, inlines, [src, title]] }) => {
 		// todo: alt text
 		const img = <img src={src} title={title} {...ap(a)} />
-		if (inlines.length > 0) {
+		/*if (inlines.length > 0) {
 			return (
 				<figure>
 					{img}
@@ -166,7 +176,7 @@ export const defaultRenderers: Renderers = {
 					</figcaption>
 				</figure>
 			)
-		}
+		}*/
 		return img
 	},
 	RawBlock: ({ c: [type, content] }) => (
