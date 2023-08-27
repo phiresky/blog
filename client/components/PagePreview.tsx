@@ -8,14 +8,13 @@ function PageLink(props: {
 	children: React.ReactNode
 }) {
 	return (
-		<Link href={props.href}>
-			<a
-				className={`b black o-80 glow no-underline lh-solid ${
-					props.className || ""
-				}`}
-			>
-				{props.children}
-			</a>
+		<Link
+			href={props.href}
+			className={`b black o-80 glow no-underline lh-solid ${
+				props.className || ""
+			}`}
+		>
+			{props.children}
 		</Link>
 	)
 }

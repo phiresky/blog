@@ -13,10 +13,8 @@ function Hero(props: {
 			<div className="mw7 center white">
 				<div className="pv4">
 					<h1 className="f2 normal lh-title ma0 pa0">
-						<Link href={"/"}>
-							<a className="white no-underline">
-								{props.heroTitle}
-							</a>
+						<Link href={"/"} className="white no-underline">
+							{props.heroTitle}
 						</Link>
 					</h1>
 
@@ -41,10 +39,12 @@ function Hero(props: {
 									)
 								else
 									return (
-										<Link href={link.href} key={i}>
-											<a className={cls} key={i}>
-												{link.text}
-											</a>
+										<Link
+											href={link.href}
+											key={i}
+											className={cls}
+										>
+											{link.text}
 										</Link>
 									)
 							})}
