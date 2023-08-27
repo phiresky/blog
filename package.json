@@ -95,5 +95,5 @@
 		"printWidth": 80,
 		"endOfLine": "lf"
 	},
-	"packageManager": "yarn@3.2.2"
+	"packageManager": "yarn@4.0.0-rc.50"
 }
