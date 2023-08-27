@@ -164,7 +164,7 @@ export const defaultRenderers: Renderers = {
 		</dl>
 	),
 	Div: SimpAttr("div"),
-	Image: ({ c: [a, inlines, [src, title]] }) => {
+	Image: ({ c: [a, _inlines, [src, title]] }) => {
 		// todo: alt text
 		const img = <img src={src} title={title} {...ap(a)} />
 		/*if (inlines.length > 0) {

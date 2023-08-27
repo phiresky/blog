@@ -1,4 +1,4 @@
-import { join, dirname } from "path"
+import { join, dirname, relative } from "path"
 import { promises as fs } from "fs"
 import { promisify } from "util"
 import { execFile as _execFile } from "child_process"
@@ -26,6 +26,8 @@ const execFile = promisify(_execFile)
 
 export const inputDir = join(__dirname, "../posts")
 export const outputDir = join(__dirname, "../posts-built")
+
+export const assetOutDir = join(__dirname, "..", "client", "public")
 
 export type Frontmatter = {
 	title: string
@@ -168,20 +170,13 @@ async function getMetaAndPreview(path: string) {
 		.replace(/\s*\S+$/, "") // remove cut off word
 	return { frontmatter, preview, content_ast: parsed.blocks }
 }
-async function parsePost(
-	root: string,
-	dir: string,
-	file: string,
-): Promise<Post> {
-	const path = join(dir, file)
+async function parsePost(root: string, path: string): Promise<Post> {
 	console.log("processing", path)
 
-	const { frontmatter, preview, content_ast } = await getMetaAndPreview(
-		join(root, dir, file),
-	)
+	const { frontmatter, preview, content_ast } = await getMetaAndPreview(path)
 
 	return {
-		filename: path,
+		filename: relative(root, path),
 		frontmatter,
 		preview,
 		content_ast,
@@ -190,11 +185,18 @@ async function parsePost(
 export async function parsePosts(): Promise<Post[]> {
 	const root = join(__dirname, "/../posts")
 	const posts = []
-	for (const dir of await fs.readdir(root)) {
-		if (!(await fs.stat(join(root, dir))).isDirectory()) continue
-		for (const file of await fs.readdir(join(root, dir))) {
-			if (!/\.md$/.test(file)) continue
-			posts.push(parsePost(root, dir, file))
+	for await (const file of await fs.opendir(root, {
+		recursive: true,
+	})) {
+		if (!file.isFile()) continue
+		if (!/\.md$/.test(file.name)) {
+			const rel = relative(root, file.path)
+			console.log("copying asset", rel, file.path)
+			const outDir = join(assetOutDir, dirname(rel))
+			await fs.mkdir(outDir, { recursive: true })
+			await fs.copyFile(file.path, join(outDir, file.name))
+		} else {
+			posts.push(parsePost(root, file.path))
 		}
 	}
 	return await Promise.all(posts)

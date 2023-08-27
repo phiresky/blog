@@ -7,7 +7,6 @@ require("ts-node").register({
 	project: "tsconfig.json",
 })
 const { config } = require("./config")
-const summary = require("../posts-built/summary.json")
 const isProd = process.env.NODE_ENV === "production"
 
 module.exports = withBundleAnalyzer({
