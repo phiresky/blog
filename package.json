@@ -3,7 +3,7 @@
 	"version": "3.1.1",
 	"description": "Markdown based blog using next.js",
 	"scripts": {
-		"runts": "ts-node --transpile-only --project=tsconfig.json",
+		"runts": "ts-node --swc --project=tsconfig.json",
 		"dev": "yarn next dev client",
 		"posts": "yarn runts server/build-posts.ts",
 		"watch-posts": "while true ; do yarn posts ; inotifywait -r -e modify posts ; done",
@@ -36,6 +36,7 @@
 		"@fortawesome/free-solid-svg-icons": "^6.4.2",
 		"@fortawesome/react-fontawesome": "^0.2.0",
 		"@next/bundle-analyzer": "^13.4.19",
+		"@swc/core": "^1.3.80",
 		"@types/debounce-promise": "^3.1.6",
 		"@types/js-yaml": "^4.0.5",
 		"@types/rc-tooltip": "^3.7.7",

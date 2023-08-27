@@ -1,2 +1,2 @@
 #!/bin/bash
-exec yarn run pandoc-url2cite "$@"
+exec "$(dirname "$0")"/node_modules/.bin/pandoc-url2cite "$@"
