@@ -157,3 +157,4 @@ Since I wrote this article in 2021, a lot of interesting things have happened in
 -   [libgen-ipfs](https://news.ycombinator.com/item?id=28585208): implements a search engine for the [Library Genesis](https://en.wikipedia.org/wiki/Library_Genesis) based on IPFS and sql.js-httpvfs.
 -   [absurd-sql](https://jlongster.com/future-sql-web): implements a backend for sql.js (sqlite3 compiled for the web) that treats IndexedDB like a disk and stores data in blocks there. Inspired by this article.
 -   sqlite itself has now added [official support for wasm](https://sqlite.org/wasm/doc/trunk/index.md), citing absurd-sql as related work!
+-   [sqlite-wasm-http](https://github.com/mmomtchev/sqlite-wasm-http): Builds on the official sqlite WASM support ands adds support for an HTTP VFS. Also inspired by this article! Also shows a use case for loading [MBTiles](https://github.com/mmomtchev/ol-mbtiles) in the browser.
