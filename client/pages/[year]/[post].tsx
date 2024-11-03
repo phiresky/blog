@@ -20,6 +20,7 @@ import { config } from "../../config"
 import { makeUrl } from "../../utils/content"
 import { formatDate } from "../../utils/date"
 import dynamic from "next/dynamic"
+import CodeBlock from "../../components/CodeBlock"
 
 //import { BlockMath, InlineMath } from "react-katex"
 
@@ -63,6 +64,22 @@ export async function getStaticProps(
 }
 
 const renderers: Renderers = {
+	Code: ({ c: [attr, text] }) => {
+		const language = attr[1][0]
+		if (language)
+			return <CodeBlock language={language} inline wrap value={text} />
+		return (
+			<code
+				{...attrProps([
+					attr[0],
+					[...attr[1], "not-highlighted"],
+					attr[2],
+				])}
+			>
+				{text}
+			</code>
+		)
+	},
 	CodeBlock: ({ c: [attr, text] }) => (
 		<Code {...attrProps(attr)} language={attr[1][0]} value={text} />
 	),

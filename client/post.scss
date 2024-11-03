@@ -1,3 +1,4 @@
+@import "tachyons/css/tachyons.css";
 @import "./ansi-html.scss";
 
 body .rc-tooltip {
@@ -5,6 +6,14 @@ body .rc-tooltip {
 }
 .rc-tooltip-content {
 	max-width: 300px;
+}
+
+.info-box {
+	display: flex;
+	color: #001b44;
+	background-color: #cdecff;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 blockquote {
@@ -320,7 +329,10 @@ table {
 	color: #0365a5;
 }
 .footnote {
-	cursor: pointer;
 	border: 1px solid gray;
 	padding: 0 1em;
+}
+.footnote-button {
+	color: gray;
+	font-size: 90%;
 }

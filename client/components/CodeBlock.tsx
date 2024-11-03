@@ -28,15 +28,24 @@ class CodeBlock extends PureComponent<{
 	value: string
 	className?: string
 	wrap?: boolean
+	inline?: boolean
 }> {
 	render(): ReactNode {
-		const { language, value, className, wrap = false } = this.props
+		const {
+			language,
+			value,
+			className,
+			wrap = false,
+			inline = false,
+		} = this.props
 		return (
 			<SyntaxHighlighter
 				className={className}
 				language={language}
 				style={theme as unknown}
 				wrapLongLines={wrap}
+				PreTag={inline ? "span" : undefined}
+				customStyle={inline ? { padding: "0.1em" } : {}}
 			>
 				{value.trim()}
 			</SyntaxHighlighter>

@@ -302,14 +302,17 @@ export const defaultRenderers: Renderers = {
 		const [shown, setShown] = React.useState(false)
 		return (
 			<>
-				<span>
-					<button onClick={(_e) => setShown(!shown)}>note</button>
-					{shown && (
-						<div className="footnote">
-							<Pandoc ele={c} />
-						</div>
-					)}
-				</span>
+				<button
+					className="footnote-button"
+					onClick={(_e) => setShown(!shown)}
+				>
+					{shown ? "close note" : "note"}
+				</button>
+				{shown && (
+					<div className="footnote">
+						<Pandoc ele={c} />
+					</div>
+				)}
 			</>
 		)
 	},
