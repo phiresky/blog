@@ -120,7 +120,8 @@ function _mapInlines(inlines: Inline[]) {
 		if (v.t === "Str") {
 			return anchormeFullList(v.c).map((e) => {
 				if (
-					((e as URL).isURL && !(e as URL).protocol) ||
+					((e as { isURL?: boolean }).isURL &&
+						!(e as URL).protocol) ||
 					("isText" in e && e.isText)
 				) {
 					// if is url but doesn't have protocol
@@ -192,7 +193,7 @@ export async function parsePosts(): Promise<Post[]> {
 		recursive: true,
 	})) {
 		if (!file.isFile()) continue
-		const filePath = join(file.path, file.name)
+		const filePath = join(file.parentPath, file.name)
 		if (!/\.md$/.test(file.name)) {
 			waits.push(
 				(async () => {
@@ -242,4 +243,7 @@ async function build() {
 	}
 }
 
-if (require.main === module) build().catch((e) => console.error(e))
+if (require.main === module)
+	build().catch((e: unknown) => {
+		console.error(e)
+	})

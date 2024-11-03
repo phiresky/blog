@@ -19,5 +19,4 @@ module.exports = withBundleAnalyzer({
 	trailingSlash: true,
 	reactStrictMode: true,
 	eslint: { ignoreDuringBuilds: true },
-	swcMinify: true,
 })

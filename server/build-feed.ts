@@ -29,4 +29,7 @@ async function write() {
 	await fs.writeFile(join(outDir, "feed.json"), feed.json1())
 }
 
-if (require.main === module) write().catch((e) => console.error(e))
+if (require.main === module)
+	write().catch((e: unknown) => {
+		console.error(e)
+	})

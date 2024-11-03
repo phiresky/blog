@@ -22,8 +22,11 @@ export function filterPosts(summary: Summary): PostSummary[] {
 export function fromEntries<V>(
 	iterable: Iterable<[string, V]>,
 ): Record<string, V> {
-	return [...iterable].reduce((obj, [key, val]) => {
-		obj[key] = val
-		return obj
-	}, {} as Record<string, V>)
+	return [...iterable].reduce(
+		(obj, [key, val]) => {
+			obj[key] = val
+			return obj
+		},
+		{} as Record<string, V>,
+	)
 }

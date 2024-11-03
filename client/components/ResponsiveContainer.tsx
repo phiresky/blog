@@ -14,7 +14,7 @@ import React, {
 	useRef,
 	useEffect,
 } from "react"
-import ReactResizeDetector from "react-resize-detector"
+import ReactResizeDetector, { useResizeDetector } from "react-resize-detector"
 import { isPercent } from "recharts/lib/util/DataUtils"
 import { warn } from "recharts/lib/util/LogUtils"
 
@@ -180,28 +180,27 @@ export const ResponsiveContainer = forwardRef(
 		useEffect(() => {
 			setMounted(true)
 		}, [])
+		useResizeDetector({
+			handleHeight: true,
+			handleWidth: true,
+			onResize: handleResize,
+			targetRef: containerRef,
+		})
 
 		const style = { width, height, minWidth, minHeight, maxHeight }
 
 		return (
-			<ReactResizeDetector
-				handleWidth
-				handleHeight
-				onResize={handleResize}
-				targetRef={containerRef}
+			<div
+				{...(id != null ? { id: `${id}` } : {})}
+				className={classNames(
+					"recharts-responsive-container",
+					className,
+				)}
+				style={style}
+				ref={containerRef}
 			>
-				<div
-					{...(id != null ? { id: `${id}` } : {})}
-					className={classNames(
-						"recharts-responsive-container",
-						className,
-					)}
-					style={style}
-					ref={containerRef}
-				>
-					{renderChart()}
-				</div>
-			</ReactResizeDetector>
+				{renderChart()}
+			</div>
 		)
 	},
 )

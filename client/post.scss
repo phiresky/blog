@@ -109,15 +109,15 @@ pre {
 }
 
 .sqlite-httpvfs-demo {
+	border: 1px solid gray;
+	border-radius: 5px;
+	padding: 1ex;
+	padding-top: 0;
 	@media (min-width: 58rem) {
 		width: calc(100% + 10rem);
 		max-width: 100vw;
 		margin-left: -5rem;
 	}
-	border: 1px solid gray;
-	border-radius: 5px;
-	padding: 1ex;
-	padding-top: 0;
 	pre,
 	.like-codeblock {
 		border-radius: 3px;
