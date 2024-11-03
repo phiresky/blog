@@ -192,18 +192,24 @@ export async function parsePosts(): Promise<Post[]> {
 		recursive: true,
 	})) {
 		if (!file.isFile()) continue
+		const filePath = join(file.path, file.name)
 		if (!/\.md$/.test(file.name)) {
 			waits.push(
 				(async () => {
-					const rel = relative(root, file.path)
-					console.log("copying asset", rel, file.path)
+					const rel = relative(root, filePath)
 					const outDir = join(assetOutDir, dirname(rel))
+					console.log(
+						"copying asset",
+						filePath,
+						file.isFile(),
+						outDir,
+					)
 					await fs.mkdir(outDir, { recursive: true })
-					await fs.copyFile(file.path, join(outDir, file.name))
+					await fs.copyFile(filePath, join(outDir, file.name))
 				})(),
 			)
 		} else {
-			posts.push(parsePost(root, file.path))
+			posts.push(parsePost(root, filePath))
 		}
 	}
 	await Promise.all(waits)
