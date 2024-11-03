@@ -5,28 +5,10 @@
     "description": "About my personal projects and other stuff",
     "items": [
         {
-            "url": "https://phiresky.github.io/blog/2019/about",
-            "title": "Creating a blog",
-            "summary": "Hello World! I finally decided to make a blog to put my ramblings and projects. After some deliberation I settled on using next.js, so I can use React+TypeScript, don’t need a server and the website is accessible without JS enabled. The content is written as markdown, though I’m adding some neat...",
-            "date_modified": "2019-06-14T00:00:00.000Z"
-        },
-        {
-            "url": "https://phiresky.github.io/blog/2019/pandoc-url2cite",
-            "title": "Automatic citation extraction from URLs",
-            "summary": "pandoc-url2cite[1] allows you to instantly and transparently cite most papers directly given only a single URL. You simply add a URL of a publication, and it will replace that with a real citation in whatever CSL[2] style you want. This means you can avoid dealing with Mendeley[3] or Zotero[4] and...",
-            "date_modified": "2019-12-13T00:00:00.000Z"
-        },
-        {
-            "url": "https://phiresky.github.io/blog/2019/rga--ripgrep-for-zip-targz-docx-odt-epub-jpg",
-            "title": "rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.",
-            "summary": "rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome ripgrep and enables it to search in pdf, docx, sqlite, jpg, zip, tar.*, movie subtitles (mkv, mp4), etc. ExamplesPDFs Say you have a large folder of papers or lecture slides,...",
-            "date_modified": "2019-06-16T00:00:00.000Z"
-        },
-        {
-            "url": "https://phiresky.github.io/blog/2019/writer",
-            "title": "Pandoc Test Suite",
-            "summary": "This is a set of tests for pandoc. Most of them are adapted from John Gruber’s markdown test suite.HeadersLevel 2 with an embedded linkLevel 3 with emphasisLevel 4Level 5Level 1Level 2 with emphasisLevel 3 with no blank lineLevel 2 with no blank lineParagraphs Here’s a regular paragraph. In...",
-            "date_modified": "2006-07-16T22:00:00.000Z"
+            "url": "https://phiresky.github.io/blog/2020/sqlite-performance-tuning",
+            "title": "SQLite performance tuning",
+            "summary": "SQLite is an embedded SQL database. It’s extremely easy to setup, buildable as a single C file with libraries existing for basically all common programming languages. It doesn’t need any server setup or configuration since the SQL logic is run in the host process, and the database consists of only...",
+            "date_modified": "2020-06-26T00:00:00.000Z"
         },
         {
             "url": "https://phiresky.github.io/blog/2020/sql-libs-for-typescript",
@@ -35,10 +17,58 @@
             "date_modified": "2020-06-27T00:00:00.000Z"
         },
         {
-            "url": "https://phiresky.github.io/blog/2020/sqlite-performance-tuning",
-            "title": "SQLite performance tuning",
-            "summary": "SQLite is an embedded SQL database. It’s extremely easy to setup, buildable as a single C file with libraries existing for basically all common programming languages. It doesn’t need any server setup or configuration since the SQL logic is run in the host process, and the database consists of only...",
-            "date_modified": "2020-06-26T00:00:00.000Z"
+            "url": "https://phiresky.github.io/blog/2022/sqlite-zstd",
+            "title": "sqlite-zstd: Transparent dictionary-based row-level compression for SQLite",
+            "summary": "Motivation (or side side projects) While working on my startup (DishDetective) I started a side project of an automatic time-tracking tool (timetrackrs), where I try to collect a lot of information about my habits for later analysis. The main component collects data from my computer about what...",
+            "date_modified": "2022-07-31T00:00:00.000Z"
+        },
+        {
+            "url": "https://phiresky.github.io/blog/2019/about",
+            "title": "Creating a blog",
+            "summary": "Hello World! I finally decided to make a blog to put my ramblings and projects. After some deliberation I settled on using next.js, so I can use React+TypeScript, don’t need a server and the website is accessible without JS enabled. The content is written as markdown, though I’m adding some neat...",
+            "date_modified": "2019-06-14T00:00:00.000Z"
+        },
+        {
+            "url": "https://phiresky.github.io/blog/2019/writer",
+            "title": "Pandoc Test Suite",
+            "summary": "This is a set of tests for pandoc. Most of them are adapted from John Gruber’s markdown test suite.HeadersLevel 2 with an embedded linkLevel 3 with emphasisLevel 4Level 5Level 1Level 2 with emphasisLevel 3 with no blank lineLevel 2 with no blank lineParagraphs Here’s a regular paragraph. In...",
+            "date_modified": "2006-07-16T22:00:00.000Z"
+        },
+        {
+            "url": "https://phiresky.github.io/blog/2019/rga--ripgrep-for-zip-targz-docx-odt-epub-jpg",
+            "title": "rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.",
+            "summary": "rga is a line-oriented search tool that allows you to look for a regex in a multitude of file types. rga wraps the awesome ripgrep and enables it to search in pdf, docx, sqlite, jpg, zip, tar.*, movie subtitles (mkv, mp4), etc. ExamplesPDFs Say you have a large folder of papers or lecture slides,...",
+            "date_modified": "2019-06-16T00:00:00.000Z"
+        },
+        {
+            "url": "https://phiresky.github.io/blog/2019/pandoc-url2cite",
+            "title": "Automatic citation extraction from URLs",
+            "summary": "pandoc-url2cite[1] allows you to instantly and transparently cite most papers directly given only a single URL. You simply add a URL of a publication, and it will replace that with a real citation in whatever CSL[2] style you want. This means you can avoid dealing with Mendeley[3] or Zotero[4] and...",
+            "date_modified": "2019-12-13T00:00:00.000Z"
+        },
+        {
+            "url": "https://phiresky.github.io/blog/2023/improving-lemmy-performance",
+            "title": "Improving Lemmy (PostgreSQL) Performance",
+            "summary": "This article is a mix of a report of things I have worked on in Lemmy and generic advice you can use to improve the performance of any (Postgre)SQL project.What’s lemmy? Lemmy is an open-source federated social news aggregator and discussion site. It’s basically to Reddit what Mastodon is to...",
+            "date_modified": "2023-08-27T00:00:00.000Z"
+        },
+        {
+            "url": "https://phiresky.github.io/blog/2024/mock-data-from-postgres-stats",
+            "title": "Using PostgreSQL production query planner statistics to fill a mock database",
+            "summary": "Did you know that PostgreSQL stores statistics about your data that can also be pretty useful not just for the query planner? Say you have a table users (id bigint, created timestamptz, category text): This information is a bit hard to interpret, so let’s just let AI give us a nice visualization of ...",
+            "date_modified": "2024-11-03T00:00:00.000Z"
+        },
+        {
+            "url": "https://phiresky.github.io/blog/2021/python-features",
+            "title": "10 underused features of modern Python [incomplete]",
+            "summary": "Named tupleautomatic constructor generation etcstrong typingimmutablesame memory usage as normal tuplesdefault valuesmore safety than tuples, access params.name like objects, order does not mattercompatible API with tuplesTyping A must if you’re used to typed programming languages. Makes it much...",
+            "date_modified": "2021-02-15T00:00:00.000Z"
+        },
+        {
+            "url": "https://phiresky.github.io/blog/2021/led-strips-for-indoor-lighting",
+            "title": "Knowledge dump about LED Strips for indoor lighting",
+            "summary": "Introduction / Motivation Most people use LED strips only for decorative/moon lighting (with intense colours but not very bright). I have done this too. But I thought why not replace all lighting with LED strips? By now, most people have heard that reducing artifical or blue or any light during the ...",
+            "date_modified": "2021-10-14T00:00:00.000Z"
         },
         {
             "url": "https://phiresky.github.io/blog/2021/data-export-day",
@@ -51,24 +81,6 @@
             "title": "Hosting SQLite databases on Github Pages",
             "summary": "I was writing a tiny website to display statistics of how much sponsored content a Youtube creator has over time when I noticed that I often write a small tool as a website that queries some data from a database and then displays it in a graph, a table, or similar. But if you want to use a...",
             "date_modified": "2021-04-17T00:00:00.000Z"
-        },
-        {
-            "url": "https://phiresky.github.io/blog/2021/led-strips-for-indoor-lighting",
-            "title": "Knowledge dump about LED Strips for indoor lighting",
-            "summary": "Introduction / Motivation Most people use LED strips only for decorative/moon lighting (with intense colours but not very bright). I have done this too. But I thought why not replace all lighting with LED strips? By now, most people have heard that reducing artifical or blue or any light during the ...",
-            "date_modified": "2021-10-14T00:00:00.000Z"
-        },
-        {
-            "url": "https://phiresky.github.io/blog/2021/python-features",
-            "title": "10 underused features of modern Python [incomplete]",
-            "summary": "Named tupleautomatic constructor generation etcstrong typingimmutablesame memory usage as normal tuplesdefault valuesmore safety than tuples, access params.name like objects, order does not mattercompatible API with tuplesTyping A must if you’re used to typed programming languages. Makes it much...",
-            "date_modified": "2021-02-15T00:00:00.000Z"
-        },
-        {
-            "url": "https://phiresky.github.io/blog/2022/sqlite-zstd",
-            "title": "sqlite-zstd: Transparent dictionary-based row-level compression for SQLite",
-            "summary": "Motivation (or side side projects) While working on my startup (DishDetective) I started a side project of an automatic time-tracking tool (timetrackrs), where I try to collect a lot of information about my habits for later analysis. The main component collects data from my computer about what...",
-            "date_modified": "2022-07-31T00:00:00.000Z"
         }
     ]
 }
