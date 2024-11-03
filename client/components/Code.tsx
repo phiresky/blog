@@ -13,11 +13,14 @@ const SqliteHttpvfsDemo = dynamic<CodeProps>(() =>
 		(m) => m.SqliteHttpvfsDemo,
 	),
 )
+const QalcModule = dynamic<CodeProps>(() => import("./QalcModule"))
+
 const specialCodeBlockComponents: {
 	[name: string]: React.ComponentType<CodeProps> | undefined
 } = {
 	barchart: CodeBarChart,
 	"sqlite-httpvfs-demo": SqliteHttpvfsDemo,
+	qalc: QalcModule,
 }
 
 export function Code(props: CodeProps): React.ReactElement {

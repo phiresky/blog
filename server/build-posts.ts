@@ -91,6 +91,7 @@ function anchormeFullList(text: string): FullAnchorme[] {
 				start: lastIndex,
 				end: match.start,
 				string: text.substring(lastIndex, match.start),
+				reason: "",
 			})
 		}
 
@@ -107,6 +108,7 @@ function anchormeFullList(text: string): FullAnchorme[] {
 			start: lastIndex,
 			end: text.length,
 			string: text.substring(lastIndex),
+			reason: "",
 		})
 	}
 
@@ -185,20 +187,26 @@ async function parsePost(root: string, path: string): Promise<Post> {
 export async function parsePosts(): Promise<Post[]> {
 	const root = join(__dirname, "/../posts")
 	const posts = []
+	const waits = []
 	for await (const file of await fs.opendir(root, {
 		recursive: true,
 	})) {
 		if (!file.isFile()) continue
 		if (!/\.md$/.test(file.name)) {
-			const rel = relative(root, file.path)
-			console.log("copying asset", rel, file.path)
-			const outDir = join(assetOutDir, dirname(rel))
-			await fs.mkdir(outDir, { recursive: true })
-			await fs.copyFile(file.path, join(outDir, file.name))
+			waits.push(
+				(async () => {
+					const rel = relative(root, file.path)
+					console.log("copying asset", rel, file.path)
+					const outDir = join(assetOutDir, dirname(rel))
+					await fs.mkdir(outDir, { recursive: true })
+					await fs.copyFile(file.path, join(outDir, file.name))
+				})(),
+			)
 		} else {
 			posts.push(parsePost(root, file.path))
 		}
 	}
+	await Promise.all(waits)
 	return await Promise.all(posts)
 }
 

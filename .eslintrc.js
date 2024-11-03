@@ -14,17 +14,19 @@ module.exports = {
 	extends: [
 		"eslint:recommended",
 		"plugin:@next/next/recommended",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		"plugin:@typescript-eslint/strict",
+		"plugin:@typescript-eslint/strict-type-checked",
 		"plugin:prettier/recommended",
 		"prettier",
 	],
 	rules: {
 		"@typescript-eslint/no-unused-vars": [
-			"warn", // or "error"
-			{ 
-			  "argsIgnorePattern": "^_",
-			  "varsIgnorePattern": "^_",
-			  "caughtErrorsIgnorePattern": "^_"
-			}	]}
+			"warn", // or "error"e
+			{
+				argsIgnorePattern: "^_",
+				varsIgnorePattern: "^_",
+				caughtErrorsIgnorePattern: "^_",
+			},
+		],
+	},
 }

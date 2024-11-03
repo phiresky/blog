@@ -29,7 +29,7 @@ export const config: ConfigJson = {
 	topLinks: [
 		{
 			text: "Blog",
-			href: "https://phiresky.github.io/blog/",
+			href: "/",
 		},
 		{
 			text: "GitHub",

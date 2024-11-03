@@ -302,8 +302,8 @@ export const defaultRenderers: Renderers = {
 		const [shown, setShown] = React.useState(false)
 		return (
 			<>
-				<span onClick={(e) => setShown(!shown)}>
-					<button>note</button>
+				<span>
+					<button onClick={(_e) => setShown(!shown)}>note</button>
 					{shown && (
 						<div className="footnote">
 							<Pandoc ele={c} />
