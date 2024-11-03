@@ -226,7 +226,9 @@ export const SqliteHttpvfsDemo: React.FC<CodeProps> = (props) => {
 				{!editMode ? (
 					<div
 						className="inner-body"
-						ref={(e) => e && setInputHeight(e?.clientHeight)}
+						ref={(e) => {
+							if (e) setInputHeight(e.clientHeight)
+						}}
 					>
 						<CodeBlock
 							className="inner-body"
@@ -431,7 +433,7 @@ const PageReadsView: React.FC<{ pages: string | PageReadReq[] }> = observer(
 									: (e.prefetch
 											? `sequential, prefetch ${e.prefetch} pages`
 											: `random`) +
-									  ` (${e.prefetch + 1} KiB XHR)`}
+										` (${e.prefetch + 1} KiB XHR)`}
 							</td>
 							<td>{e.page?.name ?? "[system]"}</td>
 							<td>{e.page?.pagetype}</td>
