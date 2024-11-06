@@ -134,7 +134,7 @@ A prompt to do this based on the result of the first step is still in the repo.
 
 ### Alternative 3: Generating data purely based on the schema
 
-This is of course possible, but you'll miss out on a ton of realism. For example, a `text` column is very often actually more like a mix of `enum` and free form text, with a few very common values. An `integer` or `enum` is often `0`, `1` or `first_enum_value`. Ofetn there's columns that are `null` 100% of the time.
+This is of course possible, but you'll miss out on a ton of realism. For example, a `text` column is very often actually more like a mix of `enum` and free form text, with a few very common values. An `integer` or `enum` is often `0`, `1` or `first_enum_value`. Often there's columns that are `null` 100% of the time.
 
 If you just sample randomly, you won't get the same query plans as on production. Since getting realistic DB interaction was my main goal, using the real statistics greatly goes towards this goal.
 
