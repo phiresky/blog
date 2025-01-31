@@ -22,7 +22,7 @@ export type ConfigJson = {
 }
 export const config: ConfigJson = {
 	siteTitle: "phiresky's blog",
-	siteDescription: "About my personal projects and other stuff",
+	siteDescription: "Code, Craft, and Creativity",
 	stylesheets: [],
 	id: "https://phiresky.github.io/blog/",
 	publicUrlBase: "https://phiresky.github.io",

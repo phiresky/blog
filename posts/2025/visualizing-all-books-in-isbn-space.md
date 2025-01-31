@@ -20,7 +20,9 @@ Here's how I did it.
 
 ## The inherent structure of ISBNs
 
-Large blocks of 10k to 100 million ISBNs are assigned by the _International ISBN Agency_ to regional organizations. Then, each country has their own method of subdividing their blocks into publishers.
+The `978-`/`979-` prefix of an ISBN comes from the fact that ISBN13s are a subset of [European Article Numbers](https://en.wikipedia.org/wiki/International_Article_Number), which have a three-digit prefix. This fixed prefix is affectionately called [Bookland](https://en.wikipedia.org/wiki/Bookland). We can thus ignore it almost completely.
+
+Large blocks of 10k to 100 million ISBNs are assigned by the _International ISBN Agency_ to international organizations. Then, each country has their own method of subdividing their blocks into publishers.
 
 The important part is that ISBN blocks are always assigned by **prefix**. For example, `978-4` is assigned to Japan, and Japan assigned `978-4-312` to one publisher. That publisher then assigns the articles `000000-99999`, leading to an ISBN of `978-4-312-99999-X`, where X is a checksum. The longer the country prefix is, the fewer books can be assigned within it. For example, while Japan has a space of 100 million ISBNs, Singapore has a prefix of `978-9971-`, allowing only 100 thousand ISBNs.
 
@@ -120,6 +122,8 @@ vec4 colorOfPixel(vec2 uv) {
 }
 ```
 
+The `$dataset_x` syntax is not part of GLSL, but rather a very simple (regex) templating syntax, that allows me to only load the images that the shader actually reads from.
+
 You can edit the used shader directly in the visualization by going to the **⚙️ Advanced** options, it updates live. The meaning of the pixels in each dataset is described in [the readme](https://github.com/phiresky/isbn-visualization).
 
 ### The bookshelf-view
@@ -133,7 +137,6 @@ It's not really what books looks like, but it makes the fully zoomed in view loo
 Since the styling is in the shader, we can make it smoothly appear by simply passing in the current ZOOM as an uniform and fading it in:
 
 ```glsl
-uniform bool IS_IMAGE_MAX_ZOOM;
 uniform float CURRENT_ZOOM;
 
 vec4 bookshelfOverlayDependingOnZoom(vec4 bookColor) {
@@ -148,9 +151,9 @@ vec4 bookshelfOverlayDependingOnZoom(vec4 bookColor) {
 
 As far as I know, shaders work in ~32x32 pixel blocks in lockstep, which means that _every branch_ that happens in _any pixel_ in a block needs to be executed. But the zoom level is the same for all pixels, so this should even be performant.
 
-## Text and Barcodes
+## Trees, Text, Performance
 
-Just like the image tiles, I render text in a hierarchical structure depending on zoom levels and view frustrum culling. Everything is implemented using [react-threejs-fiber](https://r3f.docs.pmnd.rs). Here's an approximation of what the hierarchical Tree component looks like:
+Just like the image tiles, I render text in a hierarchical structure depending on zoom levels and view frustrum culling. Everything is implemented using [react-threejs-fiber](https://r3f.docs.pmnd.rs). Everything is described declaratively, React recursively adds scene elements as the view is moved around. Here's an approximation of what the hierarchical Tree component looks like:
 
 ```typescript
 function RenderTree(props: { prefix: IsbnPrefixWithDashes }) {
@@ -191,16 +194,51 @@ This works, but it caused `20ms` lags every time, synchronously in the rendering
 
 After all this frustrating effort, it turns out I could fix most of my performance concerns by just reducing the HTML elements, limiting DOM content added per frame, and especially removing a stack of `text-shadow` CSS filters, which are apparently horrible for performance.
 
-https://graphicore.github.io/librebarcode/
+## Barcodes
+
+At max zoom, you will also notice that each book has a barcode. I mainly added these to reinforce the concept of what we are looking at: Books ordered by ISBN. I started with some libraries to render bar codes, but it turns out there's actually a TTF font that just renders a 13-digit number as a barcode! It even calculates the check digit itself: https://graphicore.github.io/librebarcode/. Pretty convenient, and performant too, due to all the optimization OSs do for text rendering.
 
 ## Publisher ranges
 
+Each "group" (usually countries) has a large range, and each publisher has a smaller range within a group. I decided to visualize this using randomly assigned colors unique for each group and publisher:
+
+![Looking at publishers shows their range size. If a publisher has multiple ranges the color is the same.](publishers.png)
+
+In order to allow highlighting all ranges of a publisher simultaneously, I simply give each publisher a unique ID and store this as the RGB components:
+
+```glsl
+  ivec4 data = getIntegerRGB(texture2D($dataset_publishers, vUv));
+  int publisherId = data.r * 65536 + data.g * 256 + data.b;
+  if (HIGHLIGHTED_PUBLISHER_ID == publisherId) {
+    return vec4(1.); // white
+  }
+```
+
+This part I'm not extremely happy with. The publisher colors clash with the heatmap color scale, and country ranges are hard to see.
+
 ## Flight
 
-## Backend architecture?
+If you search for a book or click on the minimap, you will fly there. Calculating a good looking flight path is actually much trickier than it seems. I'm not sure how Google Earth does it. After getting a mediocre result by fitting a parabola, I nerd sniped a friend of mine to get him to do it, here's what he said:
 
-Since we can just store our image tiles as PNG and our data trees as JSON, we don't need any backend! We just need a static file host, like Github Pages to dump some HTML, CSS, PNG, and JSON.
+> "Somehow you're pretending reality is polar coordinates and converting that to cartesian coordinates?" -
+> "Yes it transforms the points into a space which has the property that for a certain zoom level (which you potentially can't reach at all) all coordinates lie on one point but all ground points are still the same distance away... aka a semicircle (or less) where the edge of the circle has the xy points zoomed in at maximum... in other words, a space that represents the speed and spatiality of the original space in one... in which the direct route is then theoretically the fastest route.... Unfortunately, this only applies if the increase in speed depends linearly on the zoom level.... but this is not the case with normal zooming... there it is rather quadratic... so every zoom level further up makes you move twice as fast to the right left... but this somehow results in a strange non-linear space with strange properties and I haven't managed to define a distance metric in there, let alone the shortest path between two points"
+>
+> -- my friend rambling about calculating flight paths
 
-## Frontend architecture
+![Blub-space transformation for smooth flight paths. This is what he sent me to try and explain it.](blub-space.png)
+
+The end result isn't perfect and it feels a bit overengineered at 500 lines of code, but it works well enough.
+
+## Architecture
+
+### Backend
+
+Since we can just store our image tiles as PNG and our data trees as JSON, we don't need any backend! We just need a static file host, like Github Pages to dump some HTML, JS, CSS, PNG, and JSON.
+
+### Frontend
 
 I used ThreeJS, React, MobX. This is a very comfortable combination to create reactive declarative GPU-accelerated 2D/3D-scenes, with easy reusability of components.
+
+## Processing Scripts
+
+There's a set of processing scripts, mostly written in JS (directly writing out JSON and PNG files), but one of them written in Rust since it has to read in a 250GByte source file, writing output to SQLite.
