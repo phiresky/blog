@@ -64,7 +64,7 @@ We just divide each paper into ten sections, not two. Even better, with this cur
 
 ![Transforming an ISBN into coordinates by simply taking every second digit](coordinates.drawio.svg)
 
-This transformation is really simple, but this took me ages to realize and I tried to generalize it, so my code for it is [50 lines](https://github.com/phiresky/isbn-visualization/blob/master/src/projections/bookshelf.ts#L49-L100).
+This transformation is really simple, but it took me ages to realize and I tried to generalize it, so my code for it is [50 lines](https://github.com/phiresky/isbn-visualization/blob/master/src/projections/bookshelf.ts#L49-L100). Another happy side effect is that it's easy to understand, and even easy to find a certain book just ISBN just by exploring!
 
 ## Map tiles
 
@@ -177,14 +177,15 @@ function RenderTree(props: { prefix: IsbnPrefixWithDashes }) {
     // these elements are part of the threejs WebGL scene graph
     <group position={plane.position}>
       <Plane args={plane.size} material={material} />
-      {/* opt out of the threejs scene graph and add a html element
-          instead, using 3D CSS transforms */}
       <Html>
+        {/* opt out of the threejs scene graph and add a html element
+          instead, using 3D CSS transforms */}
         {prefixDetails.state === "fulfilled" &&
           prefixDetails.value.publisherName}...
       </Html>
       {renderChildren &&
         digits.map((i) =>
+          // recursion!
           <RenderTree prefix={props.prefix + i} />
         )}
     </group>
@@ -211,11 +212,11 @@ Each "group" (usually countries) has a large range, and each publisher has a sma
 In order to allow highlighting all ranges of a publisher simultaneously, I simply give each publisher a unique ID and store this as the RGB components:
 
 ```glsl
-  ivec4 data = getIntegerRGB(texture2D($dataset_publishers, vUv));
-  int publisherId = data.r * 65536 + data.g * 256 + data.b;
-  if (HIGHLIGHTED_PUBLISHER_ID == publisherId) {
-    return vec4(1.); // white
-  }
+ivec4 data = getIntegerRGB(texture2D($dataset_publishers, vUv));
+int publisherId = data.r * 65536 + data.g * 256 + data.b;
+if (HIGHLIGHTED_PUBLISHER_ID == publisherId) {
+  return vec4(1.); // white
+}
 ```
 
 This part I'm not extremely happy with. The publisher colors clash with the heatmap color scale, and country ranges are hard to see.
@@ -243,7 +244,7 @@ Since we can just store our image tiles as PNG and our data trees as JSON, we do
 
 I used ThreeJS, React, MobX. This is a very comfortable combination to create reactive declarative GPU-accelerated 2D/3D-scenes, with easy reusability of components. I can recommend it.
 
-## Processing Scripts
+### Processing Scripts
 
 There's a set of processing scripts, mostly written in JS (directly writing out JSON and PNG files), but one of them written in Rust since it has to read in a 250GByte source file, writing output to SQLite.
 
