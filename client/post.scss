@@ -336,3 +336,16 @@ table {
 	color: gray;
 	font-size: 90%;
 }
+
+.isbn-visualization-iframe-container {
+	position: relative;
+	left: 50%;
+	right: 50%;
+	width: 90vw;
+	margin-left: -45vw;
+	margin-right: -45vw;
+	.isbn-visualization-iframe {
+		width: 90vw;
+		height: 90vh;
+	}
+}
