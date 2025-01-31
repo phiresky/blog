@@ -59,6 +59,12 @@
             "date_modified": "2024-11-03T00:00:00.000Z"
         },
         {
+            "url": "https://phiresky.github.io/blog/2025/visualizing-all-books-in-isbn-space",
+            "title": "Visualizing all books of the world in ISBN-Space",
+            "summary": "Libraries have been trying to collect humanity’s knowledge almost since the invention of writing. In the digital age, it might actually be possible to create a comprehensive collection of all human writing meeting certain criteria That’s what shadow libraries do - collect and share as many books as ...",
+            "date_modified": "2025-01-31T00:00:00.000Z"
+        },
+        {
             "url": "https://phiresky.github.io/blog/2021/python-features",
             "title": "10 underused features of modern Python [incomplete]",
             "summary": "Named tupleautomatic constructor generation etcstrong typingimmutablesame memory usage as normal tuplesdefault valuesmore safety than tuples, access params.name like objects, order does not mattercompatible API with tuplesTyping A must if you’re used to typed programming languages. Makes it much...",

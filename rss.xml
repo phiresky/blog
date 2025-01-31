@@ -4,7 +4,7 @@
         <title>phiresky's blog</title>
         <link>https://phiresky.github.io/blog/</link>
         <description>About my personal projects and other stuff</description>
-        <lastBuildDate>Sun, 03 Nov 2024 21:41:15 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 31 Jan 2025 13:03:03 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>yup</copyright>
@@ -70,6 +70,13 @@
             <guid>https://phiresky.github.io/blog/2024/mock-data-from-postgres-stats</guid>
             <pubDate>Sun, 03 Nov 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[Did you know that PostgreSQL stores statistics about your data that can also be pretty useful not just for the query planner? Say you have a table users (id bigint, created timestamptz, category text): This information is a bit hard to interpret, so let’s just let AI give us a nice visualization of ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Visualizing all books of the world in ISBN-Space]]></title>
+            <link>https://phiresky.github.io/blog/2025/visualizing-all-books-in-isbn-space</link>
+            <guid>https://phiresky.github.io/blog/2025/visualizing-all-books-in-isbn-space</guid>
+            <pubDate>Fri, 31 Jan 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Libraries have been trying to collect humanity’s knowledge almost since the invention of writing. In the digital age, it might actually be possible to create a comprehensive collection of all human writing meeting certain criteria That’s what shadow libraries do - collect and share as many books as ...]]></description>
         </item>
         <item>
             <title><![CDATA[10 underused features of modern Python [incomplete]]]></title>
