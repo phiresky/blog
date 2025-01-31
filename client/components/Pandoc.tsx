@@ -12,6 +12,7 @@ type PandocConfig = {
 }
 const PandocConfigContext = React.createContext<PandocConfig>({})
 
+const attrWhitelist = ["target"]
 /**
  * convert pandoc AST Attr to react props (id and class)
  */
@@ -20,7 +21,12 @@ function ap([id, classes, attrs]: p.Attr): AttrProps {
 	return {
 		id: id || undefined,
 		className: classes.join(" ") || undefined,
-		...Object.fromEntries(attrs.map(([k, v]) => [`data-${k}`, v])),
+		...Object.fromEntries(
+			attrs.map(([k, v]) => [
+				attrWhitelist.includes(k) ? k : `data-${k}`,
+				v,
+			]),
+		),
 	} as AttrProps
 }
 export type AttrProps = {
