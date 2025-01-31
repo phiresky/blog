@@ -64,7 +64,7 @@ We just divide each paper into ten sections, not two. Even better, with this cur
 
 ![Transforming an ISBN into coordinates by simply taking every second digit](coordinates.drawio.svg)
 
-This transformation is really simple, but it took me ages to realize and I tried to generalize it, so my code for it is [50 lines](https://github.com/phiresky/isbn-visualization/blob/master/src/projections/bookshelf.ts#L49-L100). Another happy side effect is that it's easy to understand, and even easy to find a certain book just ISBN just by exploring!
+This transformation is really simple, but it took me ages to realize and I tried to generalize it, so my code for it is [50 lines](https://github.com/phiresky/isbn-visualization/blob/master/src/projections/bookshelf.ts#L49-L100). Another happy side effect is that it's easy to understand, and even easy to find a certain book ISBN just by exploring!
 
 ## Map tiles
 
