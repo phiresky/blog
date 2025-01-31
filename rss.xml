@@ -4,7 +4,7 @@
         <title>phiresky's blog</title>
         <link>https://phiresky.github.io/blog/</link>
         <description>Code, Craft, and Creativity</description>
-        <lastBuildDate>Fri, 31 Jan 2025 17:45:57 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 31 Jan 2025 21:50:01 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>yup</copyright>
@@ -76,7 +76,7 @@
             <link>https://phiresky.github.io/blog/2025/visualizing-all-books-in-isbn-space</link>
             <guid>https://phiresky.github.io/blog/2025/visualizing-all-books-in-isbn-space</guid>
             <pubDate>Fri, 31 Jan 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[Libraries have been trying to collect humanity’s knowledge almost since the invention of writing. In the digital age, it might actually be possible to create a comprehensive collection of all human writing meeting certain criteria. That’s what shadow libraries do - collect and share as many books...]]></description>
+            <description><![CDATA[Libraries have been trying to collect humanity’s knowledge almost since the invention of writing. In the digital age, it might actually be possible to create a comprehensive collection of all human writing that meets certain criteria. That’s what shadow libraries do - collect and share as many...]]></description>
         </item>
         <item>
             <title><![CDATA[10 underused features of modern Python [incomplete]]]></title>
