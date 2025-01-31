@@ -82,7 +82,7 @@ At the maximum zoom level on the other hand, I decided to map exactly 1 book to 
 
 ## Shaders
 
-Originally I stored RGB data directly in the map tiles, but in order to increase the flexibility I decided to store more abstract data, and do the actual rendering on the GPU using GLSL Shaders. This has a few advantages:
+Originally I stored RGB data directly in the map tiles, but in order to increase the flexibility I decided to store more abstract data, and do the actual rendering on the GPU using GLSL fragment shaders. This has a few advantages:
 
 -   Color scheme can be chosen later
 -   We can apply arbitrary transformations or filters that update instantly
@@ -91,6 +91,7 @@ Originally I stored RGB data directly in the map tiles, but in order to increase
 For example, let's take the publisher dataset. We store years from 1800 to 2055. But 95% of data is in the range 1985 to 2024. So we can reduce it to this range in the shader, which looks like this:
 
 ```glsl
+// GLSL fragment shader code - runs for every pixel on the GPU
 vec4 colorOfPixel(vec2 uv) {
   vec4 bookColor = texture2D($dataset_publication_date, uv);
   // average publication year in this pixel
@@ -158,6 +159,7 @@ As far as I know, shaders work in ~32x32 pixel blocks in lockstep, which means t
 Just like the image tiles, I render text in a hierarchical structure depending on zoom levels and view frustrum culling. Everything is implemented using [react-threejs-fiber](https://r3f.docs.pmnd.rs). The scene is described declaratively, React recursively adds scene elements as the view is moved around. Here's an approximation of what the hierarchical Tree component looks like:
 
 ```typescript
+// TypeScript JSX
 function RenderTree(props: { prefix: IsbnPrefixWithDashes }) {
   // compute where we should place text and whether we should render children.
   // depends on current view frustrum and zoom level
