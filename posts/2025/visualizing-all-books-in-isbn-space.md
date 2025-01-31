@@ -242,3 +242,9 @@ I used ThreeJS, React, MobX. This is a very comfortable combination to create re
 ## Processing Scripts
 
 There's a set of processing scripts, mostly written in JS (directly writing out JSON and PNG files), but one of them written in Rust since it has to read in a 250GByte source file, writing output to SQLite.
+
+## Conclusion
+
+In the end, we have a very flexible way of visualizing all books that have been published with an ISBN. I enjoyed working on this project a lot. In the end, it was made possible by what would in software be called a bad choice - using an identifier that can only barely fit enough elements. If you tried the same with UUIDs, you'd have purely vast emptyness ;)
+
+The source code is available at https://github.com/phiresky/isbn-visualization.
