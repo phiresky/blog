@@ -1,10 +1,10 @@
 ---
 title: Visualizing all books of the world in ISBN-Space
 date: 2025-01-31
-hidden: true
+og_image: https://phiresky.github.io/blog/2025/visualizing-all-books-in-isbn-space/screenshot2.png
 ---
 
-Libraries have been trying to collect humanity's knowledge almost since the invention of writing. In the digital age, it might actually be possible to create a comprehensive collection of all human writing meeting certain criteria. That's what [shadow libraries](https://en.wikipedia.org/wiki/Shadow_library) do - collect and share as many books as possible.
+Libraries have been trying to collect humanity's knowledge almost since the invention of writing. In the digital age, it might actually be possible to create a comprehensive collection of all human writing that meets certain criteria. That's what [shadow libraries](https://en.wikipedia.org/wiki/Shadow_library) do - collect and share as many books as possible.
 
 One shadow library, Anna's Archive (which I will not link here directly due to copyright concerns), recently posed a question: _How could we effectively visualize 100,000,000 books or more at once?_ There's lots of data to view: Titles, authors, which countries the books come from, which publishers, how old they are, how many libraries hold them, whether they are available digitally, etc.
 
@@ -28,7 +28,7 @@ The important part is that ISBN blocks are always assigned by **prefix**. For ex
 
 ### Space-filling curves
 
-Stripping ISBNs of their pre-and suffix, they are a single decimal between 0 and 2 billion. We need some way to project this one-dimensional space into a two-dimensional space. The easiest way would be to simply fill pixels row-wise from the top, which results in an image like this:
+When you strip ISBNs of their pre-and suffix, they are a single decimal number between 0 and 2 billion. We need some way to project this one-dimensional space into a two-dimensional space. The easiest way would be to simply fill pixels row-wise from the top, which results in an image like this:
 
 ![ISBN-Space presented linearly. Whiter pixels contain more books. You can see the line-stretched structure.](./oclc_isbns_smaller.png)
 
@@ -58,7 +58,9 @@ $$ \implies \frac{a}{b} = \frac{10\cdot b}{a} \implies \frac{a^2}{b^2} = 10 $$
 
 $$ \implies a:b = \sqrt{10} \approx 3.16:1 $$
 
-Even better, with this curve, the coordinate transformation is really simple!
+This is very similar to [A4 paper](https://en.wikipedia.org/wiki/ISO_216), which is defined as follows: Take a rectangle of size $1m^2$, such that if you fold it in half you get a rectangle of the same aspect ratio. The first recursive iteration is A0-paper, the fourth iteration is A4. They all have an aspect ratio of $1:\sqrt{2}$.
+
+We just divide each paper into ten sections, not two. Even better, with this curve, the coordinate transformation is really simple!
 
 ![Transforming an ISBN into coordinates by simply taking every second digit](coordinates.drawio.svg)
 
@@ -70,9 +72,9 @@ Now that we have our space, we can generate tiled images for each prefix:
 
 ![A single tile containing the average publication dates for the prefix 978-06](publication-date-978-06-small.png)
 
-I targeted a size of ~100kB per tile, which means a size of 2000 pixels times 633 ($=2000/\sqrt{10}$).
+I targeted a size of ~100kB per tile, which resulted in a size of 2000 pixels times 633 ($=2000/\sqrt{10}$).
 
-For each dataset, we store different information per pixel. In this case, I subtracted 1800 from the publication year to get a range of 1800 to 2055. The red channel contains the average publication year of each book in the pixel, the blue channel contains the ratio of books present (e.g. if 50% of books exist, blue channel would be 127/255).
+For each dataset, we store different information per pixel. In this case, I subtracted 1800 from the publication year to get a range of 1800 to 2055 in 8 bits. The red channel contains the average publication year of each book in the pixel, the blue channel contains the ratio of books present (e.g. if 50% of books exist, blue channel would be 127/255).
 
 At the maximum zoom level on the other hand, I decided to map exactly 1 book to 1 pixel for accuracy:
 
@@ -83,7 +85,7 @@ At the maximum zoom level on the other hand, I decided to map exactly 1 book to 
 Originally I stored RGB data directly in the map tiles, but in order to increase the flexibility I decided to store more abstract data, and do the actual rendering on the GPU using GLSL Shaders. This has a few advantages:
 
 -   Color scheme can be chosen later
--   We can apply arbitrary transformation or filters that apply instantly
+-   We can apply arbitrary transformations or filters that update instantly
 -   We can combine multiple datasets on the fly
 
 For example, let's take the publisher dataset. We store years from 1800 to 2055. But 95% of data is in the range 1985 to 2024. So we can reduce it to this range in the shader, which looks like this:
@@ -132,9 +134,9 @@ In order to improve the visuals, at the fully zoomed in view, each pixel gets a 
 
 ![Side-by-side comparison of the bookshelf-shader disabled and enabled (toggleable in advanced options). Each book is assigned a random width, height, and pattern.](bookshelf-example.png)
 
-It's not really what books looks like, but it makes the fully zoomed in view look much more alive. This styling is purely [implemented in the shader](https://github.com/phiresky/isbn-visualization/blob/master/src/lib/shaders.ts#L105-L151). The hardest part was getting the random-number generator to work the same within GLSL and JavaScript, since we need to know the book-height in order to set the text boundaries.
+It's not really what books look like, but it makes the fully zoomed in view look much more alive. This styling is purely [implemented in the shader](https://github.com/phiresky/isbn-visualization/blob/master/src/lib/shaders.ts#L105-L151). The hardest part was getting a random-number generator to work the same within GLSL and JavaScript, since we need to know the book-height in order to set the text boundaries.
 
-Since the styling is in the shader, we can make it smoothly appear by simply passing in the current ZOOM as an uniform and fading it in:
+Since the styling is in the shader, we can make it smoothly appear by simply passing in the current zoom as an uniform and fading it in:
 
 ```glsl
 uniform float CURRENT_ZOOM;
@@ -153,7 +155,7 @@ As far as I know, shaders work in ~32x32 pixel blocks in lockstep, which means t
 
 ## Trees, Text, Performance
 
-Just like the image tiles, I render text in a hierarchical structure depending on zoom levels and view frustrum culling. Everything is implemented using [react-threejs-fiber](https://r3f.docs.pmnd.rs). Everything is described declaratively, React recursively adds scene elements as the view is moved around. Here's an approximation of what the hierarchical Tree component looks like:
+Just like the image tiles, I render text in a hierarchical structure depending on zoom levels and view frustrum culling. Everything is implemented using [react-threejs-fiber](https://r3f.docs.pmnd.rs). The scene is described declaratively, React recursively adds scene elements as the view is moved around. Here's an approximation of what the hierarchical Tree component looks like:
 
 ```typescript
 function RenderTree(props: { prefix: IsbnPrefixWithDashes }) {
@@ -227,7 +229,7 @@ If you search for a book or click on the minimap, you will fly there. Calculatin
 
 ![Blub-space transformation for smooth flight paths. This is what he sent me to try and explain it.](blub-space.png)
 
-The end result isn't perfect and it feels a bit overengineered at 500 lines of code, but it works well enough.
+The end result isn't perfect and it feels a bit overengineered at 500 lines of code, but it works better than my original approach.
 
 ## Architecture
 
@@ -237,7 +239,7 @@ Since we can just store our image tiles as PNG and our data trees as JSON, we do
 
 ### Frontend
 
-I used ThreeJS, React, MobX. This is a very comfortable combination to create reactive declarative GPU-accelerated 2D/3D-scenes, with easy reusability of components.
+I used ThreeJS, React, MobX. This is a very comfortable combination to create reactive declarative GPU-accelerated 2D/3D-scenes, with easy reusability of components. I can recommend it.
 
 ## Processing Scripts
 
@@ -245,6 +247,6 @@ There's a set of processing scripts, mostly written in JS (directly writing out 
 
 ## Conclusion
 
-In the end, we have a very flexible way of visualizing all books that have been published with an ISBN. I enjoyed working on this project a lot. In the end, it was made possible by what would in software be called a bad choice - using an identifier that can only barely fit enough elements. If you tried the same with UUIDs, you'd have purely vast emptyness ;)
+We now have a very flexible way of visualizing all books that have been published with an ISBN. I enjoyed working on this project a lot. In the end, it was made possible by what would in software be called a bad choice - using an identifier that can only barely fit enough elements. If you tried the same with UUIDs, you'd have purely vast emptiness ;)
 
 The source code is available at https://github.com/phiresky/isbn-visualization.

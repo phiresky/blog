@@ -35,6 +35,7 @@ export type Frontmatter = {
 	date: string
 	updated?: string
 	hidden?: boolean
+	og_image?: string
 	[k: string]: unknown
 }
 

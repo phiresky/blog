@@ -21,6 +21,7 @@ import { makeUrl } from "../../utils/content"
 import { formatDate } from "../../utils/date"
 import dynamic from "next/dynamic"
 import CodeBlock from "../../components/CodeBlock"
+import Head from "next/head"
 
 //import { BlockMath, InlineMath } from "react-katex"
 
@@ -104,6 +105,11 @@ class PostUI extends React.Component<Props & WithRouterProps> {
 		}
 		return (
 			<div>
+				{meta.og_image && (
+					<Head>
+						<meta property="og:image" content={meta.og_image} />
+					</Head>
+				)}
 				<Page
 					title={
 						meta.title +
@@ -143,7 +149,7 @@ function PostDate({ post: { frontmatter: meta, filename } }: { post: Post }) {
 		const SLink = urlBase
 			? ({ children = null as React.ReactNode }) => (
 					<a href={urlBase + filename}>{children}</a>
-			  )
+				)
 			: Fragment
 		updated = (
 			<>
