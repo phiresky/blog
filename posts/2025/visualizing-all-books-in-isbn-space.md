@@ -38,7 +38,7 @@ Thus, [as people on Hacker News discussed](https://news.ycombinator.com/item?id=
 
 The commonly suggested Hilbert-curve is nice, but it leads to artifacts:
 
-![Left: a Hilbert curve. Right: ISBN-space projected into a hilbert curve. You can see that the regions look like they have spatial structure, but this is purely an artifact of the curve used. (credit: Wikipedia, Hypha A)](hilbert.png)
+![Left: a Hilbert curve. Right: ISBN-space projected into a Gilbert (Generalized Hilbert) curve. You can see that the regions look like they have spatial structure, but this is purely an artifact of the curve used. (credit: Wikipedia, Hypha A)](hilbert.png)
 
 While the Hilbert curve helps make regions more "square" (smaller regions do not get wider and wider), it introduces structure where there is none. Since structures that are not actually part of data are a huge issue in data visualization, we want to avoid this.
 
